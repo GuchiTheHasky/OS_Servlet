@@ -3,6 +3,7 @@ package the.husky.dao.jdbc;
 import the.husky.dao.UserDao;
 import the.husky.dao.jdbc.mapper.UserRowMapper;
 import the.husky.entity.user.User;
+import the.husky.exception.DataAccessException;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -19,7 +20,7 @@ public class JdbcUserDao implements UserDao {
 
 
     @Override
-    public List<User> getUsers() {
+    public List<User> findAll() throws DataAccessException {
         List<User> users = new ArrayList<>();
         try (Connection connection = connect();
              PreparedStatement statement = connection.prepareStatement(SELECT_ALL);
@@ -30,12 +31,13 @@ public class JdbcUserDao implements UserDao {
             }
         } catch (SQLException e) {
             e.printStackTrace();
+            throw new DataAccessException("Couldn't find users.", e);
         }
         return users;
     }
 
     @Override
-    public void add(User user) {
+    public void add(User user) throws DataAccessException {
         try (Connection connection = connect();
              PreparedStatement statement = connection.prepareStatement(INSERT)) {
             statement.setString(1, user.getName());
@@ -45,14 +47,15 @@ public class JdbcUserDao implements UserDao {
             statement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
+            throw new DataAccessException("Couldn't add user: " + user, e);
         }
     }
 
     @Override
-    public User getUserByName(String name) {
+    public User findUserByName(String name) throws DataAccessException {
         try (Connection connection = connect();
              PreparedStatement statement = connection.prepareStatement(GET_BY_NAME)) {
-            statement.setString(1, name); // Додано передачу значення name
+            statement.setString(1, name);
             try (ResultSet resultSet = statement.executeQuery()) {
                 if (resultSet.next()) {
                     return USER_ROW_MAPPER.mapRow(resultSet);
@@ -60,15 +63,16 @@ public class JdbcUserDao implements UserDao {
             }
         } catch (SQLException e) {
             e.printStackTrace();
+            throw new DataAccessException("Couldn't find a user with this name: " + name, e);
         }
         return null;
     }
 
     @Override
-    public User getById(int id) {
+    public User findById(int id) throws DataAccessException {
         try (Connection connection = connect();
              PreparedStatement statement = connection.prepareStatement(GET_BY_ID)) {
-            statement.setInt(1, id); // Додано передачу значення id
+            statement.setInt(1, id);
             try (ResultSet resultSet = statement.executeQuery()) {
                 if (resultSet.next()) {
                     return USER_ROW_MAPPER.mapRow(resultSet);
@@ -76,12 +80,13 @@ public class JdbcUserDao implements UserDao {
             }
         } catch (SQLException e) {
             e.printStackTrace();
+            throw new DataAccessException("Couldn't find a user with this Id: " + id, e);
         }
         return null;
     }
 
     @Override
-    public void update(User user) {
+    public void update(User user) throws DataAccessException {
         try (Connection connection = connect();
              PreparedStatement statement = connection.prepareStatement(UPDATE)) {
             statement.setString(1, user.getName());
@@ -91,17 +96,19 @@ public class JdbcUserDao implements UserDao {
             statement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
+            throw new DataAccessException("Couldn't update user: " + user, e);
         }
     }
 
     @Override
-    public void delete(int id) {
+    public void delete(int id) throws DataAccessException {
         try (Connection connection = connect();
              PreparedStatement statement = connection.prepareStatement(DELETE)) {
             statement.setInt(1, id);
             statement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
+            throw new DataAccessException("Couldn't delete user with thouse id: " + id, e);
         }
     }
 

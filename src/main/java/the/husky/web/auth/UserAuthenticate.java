@@ -1,5 +1,8 @@
 package the.husky.web.auth;
 
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -22,27 +25,28 @@ public class UserAuthenticate {
         this.userService = service;
     }
 
+    public static boolean isAuthenticate(HttpServletRequest request) {
+        Cookie[] cookies = request.getCookies();
+        boolean isAuthenticated = false;
+
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if (cookie.getName().equals("user-token")) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+
     public User authenticate(String username, String password) {
         for (User user : users) {
             if (user.getName().equals(username) && user.getPassword().equals(password)) {
-                authenticatedUser = user;
                 return user;
             }
         }
         return null;
-    }
-
-    public void removeUser(User user) {
-        if (users.contains(user)) {
-            users.remove(user);
-            if (authenticatedUser != null && authenticatedUser.equals(user)) {
-                authenticatedUser = null;
-            }
-        }
-    }
-
-    public int getUserId(User user) {
-        return user.getUserId();
     }
 
     public void addNewUser(User user) {
@@ -55,9 +59,4 @@ public class UserAuthenticate {
             authenticatedUser = null;
         }
     }
-
-    public boolean isAuthenticated(User user) {
-        return authenticatedUser != null && authenticatedUser.equals(user);
-    }
-
 }

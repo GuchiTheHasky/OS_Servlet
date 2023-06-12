@@ -3,7 +3,6 @@ package the.husky.web.servlet;
 import jakarta.servlet.http.Cookie;
 import lombok.Setter;
 import the.husky.entity.user.User;
-import the.husky.service.UserService;
 import the.husky.web.auth.UserAuthenticate;
 import the.husky.web.util.PageGenerator;
 import jakarta.servlet.ServletException;
@@ -18,40 +17,34 @@ import java.util.UUID;
 public class LoginServlet extends HttpServlet {
 
     private UserAuthenticate userAuthenticate;
-    private UserService service;
 
-    public LoginServlet(UserService service, UserAuthenticate userAuthenticate) {
-        this.service = service;
+    public LoginServlet(UserAuthenticate userAuthenticate) {
         this.userAuthenticate = userAuthenticate;
     }
 
-    public LoginServlet(UserService service) {
-        this.service = service;
-    }
-
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse response) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         PageGenerator pageGenerator = PageGenerator.instance();
         String page = pageGenerator.getPage("login.html");
         response.getWriter().write(page);
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String username = req.getParameter("username");
-        String password = req.getParameter("password");
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String username = request.getParameter("username");
+        String password = request.getParameter("password");
 
         User user = userAuthenticate.authenticate(username, password);
 
-        if (user != null && !userAuthenticate.isAuthenticated(user)) {
+        if (user != null) {
             String token = UUID.randomUUID().toString();
-            System.out.println("token " + token);
-
-            resp.addCookie(new Cookie("user-token", token));
-            resp.addCookie(new Cookie("preferredlanguage", "en"));
-            resp.sendRedirect("vehicle/all");
+            Cookie tokenTimer = new Cookie("user-token", token);
+            tokenTimer.setMaxAge(3000);
+            response.addCookie(tokenTimer);
+            response.addCookie(new Cookie("preferredlanguage", "ua"));
+            response.sendRedirect("vehicle/all");
         } else {
-            resp.sendRedirect("/login");
+            response.sendRedirect("/login");
         }
     }
 }

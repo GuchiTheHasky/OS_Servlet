@@ -13,7 +13,7 @@ public class VehicleService {
     }
 
     public List<Vehicle> getAll() {
-        return DAO.getAll();
+        return DAO.findAll();
     }
 
     public void add(Vehicle vehicle) {
@@ -25,7 +25,7 @@ public class VehicleService {
     }
 
     public Vehicle getById(int id) {
-        return DAO.getById(id);
+        return DAO.findById(id);
     }
 
     public void edit(Vehicle vehicle) {

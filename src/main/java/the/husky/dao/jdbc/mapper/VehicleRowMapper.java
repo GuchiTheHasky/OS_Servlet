@@ -13,7 +13,6 @@ public class VehicleRowMapper {
         int id = resultSet.getInt("vehicle_id");
         String manufacture = resultSet.getString("manufacture");
         String engine = resultSet.getString("enginetype");
-        System.out.println("RowMapper: " + engine);
         String model = resultSet.getString("model");
         double price = resultSet.getDouble("price");
         int age = resultSet.getInt("age");

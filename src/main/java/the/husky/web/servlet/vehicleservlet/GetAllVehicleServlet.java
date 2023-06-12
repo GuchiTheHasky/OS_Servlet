@@ -9,6 +9,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import the.husky.web.auth.UserAuthenticate;
 import the.husky.web.util.PageGenerator;
 
 import java.io.IOException;
@@ -25,27 +26,30 @@ public class GetAllVehicleServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String manufacturerFilter = request.getParameter("manufacturer");
-        String engineTypeFilter = request.getParameter("engineType");
+        if (UserAuthenticate.isAuthenticate(request)) {
+            String manufacturerFilter = request.getParameter("manufacturer");
+            String engineTypeFilter = request.getParameter("engineType");
 
-        List<Vehicle> vehicles = service.getAll();
-        PageGenerator pageGenerator = PageGenerator.instance();
+            List<Vehicle> vehicles = service.getAll();
+            PageGenerator pageGenerator = PageGenerator.instance();
 
-        if (manufacturerFilter != null && !manufacturerFilter.isEmpty()) {
-            vehicles = filterByManufacturer(vehicles, manufacturerFilter);
+            if (manufacturerFilter != null && !manufacturerFilter.isEmpty()) {
+                vehicles = filterByManufacturer(vehicles, manufacturerFilter);
+            }
+
+            if (engineTypeFilter != null && !engineTypeFilter.isEmpty()) {
+                vehicles = filterByEngineType(vehicles, engineTypeFilter);
+            }
+
+            HashMap<String, Object> parameters = new HashMap<>();
+            parameters.put("vehicles", vehicles);
+            parameters.put("manufacturers", VehicleManufacturer.getManufacturers());
+            parameters.put("engineTypes", EngineType.getAllEngineTypes());
+
+            String page = pageGenerator.getPage("vehicle_list.html", parameters);
+            response.getWriter().write(page);
         }
-
-        if (engineTypeFilter != null && !engineTypeFilter.isEmpty()) {
-            vehicles = filterByEngineType(vehicles, engineTypeFilter);
-        }
-
-        HashMap<String, Object> parameters = new HashMap<>();
-        parameters.put("vehicles", vehicles);
-        parameters.put("manufacturers", VehicleManufacturer.getManufacturers());
-        parameters.put("engineTypes", EngineType.getAllEngineTypes());
-
-        String page = pageGenerator.getPage("vehicle_list.html", parameters);
-        response.getWriter().write(page);
+        response.sendRedirect("/login");
     }
 
     private List<Vehicle> filterByManufacturer(List<Vehicle> vehicles, String manufacturerFilter) {
@@ -65,10 +69,5 @@ public class GetAllVehicleServlet extends HttpServlet {
             }
         }
         return filteredVehicles;
-    }
-
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        doGet(request, response);
     }
 }

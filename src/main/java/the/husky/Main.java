@@ -24,7 +24,7 @@ public class Main {
         List<User> users = userService.getAll();
         UserAuthenticate userAuthenticate = new UserAuthenticate(users, userService);
 
-        LoginServlet loginServlet = new LoginServlet(userService, userAuthenticate);
+        LoginServlet loginServlet = new LoginServlet(userAuthenticate);
         LogoServlet logoServlet = new LogoServlet();
         FaviconServlet faviconServlet = new FaviconServlet();
 
@@ -39,7 +39,6 @@ public class Main {
 
         AddVehicleServlet addVehicleServlet = new AddVehicleServlet(vehicleService);
         GetAllVehicleServlet getAllVehicleServlet = new GetAllVehicleServlet(vehicleService);
-        VehicleManufacturerServlet vehicleManufacturerServlet = new VehicleManufacturerServlet(vehicleService);
         DeleteVehicleServlet deleteVehicleServlet = new DeleteVehicleServlet(vehicleService);
         EditVehicleServlet editVehicleServlet = new EditVehicleServlet(vehicleService);
         VehicleFilterServlet vehicleFilterServlet = new VehicleFilterServlet(vehicleService);
@@ -56,7 +55,6 @@ public class Main {
         contextHandler.addServlet(new ServletHolder(editUserServlet), "/user/edit");
         contextHandler.addServlet(new ServletHolder(editUserServlet), "/user/details");
         contextHandler.addServlet(new ServletHolder(deleteUserServlet), "/user/delete");
-        contextHandler.addServlet(new ServletHolder(vehicleManufacturerServlet), "/vehicle/manufacturer");
         contextHandler.addServlet(new ServletHolder(deleteVehicleServlet), "/vehicle/delete");
         contextHandler.addServlet(new ServletHolder(editVehicleServlet), "/vehicle/edit");
         contextHandler.addServlet(new ServletHolder(vehicleFilterServlet), "/vehicle/filter");
@@ -66,11 +64,3 @@ public class Main {
         server.start();
     }
 }
-
-
-// TODO: підключити FlyWay або LiquiBase
-// TODO: захист від <script>
-// TODO: jetty-security
-// TODO: забрати залежності між слоями,
-//  зробити dependency injection, забрати singleton і статику, підключити шаблонізатори
-// todo: зробити рандомну генерацію значень

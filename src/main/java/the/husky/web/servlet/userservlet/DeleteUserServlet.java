@@ -5,6 +5,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import the.husky.entity.user.User;
+import the.husky.exception.DataAccessException;
 import the.husky.service.UserService;
 import the.husky.web.auth.UserAuthenticate;
 
@@ -21,36 +22,28 @@ public class DeleteUserServlet extends HttpServlet {
     }
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String idParam = request.getParameter("id");
-        int id;
-
-        try {
-            id = Integer.parseInt(idParam);
-        } catch (NumberFormatException e) {
-            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid 'id' parameter");
-            return;
-        }
-
-        User user = service.getUserById(id);
-
-        if (user != null) {
-            service.delete(id);
-            User deletedUser = service.getUserById(id);
-            if (deletedUser != null) {
-                userAuthenticate.deleteExistingUser(deletedUser);
-            }
-
-            response.sendRedirect("/user/all");
-        } else {
-            response.sendError(HttpServletResponse.SC_NOT_FOUND, "User not found");
-        }
-    }
-
-    @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        doGet(request, response);
-    }
+        if (UserAuthenticate.isAuthenticate(request)) {
+            int id = Integer.parseInt(request.getParameter("id"));
 
+            try {
+                User user = service.getUserById(id);
+                if (user != null) {
+                    try {
+                        service.delete(id);
+                        userAuthenticate.deleteExistingUser(user);
+                        response.sendRedirect("/user/all");
+                    } catch (DataAccessException e) {
+                        response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Failed to delete user");
+                    }
+                } else {
+                    response.sendError(HttpServletResponse.SC_NOT_FOUND, "User not found");
+                }
+            } catch (DataAccessException e) {
+                throw new ServletException("Failed to retrieve user", e);
+            }
+        }
+        response.sendRedirect("/login");
+    }
 }
 

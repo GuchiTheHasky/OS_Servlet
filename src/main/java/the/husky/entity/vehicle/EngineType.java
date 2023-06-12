@@ -34,7 +34,7 @@ public enum EngineType {
                 return engineType;
             }
         }
-        throw new IllegalArgumentException("Engine type problem"); // TODO
+        throw new IllegalArgumentException("Invalid engine type.");
     }
 }
 

@@ -4,6 +4,7 @@ import the.husky.entity.vehicle.EngineType;
 import the.husky.entity.vehicle.Vehicle;
 import the.husky.entity.vehicle.VehicleManufacturer;
 import the.husky.service.VehicleService;
+import the.husky.web.auth.UserAuthenticate;
 import the.husky.web.util.PageGenerator;
 
 import jakarta.servlet.ServletException;
@@ -12,26 +13,28 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
-import java.util.List;
 
 public class AddVehicleServlet extends HttpServlet {
-    private final VehicleService SERVICE;
+    private VehicleService service;
 
     public AddVehicleServlet(VehicleService vehicleService) {
-        SERVICE = vehicleService;
+        service = vehicleService;
     }
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        PageGenerator pageGenerator = PageGenerator.instance();
-        String page = pageGenerator.getPage("add_vehicle.html");
-        resp.getWriter().write(page);
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        if (UserAuthenticate.isAuthenticate(request)) {
+            PageGenerator pageGenerator = PageGenerator.instance();
+            String page = pageGenerator.getPage("add_vehicle.html");
+            response.getWriter().write(page);
+        }
+        response.sendRedirect("/login");
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         Vehicle vehicle = buildVehicle(req);
-        SERVICE.add(vehicle);
+        service.add(vehicle);
         resp.sendRedirect("/vehicle/all");
     }
 

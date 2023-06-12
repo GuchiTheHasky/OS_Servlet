@@ -2,7 +2,7 @@ package the.husky.service;
 
 import the.husky.dao.UserDao;
 import the.husky.entity.user.User;
-import the.husky.web.auth.UserAuthenticate;
+import the.husky.exception.DataAccessException;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -16,29 +16,29 @@ public class UserService {
         this.DAO = userDao;
     }
 
-    public List<User> getAll() {
-        return DAO.getUsers();
+    public List<User> getAll() throws DataAccessException {
+        return DAO.findAll();
     }
 
-    public void add(User user) {
+    public void add(User user) throws DataAccessException {
         LocalDateTime time = LocalDateTime.now();
         user.setRegistrationTime(time);
         DAO.add(user);
     }
 
-    public User getByName(String name) {
-        return DAO.getUserByName(name);
+    public User getByName(String name) throws DataAccessException {
+        return DAO.findUserByName(name);
     }
 
-    public User getUserById(int id) {
-        return DAO.getById(id);
+    public User getUserById(int id) throws DataAccessException {
+        return DAO.findById(id);
     }
 
-    public void update(User user) {
+    public void update(User user) throws DataAccessException {
         DAO.update(user);
     }
 
-    public void delete(int id) {
+    public void delete(int id) throws DataAccessException {
         DAO.delete(id);
     }
 }

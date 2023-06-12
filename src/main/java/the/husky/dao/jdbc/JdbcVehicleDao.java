@@ -24,7 +24,7 @@ public class JdbcVehicleDao implements VehicleDao {
     private static final String SELECT_BY_ENGINE_TYPE = "SELECT * FROM \"vehicle\" WHERE enginetype = ?";
 
     @Override
-    public List<Vehicle> getAll() {
+    public List<Vehicle> findAll() {
         List<Vehicle> vehicles = new ArrayList<>();
         try (Connection connection = connect();
              PreparedStatement statement = connection.prepareStatement(SELECT_ALL);
@@ -59,7 +59,6 @@ public class JdbcVehicleDao implements VehicleDao {
             e.printStackTrace();
             throw new RuntimeException(e);
         }
-
     }
 
     @Override
@@ -95,7 +94,7 @@ public class JdbcVehicleDao implements VehicleDao {
     }
 
     @Override
-    public Vehicle getById(int id) {
+    public Vehicle findById(int id) {
         try (Connection connection = connect();
              PreparedStatement statement = connection.prepareStatement(GET_BY_ID)) {
             statement.setInt(1, id);

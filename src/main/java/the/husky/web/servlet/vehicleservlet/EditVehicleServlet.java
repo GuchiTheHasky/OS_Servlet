@@ -4,6 +4,7 @@ import the.husky.entity.vehicle.EngineType;
 import the.husky.entity.vehicle.Vehicle;
 import the.husky.entity.vehicle.VehicleManufacturer;
 import the.husky.service.VehicleService;
+import the.husky.web.auth.UserAuthenticate;
 import the.husky.web.util.PageGenerator;
 
 import jakarta.servlet.ServletException;
@@ -25,45 +26,36 @@ public class EditVehicleServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String vehicleIdParam = request.getParameter("vehicle_id");
-        if (vehicleIdParam == null || vehicleIdParam.isEmpty()) {
-            response.sendRedirect(request.getContextPath() + "/vehicle/all");
-            return;
+        if (UserAuthenticate.isAuthenticate(request)) {
+            int vehicleId = Integer.parseInt(request.getParameter("vehicle_id"));
+
+            Vehicle vehicle = service.getById(vehicleId);
+
+            if (vehicle != null) {
+                List<Vehicle> vehicles = service.getAll();
+
+                Map<String, Object> data = new HashMap<>();
+                data.put("vehicles", vehicles);
+                data.put("vehicle", vehicle);
+
+                response.setContentType("text/html;charset=utf-8");
+                response.setStatus(HttpServletResponse.SC_OK);
+
+                String page = PageGenerator.instance().getPage("edit_vehicle.html", data);
+                response.getWriter().write(page);
+            } else {
+                response.sendRedirect(request.getContextPath() + "/vehicle/all");
+            }
         }
-
-        int vehicleId = Integer.parseInt(vehicleIdParam);
-
-        Vehicle vehicle = service.getById(vehicleId);
-
-        if (vehicle != null) {
-            List<Vehicle> vehicles = service.getAll(); // Отримати список всіх автомобілів
-
-            Map<String, Object> data = new HashMap<>();
-            data.put("vehicles", vehicles); // Додати список автомобілів до моделі даних
-            data.put("vehicle", vehicle);
-
-            response.setContentType("text/html;charset=utf-8");
-            response.setStatus(HttpServletResponse.SC_OK);
-
-            String page = PageGenerator.instance().getPage("edit_vehicle.html", data);
-            response.getWriter().write(page);
-        } else {
-            response.sendRedirect(request.getContextPath() + "/vehicle/all");
-        }
+        response.sendRedirect("/login");
     }
 
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String vehicleIdParam = request.getParameter("vehicle_id");
-        if (vehicleIdParam == null || vehicleIdParam.isEmpty()) {
-            response.sendRedirect(request.getContextPath() + "/vehicle/all");
-            return;
-        }
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        int id = Integer.parseInt(request.getParameter("vehicle_id"));
 
-        int vehicleId = Integer.parseInt(vehicleIdParam);
-
-        Vehicle editedVehicle = service.getById(vehicleId);
+        Vehicle editedVehicle = service.getById(id);
 
         String updatedManufacturerString = request.getParameter("manufacturer");
         VehicleManufacturer updatedManufacturer = VehicleManufacturer.valueOf(updatedManufacturerString);
@@ -73,13 +65,6 @@ public class EditVehicleServlet extends HttpServlet {
         double price = Double.parseDouble(request.getParameter("price"));
         int age = Integer.parseInt(request.getParameter("age"));
         int weight = Integer.parseInt(request.getParameter("weight"));
-
-        System.out.println("Updated manufacturer: " + updatedManufacturer);
-        System.out.println("Updated engine type: " + updatedEngineType);
-        System.out.println("Model: " + model);
-        System.out.println("Price: " + price);
-        System.out.println("Age: " + age);
-        System.out.println("Weight: " + weight);
 
         editedVehicle.setManufacture(updatedManufacturer);
         editedVehicle.setEngineType(updatedEngineType);
@@ -92,6 +77,4 @@ public class EditVehicleServlet extends HttpServlet {
 
         response.sendRedirect(request.getContextPath() + "/vehicle/all");
     }
-
-
 }

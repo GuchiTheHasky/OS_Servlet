@@ -1,6 +1,8 @@
 package the.husky.web.servlet.userservlet;
 
+import lombok.SneakyThrows;
 import the.husky.entity.user.User;
+import the.husky.exception.DataAccessException;
 import the.husky.service.UserService;
 import the.husky.web.auth.UserAuthenticate;
 import the.husky.web.util.PageGenerator;
@@ -36,26 +38,20 @@ public class AddUserServlet extends HttpServlet {
         String name = request.getParameter("user_name");
         String password = request.getParameter("password");
 
-        if (name.isEmpty() || password.isEmpty()) {
-            String errorMessage = "Please fill in all required fields.";
-            PageGenerator pageGenerator = PageGenerator.instance();
-            Map<String, Object> parameters = Map.of("errorMessage", errorMessage);
-            String page = pageGenerator.getPage("add_user.html", parameters);
-            response.getWriter().write(page);
-        } else if (isUserExist(name)) {
-            String errorMessage = "Current user name: " + name + " is already in used, try again.";
-            PageGenerator pageGenerator = PageGenerator.instance();
-            Map<String, Object> parameters = Map.of("errorMessage", errorMessage);
-            String page = pageGenerator.getPage("add_user.html", parameters);
-            response.getWriter().write(page);
-        } else {
-            User user = buildUser(request);
+        if (name.isEmpty() || password.isEmpty() || isUserExist(name)) {
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST,
+                    "Required fields is empty or user is already exist.");
+        }
+
+        User user = buildUser(request);
+        try {
             service.add(user);
             userAuthenticate.addNewUser(user);
-
             List<User> users = service.getAll();
             request.setAttribute("users", users);
             request.getRequestDispatcher("/user/all").forward(request, response);
+        } catch (DataAccessException e) {
+            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Error adding user.");
         }
     }
 
@@ -66,6 +62,7 @@ public class AddUserServlet extends HttpServlet {
                 .build();
     }
 
+    @SneakyThrows
     private boolean isUserExist(String name) {
         User currentUser = service.getByName(name);
         if (currentUser != null) {
