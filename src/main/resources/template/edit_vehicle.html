@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Vehicle</title>
+</head>
+<body>
+<h2>Edit Vehicle</h2>
+
+<ul>
+    <#list vehicles as vehicle>
+    <li><a href="/vehicle/edit?vehicle_id=${vehicle.vehicleId}">${vehicle.model}</a></li>
+</#list>
+</ul>
+
+<form action="/vehicle/edit" method="post">
+    <input type="hidden" name="vehicle_id" value="${vehicle.vehicleId}">
+
+    <label for="manufacturer">Manufacturer:</label>
+    <select name="manufacturer" id="manufacturer" required>
+        <option value="SUBARU">Subaru</option>
+        <option value="KIA">Kia</option>
+        <option value="VOLVO">Volvo</option>
+        <option value="BMW">BMW</option>
+        <option value="HONDA">Honda</option>
+        <option value="FORD">Ford</option>
+        <option value="GM">GM</option>
+        <option value="MAZDA">Mazda</option>
+        <option value="TOYOTA">Toyota</option>
+        <option value="MITSUBISHI">Mitsubishi</option>
+    </select>
+
+    <label for="engineType">Engine Type:</label>
+    <select name="engineType" id="engineType" required>
+        <option value="GASOLINE">Gasoline</option>
+        <option value="DIESEL">Diesel</option>
+        <option value="ELECTRIC">Electric</option>
+        <option value="HYBRID">Hybrid</option>
+    </select>
+
+    <label for="model">Model:</label>
+    <input type="text" name="model" id="model" required>
+
+    <label for="price">Price:</label>
+    <input type="number" name="price" id="price" required>
+
+    <label for="age">Age:</label>
+    <input type="number" name="age" id="age" required>
+
+    <label for="weight">Weight:</label>
+    <input type="number" name="weight" id="weight" required>
+
+    <input type="submit" value="Edit">
+</form>
+</body>
+</html>

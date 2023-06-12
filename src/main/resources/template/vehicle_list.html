@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Car List</title>
+    <style>
+        h1 {
+        text-align: center;
+        margin-top: 30px;
+        }
+
+        form {
+        margin-bottom: 20px;
+        }
+
+        table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 20px;
+        }
+
+        th, td {
+        padding: 10px;
+        text-align: left;
+        }
+
+        th {
+        background-color: #eee;
+        }
+
+        tr:nth-child(even) {
+        background-color: #f9f9f9;
+        }
+
+        .edit-button, .delete-button {
+        display: inline-block;
+        padding: 5px 10px;
+        background-color: #007bff;
+        color: #fff;
+        text-decoration: none;
+        border-radius: 4px;
+        margin-right: 5px;
+        }
+
+        .delete-button {
+        background-color: #dc3545;
+        }
+
+        a {
+        color: #007bff;
+        text-decoration: none;
+        }
+    </style>
+
+</head>
+<body>
+<h1>Vehicle List</h1>
+
+<form action="/vehicle/all" method="get">
+    <label for="manufacturer">Filter by Manufacturer:</label>
+    <select name="manufacturer" id="manufacturer">
+        <option value="">All</option>
+        <#list manufacturers as manufacturer>
+        <option value="${manufacturer}">${manufacturer}</option>
+    </#list>
+    </select>
+    <button type="submit">Manufacture Filter</button>
+</form>
+
+<form action="/vehicle/all" method="get">
+    <label for="engineType">Filter by Engine Type:</label>
+    <select name="engineType" id="engineType">
+        <option value="">All</option>
+        <#list engineTypes as engineType>
+        <option value="${engineType}">${engineType}</option>
+    </#list>
+    </select>
+    <button type="submit">Engine Filter</button>
+</form>
+
+<a href="/vehicle/add">Back to Add</a>
+
+<table>
+    <thead>
+    <tr>
+        <th>Manufacturer</th>
+        <th>Engine Type</th>
+        <th>Model</th>
+        <th>Price</th>
+        <th>Age</th>
+        <th>Weight</th>
+    </tr>
+    </thead>
+    <tbody id="vehicles">
+    <#list vehicles as vehicle>
+    <tr>
+        <td>${vehicle.manufacture.manufacture}</td>
+        <td>${vehicle.engineType.type}</td>
+        <td>${vehicle.model}</td>
+        <td>${vehicle.price}</td>
+        <td>${vehicle.age}</td>
+        <td>${vehicle.weight}</td>
+        <td>
+            <a href="/vehicle/edit?vehicle_id=${vehicle.vehicleId?if_exists}" class="edit-button">Edit</a>
+            <form action="/vehicle/delete" method="post" onsubmit="return confirm('Are you sure you want to delete this vehicle?');">
+                <input type="hidden" name="vehicle_id" value="${vehicle.vehicleId?if_exists}">
+                <button type="submit" class="delete-button">Delete</button>
+            </form>
+        </td>
+    </tr>
+    </#list>
+
+    </tbody>
+</table>
+
+<a href="/vehicle/add">Back to Add</a>
+
+</body>
+</html>
+

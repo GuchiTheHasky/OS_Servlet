@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Delete Vehicle</title>
+</head>
+<body>
+<h1>Delete Vehicle</h1>
+<form action="/vehicle/delete" method="post">
+  <input type="hidden" name="vehicle_id" value="${vehicle.vehicleId?if_exists}" />
+  <p>Are you sure you want to delete the vehicle ${vehicle.vehicleId?if_exists}?</p>
+  <input type="submit" value="Delete" />
+</form>
+</body>
+</html>

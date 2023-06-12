@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Add Vehicle</title>
+    <style>
+        h1 {
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        form {
+            width: 300px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 4px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        select, input[type="text"] {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        input[type="submit"] {
+            width: 100%;
+            padding: 10px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+<h1>Add Vehicle</h1>
+<form action="/vehicle/add" method="post">
+    <label for="manufacture">Manufacturer:</label>
+    <select name="manufacture" id="manufacture">
+        <option value="SUBARU">Subaru</option>
+        <option value="KIA">Kia</option>
+        <option value="VOLVO">Volvo</option>
+        <option value="BMW">BMW</option>
+        <option value="HONDA">Honda</option>
+        <option value="FORD">Ford</option>
+        <option value="GM">GM</option>
+        <option value="MAZDA">Mazda</option>
+        <option value="TOYOTA">Toyota</option>
+        <option value="MITSUBISHI">Mitsubishi</option>
+    </select>
+    <br>
+
+    <label for="engineType">Engine Type:</label>
+    <select name="engineType" id="engineType">
+        <option value="Gasoline">Gasoline</option>
+        <option value="Diesel">Diesel</option>
+        <option value="Hybrid">Hybrid</option>
+        <option value="Electric">Electric</option>
+    </select>
+    <br>
+
+    <label for="model">Model:</label>
+    <input type="text" name="model" id="model">
+    <br>
+
+    <label for="price">Price:</label>
+    <input type="text" name="price" id="price">
+    <br>
+
+    <label for="age">Age:</label>
+    <input type="text" name="age" id="age">
+    <br>
+
+    <label for="weight">Weight:</label>
+    <input type="text" name="weight" id="weight">
+    <br>
+
+    <input type="submit" value="Save">
+</form>
+</body>
+</html>

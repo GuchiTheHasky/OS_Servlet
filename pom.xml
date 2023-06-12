@@ -5,8 +5,8 @@
   <artifactId>OS</artifactId>
   <packaging>war</packaging>
   <version>1.0-SNAPSHOT</version>
-  <name>OS Maven Webapp</name>
-  <url>http://maven.apache.org</url>
+  <name>os-maven-webapp</name>
+
   <dependencies>
     <dependency>
       <groupId>org.junit.jupiter</groupId>

@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Edit User Details</title>
+</head>
+<body>
+<h1>Edit User Details</h1>
+<form action="/user/edit" method="post">
+  <input type="hidden" name="id" value="${user.userId?if_exists}" />
+  <label for="name">Name:</label>
+  <input type="text" id="name" name="name" value="${user.name?if_exists}" required /><br>
+  <label for="password">Password:</label>
+  <input type="password" id="password" name="password" value="${user.password?if_exists}" required /><br>
+  <input type="submit" value="Update" />
+</form>
+</body>
+</html>
+

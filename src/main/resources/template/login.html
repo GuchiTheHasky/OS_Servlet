@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Login</title>
+    <style>
+        body {
+            background-color: #ffffff;
+            font-family: sans-serif;
+        }
+
+        .container {
+            width: 500px;
+            margin: 100px auto 0;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        input[type="text"],
+        input[type="password"] {
+            width: 96%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+        }
+
+        .btn-group {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+        }
+
+        input[type="submit"],
+        a.button {
+            background-color: darkblue;
+            color: #ffffff;
+            padding: 10px;
+            border: none;
+            cursor: pointer;
+            flex: 1;
+            text-decoration: none;
+            text-align: center;
+        }
+        input[type="submit"]:hover,
+        a.button:hover {
+            background-color: dodgerblue;
+        }
+
+        .add-user-button {
+            margin-left: 100px;
+        }
+
+        .image-container img {
+            position: absolute;
+            left: 42%;
+        }
+
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Input data:</h1>
+    <form action="/login" method="post">
+        <input type="text" name="username" placeholder="Username">
+        <input type="password" name="password" placeholder="Password">
+        <div class="btn-group">
+            <input type="submit" value="Submit">
+            <a href="/user/add" class="button add-user-button">Add new user</a>
+        </div>
+        <br/>
+        <a href="/task">Forgot Password?</a>
+    </form>
+</div>
+
+<div class="image-container">
+    <img src="/image">
+</div>
+
+<div>
+    <link rel="icon" href="favicon.ico" type="image/vnd.microsoft.icon">
+</div>
+
+</body>
+</html>
