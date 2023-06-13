@@ -15,6 +15,7 @@
     <lombok.version>1.18.26</lombok.version>
     <postgresql.version>42.6.0</postgresql.version>
     <freemarker.version>2.3.31</freemarker.version>
+    <mockito-core.version>5.3.1</mockito-core.version>
     <junit.jupiter.version>5.9.2</junit.jupiter.version>
   </properties>
 
@@ -59,14 +60,14 @@
     <dependency>
       <groupId>org.mockito</groupId>
       <artifactId>mockito-core</artifactId>
-      <version>5.3.1</version>
+      <version>${mockito-core.version}</version>
       <scope>test</scope>
     </dependency>
 
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-engine</artifactId>
-      <version>5.8.2</version>
+      <version>${junit.jupiter.version}</version>
       <scope>test</scope>
     </dependency>
   </dependencies>
