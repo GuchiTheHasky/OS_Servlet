@@ -37,12 +37,9 @@ public class LoginServlet extends HttpServlet {
         User user = userAuthenticate.authenticate(username, password);
 
         if (user != null) {
-            String token = UUID.randomUUID().toString();
-            Cookie tokenTimer = new Cookie("user-token", token);
-            tokenTimer.setMaxAge(3000);
-            response.addCookie(tokenTimer);
-            response.addCookie(new Cookie("preferredlanguage", "ua"));
-            response.sendRedirect("vehicle/all");
+            //String token = UUID.randomUUID().toString();
+            response.addCookie(new Cookie("user-token", user.getToken()));
+            response.sendRedirect("/vehicle/all");
         } else {
             response.sendRedirect("/login");
         }

@@ -3,6 +3,7 @@ package the.husky.web.servlet.userservlet;
 import the.husky.entity.user.User;
 import the.husky.exception.DataAccessException;
 import the.husky.service.UserService;
+import the.husky.service.VehicleService;
 import the.husky.web.auth.UserAuthenticate;
 import the.husky.web.util.PageGenerator;
 
@@ -16,11 +17,9 @@ import java.util.HashMap;
 import java.util.List;
 
 public class GetAllUsersServlet extends HttpServlet {
-    private UserService userService;
-
-
-    public GetAllUsersServlet(UserService userService) {
-        this.userService = userService;
+    private UserService service;
+    public GetAllUsersServlet(UserService service) {
+        this.service = service;
     }
 
     @Override
@@ -28,7 +27,7 @@ public class GetAllUsersServlet extends HttpServlet {
         if (UserAuthenticate.isAuthenticate(request)) {
             List<User> users;
             try {
-                users = userService.getAll();
+                users = service.getAll();
             } catch (DataAccessException e) {
                 throw new ServletException("An error occurred while retrieving the user list.", e);
             }
@@ -37,7 +36,13 @@ public class GetAllUsersServlet extends HttpServlet {
             parameters.put("users", users);
             String page = pageGenerator.getPage("user_list.html", parameters);
             response.getWriter().write(page);
+        } else {
+            response.sendRedirect("/login");
         }
-        response.sendRedirect("/login");
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        doGet(request, response);
     }
 }

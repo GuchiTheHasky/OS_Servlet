@@ -46,8 +46,9 @@ public class EditVehicleServlet extends HttpServlet {
             } else {
                 response.sendRedirect(request.getContextPath() + "/vehicle/all");
             }
+        } else {
+            response.sendRedirect("/login");
         }
-        response.sendRedirect("/login");
     }
 
 

@@ -29,7 +29,8 @@ public class DeleteVehicleServlet extends HttpServlet {
             } else {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND, "Vehicle not found");
             }
+        } else {
+            response.sendRedirect("/login");
         }
-        response.sendRedirect("/login");
     }
 }

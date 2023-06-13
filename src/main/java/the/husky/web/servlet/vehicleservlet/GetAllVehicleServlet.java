@@ -18,7 +18,6 @@ import java.util.HashMap;
 import java.util.List;
 
 public class GetAllVehicleServlet extends HttpServlet {
-
     private VehicleService service;
     public GetAllVehicleServlet(VehicleService service) {
         this.service = service;
@@ -48,8 +47,9 @@ public class GetAllVehicleServlet extends HttpServlet {
 
             String page = pageGenerator.getPage("vehicle_list.html", parameters);
             response.getWriter().write(page);
+        } else {
+            response.sendRedirect("/login");
         }
-        response.sendRedirect("/login");
     }
 
     private List<Vehicle> filterByManufacturer(List<Vehicle> vehicles, String manufacturerFilter) {

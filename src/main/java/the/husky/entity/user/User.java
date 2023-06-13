@@ -15,6 +15,7 @@ public class User {
     private String name;
     private String password;
     private LocalDateTime registrationTime;
+    private String token;
 
     public User(String name, String password) {
         this.name = name;

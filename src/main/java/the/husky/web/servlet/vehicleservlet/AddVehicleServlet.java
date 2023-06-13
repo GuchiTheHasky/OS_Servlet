@@ -27,8 +27,9 @@ public class AddVehicleServlet extends HttpServlet {
             PageGenerator pageGenerator = PageGenerator.instance();
             String page = pageGenerator.getPage("add_vehicle.html");
             response.getWriter().write(page);
+        } else {
+            response.sendRedirect("/login");
         }
-        response.sendRedirect("/login");
     }
 
     @Override
