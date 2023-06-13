@@ -8,7 +8,7 @@ import the.husky.dao.jdbc.JdbcVehicleDao;
 import the.husky.entity.user.User;
 import the.husky.service.UserService;
 import the.husky.service.VehicleService;
-import the.husky.web.auth.UserAuthenticate;
+import the.husky.web.security.SecurityService;
 import the.husky.web.servlet.*;
 import the.husky.web.servlet.userservlet.*;
 import the.husky.web.servlet.vehicleservlet.*;
@@ -22,17 +22,17 @@ public class Main {
         UserService userService = new UserService(userDao);
 
         List<User> users = userService.getAll();
-        UserAuthenticate userAuthenticate = new UserAuthenticate(users, userService);
+        SecurityService securityService = new SecurityService(users, userService);
 
-        LoginServlet loginServlet = new LoginServlet(userAuthenticate);
+        LoginServlet loginServlet = new LoginServlet();
         LogoServlet logoServlet = new LogoServlet();
         FaviconServlet faviconServlet = new FaviconServlet();
 
         ValidationTaskServlet validationTaskServlet = new ValidationTaskServlet();
-        AddUserServlet addUserServlet = new AddUserServlet(userService, userAuthenticate);
+        AddUserServlet addUserServlet = new AddUserServlet(userService, securityService);
         GetAllUsersServlet getAllUsersServlet = new GetAllUsersServlet(userService);
         EditUserDetailsServlet editUserServlet = new EditUserDetailsServlet(userService);
-        DeleteUserServlet deleteUserServlet = new DeleteUserServlet(userService, userAuthenticate);
+        DeleteUserServlet deleteUserServlet = new DeleteUserServlet(userService, securityService);
 
         JdbcVehicleDao vehicleDao = new JdbcVehicleDao();
         VehicleService vehicleService = new VehicleService(vehicleDao);

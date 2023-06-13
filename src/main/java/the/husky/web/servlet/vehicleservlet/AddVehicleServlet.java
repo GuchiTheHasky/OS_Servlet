@@ -4,7 +4,7 @@ import the.husky.entity.vehicle.EngineType;
 import the.husky.entity.vehicle.Vehicle;
 import the.husky.entity.vehicle.VehicleManufacturer;
 import the.husky.service.VehicleService;
-import the.husky.web.auth.UserAuthenticate;
+import the.husky.web.security.SecurityService;
 import the.husky.web.util.PageGenerator;
 
 import jakarta.servlet.ServletException;
@@ -23,7 +23,7 @@ public class AddVehicleServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        if (UserAuthenticate.isAuthenticate(request)) {
+        if (SecurityService.isAuthenticate(request)) {
             PageGenerator pageGenerator = PageGenerator.instance();
             String page = pageGenerator.getPage("add_vehicle.html");
             response.getWriter().write(page);

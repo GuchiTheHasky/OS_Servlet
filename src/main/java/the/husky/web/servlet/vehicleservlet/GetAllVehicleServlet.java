@@ -9,7 +9,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import the.husky.web.auth.UserAuthenticate;
+import the.husky.web.security.SecurityService;
 import the.husky.web.util.PageGenerator;
 
 import java.io.IOException;
@@ -25,7 +25,7 @@ public class GetAllVehicleServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        if (UserAuthenticate.isAuthenticate(request)) {
+        if (SecurityService.isAuthenticate(request)) {
             String manufacturerFilter = request.getParameter("manufacturer");
             String engineTypeFilter = request.getParameter("engineType");
 

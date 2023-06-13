@@ -1,9 +1,7 @@
 package the.husky.web.servlet;
 
 import jakarta.servlet.http.Cookie;
-import lombok.Setter;
 import the.husky.entity.user.User;
-import the.husky.web.auth.UserAuthenticate;
 import the.husky.web.util.PageGenerator;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
@@ -11,16 +9,12 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
+import java.security.SecureRandom;
+import java.util.Base64;
+import java.util.Random;
 import java.util.UUID;
 
-@Setter
 public class LoginServlet extends HttpServlet {
-
-    private UserAuthenticate userAuthenticate;
-
-    public LoginServlet(UserAuthenticate userAuthenticate) {
-        this.userAuthenticate = userAuthenticate;
-    }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -30,19 +24,36 @@ public class LoginServlet extends HttpServlet {
     }
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String username = request.getParameter("username");
         String password = request.getParameter("password");
 
-        User user = userAuthenticate.authenticate(username, password);
+        User user = buildUser(username, password);
 
         if (user != null) {
-            //String token = UUID.randomUUID().toString();
-            response.addCookie(new Cookie("user-token", user.getToken()));
+            String token = UUID.randomUUID().toString();
+            String salt = generateSalt();
+            user.setToken(token + salt);
+            response.addCookie(new Cookie("user-valid", token));
             response.sendRedirect("/vehicle/all");
         } else {
             response.sendRedirect("/login");
         }
     }
-}
 
+    private User buildUser(String name, String password) {
+        return User.builder()
+                .name(name)
+                .password(password)
+                .build();
+    }
+
+    private String generateSalt() {
+        SecureRandom secureRandom = new SecureRandom();
+        int maxLength = 32;
+        int saltLength = new Random().nextInt(maxLength);
+        byte[] salt = new byte[saltLength];
+        secureRandom.nextBytes(salt);
+        return Base64.getEncoder().encodeToString(salt);
+    }
+}

@@ -4,7 +4,7 @@ import lombok.SneakyThrows;
 import the.husky.entity.user.User;
 import the.husky.exception.DataAccessException;
 import the.husky.service.UserService;
-import the.husky.web.auth.UserAuthenticate;
+import the.husky.web.security.SecurityService;
 import the.husky.web.util.PageGenerator;
 
 import jakarta.servlet.ServletException;
@@ -14,16 +14,15 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Map;
 
 public class AddUserServlet extends HttpServlet {
     private UserService service;
-    private UserAuthenticate userAuthenticate;
+    private SecurityService securityService;
 
 
-    public AddUserServlet(UserService service, UserAuthenticate userAuthenticate) {
+    public AddUserServlet(UserService service, SecurityService securityService) {
         this.service = service;
-        this.userAuthenticate = userAuthenticate;
+        this.securityService = securityService;
     }
 
     @Override
@@ -46,7 +45,7 @@ public class AddUserServlet extends HttpServlet {
         User user = buildUser(request);
         try {
             service.add(user);
-            userAuthenticate.addNewUser(user);
+            securityService.addNewUser(user);
             List<User> users = service.getAll();
             request.setAttribute("users", users);
             request.getRequestDispatcher("/user/all").forward(request, response);

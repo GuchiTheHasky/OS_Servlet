@@ -7,23 +7,23 @@ import jakarta.servlet.http.HttpServletResponse;
 import the.husky.entity.user.User;
 import the.husky.exception.DataAccessException;
 import the.husky.service.UserService;
-import the.husky.web.auth.UserAuthenticate;
+import the.husky.web.security.SecurityService;
 
 import java.io.IOException;
 
 public class DeleteUserServlet extends HttpServlet {
     private UserService service;
-    private UserAuthenticate userAuthenticate;
+    private SecurityService securityService;
 
 
-    public DeleteUserServlet(UserService service, UserAuthenticate userAuthenticate) {
+    public DeleteUserServlet(UserService service, SecurityService securityService) {
         this.service = service;
-        this.userAuthenticate = userAuthenticate;
+        this.securityService = securityService;
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        if (UserAuthenticate.isAuthenticate(request)) {
+        if (SecurityService.isAuthenticate(request)) {
             int id = Integer.parseInt(request.getParameter("id"));
 
             try {
@@ -31,7 +31,7 @@ public class DeleteUserServlet extends HttpServlet {
                 if (user != null) {
                     try {
                         service.delete(id);
-                        userAuthenticate.deleteExistingUser(user);
+                        securityService.deleteExistingUser(user);
                         response.sendRedirect("/user/all");
                     } catch (DataAccessException e) {
                         response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Failed to delete user");

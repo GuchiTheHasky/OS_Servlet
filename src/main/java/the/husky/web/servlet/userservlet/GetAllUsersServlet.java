@@ -3,8 +3,7 @@ package the.husky.web.servlet.userservlet;
 import the.husky.entity.user.User;
 import the.husky.exception.DataAccessException;
 import the.husky.service.UserService;
-import the.husky.service.VehicleService;
-import the.husky.web.auth.UserAuthenticate;
+import the.husky.web.security.SecurityService;
 import the.husky.web.util.PageGenerator;
 
 import jakarta.servlet.ServletException;
@@ -24,7 +23,7 @@ public class GetAllUsersServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        if (UserAuthenticate.isAuthenticate(request)) {
+        if (SecurityService.isAuthenticate(request)) {
             List<User> users;
             try {
                 users = service.getAll();
