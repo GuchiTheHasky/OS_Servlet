@@ -35,18 +35,12 @@ public class LoginServlet extends HttpServlet {
 
         User user = buildUser(username, password);
 
-        if (user != null) {
-            if (securityService.authenticateUser(user) != null) {
-
-                String token = generateToken();
-
-                response.addCookie(new Cookie("token", token));
-                response.sendRedirect("/vehicle/all");
-            } else {
-                response.sendRedirect("/user/add");
-            }
+        if (securityService.authenticateUser(user) != null) {
+            String token = generateToken();
+            response.addCookie(new Cookie("token", token));
+            response.sendRedirect("/vehicle/all");
         } else {
-            response.sendRedirect("/login");
+            response.sendRedirect("/user/add");
         }
     }
 
