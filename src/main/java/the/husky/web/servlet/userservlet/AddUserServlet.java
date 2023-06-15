@@ -34,6 +34,14 @@ public class AddUserServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String name = request.getParameter("user_name");
+        String password = request.getParameter("password");
+
+        if (name.isEmpty() || password.isEmpty() || isUserExist(name)) {
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST,
+                    "Required fields is empty or user is already exist.");
+        }
+
         User user = buildUser(request);
         try {
             service.add(user);
@@ -52,5 +60,19 @@ public class AddUserServlet extends HttpServlet {
                 .name(request.getParameter("user_name"))
                 .password(request.getParameter("password"))
                 .build();
+    }
+
+    @SneakyThrows
+    private boolean isUserExist(String name) {
+        User currentUser = service.getByName(name);
+        if (currentUser != null) {
+            List<User> users = service.getAll();
+            for (User user : users) {
+                if (user.getName().equals(currentUser.getName())) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 }

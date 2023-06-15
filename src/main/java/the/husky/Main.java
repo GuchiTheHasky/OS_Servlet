@@ -9,6 +9,7 @@ import the.husky.dao.jdbc.JdbcUserDao;
 import the.husky.dao.jdbc.JdbcVehicleDao;
 import the.husky.service.UserService;
 import the.husky.service.VehicleService;
+import the.husky.web.security.filter.user.SecurityFilterAddUser;
 import the.husky.web.security.filter.SecurityFilterLogin;
 import the.husky.web.security.filter.SecurityFilterMain;
 import the.husky.web.security.SecurityService;
@@ -67,6 +68,9 @@ public class Main {
         contextHandler.addFilter
                 (new FilterHolder
                         (new SecurityFilterLogin()), "/login", EnumSet.of(DispatcherType.REQUEST));
+        contextHandler.addFilter
+                (new FilterHolder
+                        (new SecurityFilterAddUser(userService)), "/user/add", EnumSet.of(DispatcherType.REQUEST));
 
 
         Server server = new Server(1025);
