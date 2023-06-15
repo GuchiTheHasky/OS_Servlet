@@ -37,7 +37,7 @@ public class GetAllUsersServlet extends HttpServlet {
         response.getWriter().write(page);
     }
 
-    @Override
+    @Override // todo
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         doGet(request, response);
     }

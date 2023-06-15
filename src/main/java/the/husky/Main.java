@@ -13,6 +13,7 @@ import the.husky.web.security.filter.user.SecurityFilterAddUser;
 import the.husky.web.security.filter.SecurityFilterLogin;
 import the.husky.web.security.filter.SecurityFilterMain;
 import the.husky.web.security.SecurityService;
+import the.husky.web.security.filter.vehicle.SecurityFilterAddVehicle;
 import the.husky.web.servlet.*;
 import the.husky.web.servlet.userservlet.*;
 import the.husky.web.servlet.vehicleservlet.*;
@@ -34,7 +35,7 @@ public class Main {
         ValidationTaskServlet validationTaskServlet = new ValidationTaskServlet();
         AddUserServlet addUserServlet = new AddUserServlet(userService, securityService);
         GetAllUsersServlet getAllUsersServlet = new GetAllUsersServlet(userService);
-        EditUserDetailsServlet editUserServlet = new EditUserDetailsServlet(userService);
+        EditUserServlet editUserServlet = new EditUserServlet(userService);
         DeleteUserServlet deleteUserServlet = new DeleteUserServlet(userService, securityService);
 
         JdbcVehicleDao vehicleDao = new JdbcVehicleDao();
@@ -71,6 +72,9 @@ public class Main {
         contextHandler.addFilter
                 (new FilterHolder
                         (new SecurityFilterAddUser(userService)), "/user/add", EnumSet.of(DispatcherType.REQUEST));
+        contextHandler.addFilter
+                (new FilterHolder
+                        (new SecurityFilterAddVehicle()), "/vehicle/add", EnumSet.of(DispatcherType.REQUEST));
 
 
         Server server = new Server(1025);
