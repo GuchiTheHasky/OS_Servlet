@@ -14,6 +14,7 @@ import the.husky.web.security.filter.SecurityFilterLogin;
 import the.husky.web.security.filter.SecurityFilterMain;
 import the.husky.web.security.SecurityService;
 import the.husky.web.security.filter.vehicle.SecurityFilterAddVehicle;
+import the.husky.web.security.filter.vehicle.SecurityFilterDeleteVehicle;
 import the.husky.web.servlet.*;
 import the.husky.web.servlet.userservlet.*;
 import the.husky.web.servlet.vehicleservlet.*;
@@ -71,10 +72,15 @@ public class Main {
                         (new SecurityFilterLogin()), "/login", EnumSet.of(DispatcherType.REQUEST));
         contextHandler.addFilter
                 (new FilterHolder
-                        (new SecurityFilterAddUser(userService)), "/user/add", EnumSet.of(DispatcherType.REQUEST));
+                        (new SecurityFilterAddUser(userService)), "/user/add",
+                        EnumSet.of(DispatcherType.REQUEST));
         contextHandler.addFilter
                 (new FilterHolder
                         (new SecurityFilterAddVehicle()), "/vehicle/add", EnumSet.of(DispatcherType.REQUEST));
+        contextHandler.addFilter
+                (new FilterHolder
+                        (new SecurityFilterDeleteVehicle(vehicleService)), "/vehicle/delete",
+                        EnumSet.of(DispatcherType.REQUEST));
 
 
         Server server = new Server(1025);
