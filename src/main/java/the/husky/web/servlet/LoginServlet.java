@@ -1,7 +1,9 @@
 package the.husky.web.servlet;
 
 import jakarta.servlet.http.Cookie;
+import lombok.AllArgsConstructor;
 import the.husky.entity.user.User;
+import the.husky.web.security.SecurityService;
 import the.husky.web.util.PageGenerator;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
@@ -14,7 +16,10 @@ import java.util.Base64;
 import java.util.Random;
 import java.util.UUID;
 
+@AllArgsConstructor
 public class LoginServlet extends HttpServlet {
+
+    private SecurityService securityService;
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -31,11 +36,15 @@ public class LoginServlet extends HttpServlet {
         User user = buildUser(username, password);
 
         if (user != null) {
-            String token = UUID.randomUUID().toString();
-            String salt = generateSalt();
-            user.setToken(token + salt);
-            response.addCookie(new Cookie("user-valid", token));
-            response.sendRedirect("/vehicle/all");
+            if (securityService.authenticateUser(user) != null) {
+
+                String token = generateToken();
+
+                response.addCookie(new Cookie("token", token));
+                response.sendRedirect("/vehicle/all");
+            } else {
+                response.sendRedirect("/user/add");
+            }
         } else {
             response.sendRedirect("/login");
         }
@@ -46,6 +55,12 @@ public class LoginServlet extends HttpServlet {
                 .name(name)
                 .password(password)
                 .build();
+    }
+
+    private String generateToken() {
+        String rndToken = UUID.randomUUID().toString();
+        String salt = generateSalt();
+        return rndToken + salt;
     }
 
     private String generateSalt() {

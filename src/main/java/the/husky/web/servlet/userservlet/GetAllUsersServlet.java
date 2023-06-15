@@ -17,27 +17,24 @@ import java.util.List;
 
 public class GetAllUsersServlet extends HttpServlet {
     private UserService service;
+
     public GetAllUsersServlet(UserService service) {
         this.service = service;
     }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        if (SecurityService.isAuthenticate(request)) {
-            List<User> users;
-            try {
-                users = service.getAll();
-            } catch (DataAccessException e) {
-                throw new ServletException("An error occurred while retrieving the user list.", e);
-            }
-            PageGenerator pageGenerator = PageGenerator.instance();
-            HashMap<String, Object> parameters = new HashMap<>();
-            parameters.put("users", users);
-            String page = pageGenerator.getPage("user_list.html", parameters);
-            response.getWriter().write(page);
-        } else {
-            response.sendRedirect("/login");
+        List<User> users;
+        try {
+            users = service.getAll();
+        } catch (DataAccessException e) {
+            throw new ServletException("An error occurred while retrieving the user list.", e);
         }
+        PageGenerator pageGenerator = PageGenerator.instance();
+        HashMap<String, Object> parameters = new HashMap<>();
+        parameters.put("users", users);
+        String page = pageGenerator.getPage("user_list.html", parameters);
+        response.getWriter().write(page);
     }
 
     @Override

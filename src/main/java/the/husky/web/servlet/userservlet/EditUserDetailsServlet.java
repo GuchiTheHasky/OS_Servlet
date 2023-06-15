@@ -24,29 +24,26 @@ public class EditUserDetailsServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        if (SecurityService.isAuthenticate(request)) {
-            int id = Integer.parseInt(request.getParameter("id"));
+        int id = Integer.parseInt(request.getParameter("id"));
 
-            User user = null;
-            try {
-                user = userService.getUserById(id);
-            } catch (DataAccessException e) {
-                response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Invalid access to update data.");
-            }
-
-            if (user != null) {
-                Map<String, Object> params = new HashMap<>();
-                params.put("user", user);
-
-                response.setContentType("text/html;charset=utf-8");
-                response.setStatus(HttpServletResponse.SC_OK);
-
-                response.getWriter().println(PageGenerator.instance().getPage("user_details.html", params));
-            } else {
-                response.sendError(HttpServletResponse.SC_NOT_FOUND, "User not found");
-            }
+        User user = null;
+        try {
+            user = userService.getUserById(id);
+        } catch (DataAccessException e) {
+            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Invalid access to update data.");
         }
-        response.sendRedirect("/login");
+
+        if (user != null) {
+            Map<String, Object> params = new HashMap<>();
+            params.put("user", user);
+
+            response.setContentType("text/html;charset=utf-8");
+            response.setStatus(HttpServletResponse.SC_OK);
+
+            response.getWriter().println(PageGenerator.instance().getPage("user_details.html", params));
+        } else {
+            response.sendError(HttpServletResponse.SC_NOT_FOUND, "User not found");
+        }
     }
 
     @Override

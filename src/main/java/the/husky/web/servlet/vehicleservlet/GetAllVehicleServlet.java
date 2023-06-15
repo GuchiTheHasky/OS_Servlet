@@ -19,37 +19,34 @@ import java.util.List;
 
 public class GetAllVehicleServlet extends HttpServlet {
     private VehicleService service;
+
     public GetAllVehicleServlet(VehicleService service) {
         this.service = service;
     }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        if (SecurityService.isAuthenticate(request)) {
-            String manufacturerFilter = request.getParameter("manufacturer");
-            String engineTypeFilter = request.getParameter("engineType");
+        String manufacturerFilter = request.getParameter("manufacturer");
+        String engineTypeFilter = request.getParameter("engineType");
 
-            List<Vehicle> vehicles = service.getAll();
-            PageGenerator pageGenerator = PageGenerator.instance();
+        List<Vehicle> vehicles = service.getAll();
+        PageGenerator pageGenerator = PageGenerator.instance();
 
-            if (manufacturerFilter != null && !manufacturerFilter.isEmpty()) {
-                vehicles = filterByManufacturer(vehicles, manufacturerFilter);
-            }
-
-            if (engineTypeFilter != null && !engineTypeFilter.isEmpty()) {
-                vehicles = filterByEngineType(vehicles, engineTypeFilter);
-            }
-
-            HashMap<String, Object> parameters = new HashMap<>();
-            parameters.put("vehicles", vehicles);
-            parameters.put("manufacturers", VehicleManufacturer.getManufacturers());
-            parameters.put("engineTypes", EngineType.getAllEngineTypes());
-
-            String page = pageGenerator.getPage("vehicle_list.html", parameters);
-            response.getWriter().write(page);
-        } else {
-            response.sendRedirect("/login");
+        if (manufacturerFilter != null && !manufacturerFilter.isEmpty()) {
+            vehicles = filterByManufacturer(vehicles, manufacturerFilter);
         }
+
+        if (engineTypeFilter != null && !engineTypeFilter.isEmpty()) {
+            vehicles = filterByEngineType(vehicles, engineTypeFilter);
+        }
+
+        HashMap<String, Object> parameters = new HashMap<>();
+        parameters.put("vehicles", vehicles);
+        parameters.put("manufacturers", VehicleManufacturer.getManufacturers());
+        parameters.put("engineTypes", EngineType.getAllEngineTypes());
+
+        String page = pageGenerator.getPage("vehicle_list.html", parameters);
+        response.getWriter().write(page);
     }
 
     private List<Vehicle> filterByManufacturer(List<Vehicle> vehicles, String manufacturerFilter) {
@@ -61,6 +58,7 @@ public class GetAllVehicleServlet extends HttpServlet {
         }
         return filteredVehicles;
     }
+
     private List<Vehicle> filterByEngineType(List<Vehicle> vehicles, String engineFilter) {
         List<Vehicle> filteredVehicles = new ArrayList<>();
         for (Vehicle vehicle : vehicles) {

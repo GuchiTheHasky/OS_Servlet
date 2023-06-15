@@ -23,13 +23,9 @@ public class AddVehicleServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        if (SecurityService.isAuthenticate(request)) {
-            PageGenerator pageGenerator = PageGenerator.instance();
-            String page = pageGenerator.getPage("add_vehicle.html");
-            response.getWriter().write(page);
-        } else {
-            response.sendRedirect("/login");
-        }
+        PageGenerator pageGenerator = PageGenerator.instance();
+        String page = pageGenerator.getPage("add_vehicle.html");
+        response.getWriter().write(page);
     }
 
     @Override

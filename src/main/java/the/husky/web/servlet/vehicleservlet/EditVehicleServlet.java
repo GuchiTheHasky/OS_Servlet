@@ -4,7 +4,6 @@ import the.husky.entity.vehicle.EngineType;
 import the.husky.entity.vehicle.Vehicle;
 import the.husky.entity.vehicle.VehicleManufacturer;
 import the.husky.service.VehicleService;
-import the.husky.web.security.SecurityService;
 import the.husky.web.util.PageGenerator;
 
 import jakarta.servlet.ServletException;
@@ -26,28 +25,24 @@ public class EditVehicleServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        if (SecurityService.isAuthenticate(request)) {
-            int vehicleId = Integer.parseInt(request.getParameter("vehicle_id"));
+        int vehicleId = Integer.parseInt(request.getParameter("vehicle_id"));
 
-            Vehicle vehicle = service.getById(vehicleId);
+        Vehicle vehicle = service.getById(vehicleId);
 
-            if (vehicle != null) {
-                List<Vehicle> vehicles = service.getAll();
+        if (vehicle != null) {
+            List<Vehicle> vehicles = service.getAll();
 
-                Map<String, Object> data = new HashMap<>();
-                data.put("vehicles", vehicles);
-                data.put("vehicle", vehicle);
+            Map<String, Object> data = new HashMap<>();
+            data.put("vehicles", vehicles);
+            data.put("vehicle", vehicle);
 
-                response.setContentType("text/html;charset=utf-8");
-                response.setStatus(HttpServletResponse.SC_OK);
+            response.setContentType("text/html;charset=utf-8");
+            response.setStatus(HttpServletResponse.SC_OK);
 
-                String page = PageGenerator.instance().getPage("edit_vehicle.html", data);
-                response.getWriter().write(page);
-            } else {
-                response.sendRedirect(request.getContextPath() + "/vehicle/all");
-            }
+            String page = PageGenerator.instance().getPage("edit_vehicle.html", data);
+            response.getWriter().write(page);
         } else {
-            response.sendRedirect("/login");
+            response.sendRedirect(request.getContextPath() + "/vehicle/all");
         }
     }
 

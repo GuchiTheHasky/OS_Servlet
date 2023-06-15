@@ -22,22 +22,18 @@ public class VehicleFilterServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        if (SecurityService.isAuthenticate(request)) {
-            String manufacturer = request.getParameter("manufacturer");
-            List<Vehicle> filteredVehicles = service.filterByManufacturer(manufacturer);
-            List<Vehicle> allVehicles = service.getAll();
-            List<String> manufacturers = VehicleManufacturer.getManufacturers();
+        String manufacturer = request.getParameter("manufacturer");
+        List<Vehicle> filteredVehicles = service.filterByManufacturer(manufacturer);
+        List<Vehicle> allVehicles = service.getAll();
+        List<String> manufacturers = VehicleManufacturer.getManufacturers();
 
-            if (manufacturer != null && !manufacturer.isEmpty()) {
-                request.setAttribute("vehicles", filteredVehicles);
-            } else {
-                request.setAttribute("vehicles", allVehicles);
-            }
-
-            request.setAttribute("manufacturers", manufacturers);
-            request.getRequestDispatcher("/vehicle/all").forward(request, response);
+        if (manufacturer != null && !manufacturer.isEmpty()) {
+            request.setAttribute("vehicles", filteredVehicles);
         } else {
-            response.sendRedirect("/login");
+            request.setAttribute("vehicles", allVehicles);
         }
+
+        request.setAttribute("manufacturers", manufacturers);
+        request.getRequestDispatcher("/vehicle/all").forward(request, response);
     }
 }

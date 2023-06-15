@@ -23,27 +23,24 @@ public class DeleteUserServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        if (SecurityService.isAuthenticate(request)) {
-            int id = Integer.parseInt(request.getParameter("id"));
+        int id = Integer.parseInt(request.getParameter("id"));
 
-            try {
-                User user = service.getUserById(id);
-                if (user != null) {
-                    try {
-                        service.delete(id);
-                        securityService.deleteExistingUser(user);
-                        response.sendRedirect("/user/all");
-                    } catch (DataAccessException e) {
-                        response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Failed to delete user");
-                    }
-                } else {
-                    response.sendError(HttpServletResponse.SC_NOT_FOUND, "User not found");
+        try {
+            User user = service.getUserById(id);
+            if (user != null) {
+                try {
+                    service.delete(id);
+                    securityService.deleteExistingUser(user);
+                    response.sendRedirect("/user/all");
+                } catch (DataAccessException e) {
+                    response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Failed to delete user");
                 }
-            } catch (DataAccessException e) {
-                throw new ServletException("Failed to retrieve user", e);
+            } else {
+                response.sendError(HttpServletResponse.SC_NOT_FOUND, "User not found");
             }
+        } catch (DataAccessException e) {
+            throw new ServletException("Failed to retrieve user", e);
         }
-        response.sendRedirect("/login");
     }
 }
 

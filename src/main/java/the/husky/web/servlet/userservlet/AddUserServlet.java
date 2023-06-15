@@ -46,6 +46,7 @@ public class AddUserServlet extends HttpServlet {
         try {
             service.add(user);
             securityService.addNewUser(user);
+
             List<User> users = service.getAll();
             request.setAttribute("users", users);
             request.getRequestDispatcher("/user/all").forward(request, response);

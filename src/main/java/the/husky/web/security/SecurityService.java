@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import the.husky.entity.user.User;
+import the.husky.exception.DataAccessException;
 import the.husky.service.UserService;
 
 import java.util.*;
@@ -19,8 +20,10 @@ public class SecurityService {
     private UserService userService;
     private User authenticatedUser;
 
-    public SecurityService(List<User> users, UserService service) {
-        this.users = users;
+
+
+    public SecurityService(UserService service) throws DataAccessException {
+        this.users = service.getAll();
         this.userService = service;
     }
 
@@ -28,7 +31,7 @@ public class SecurityService {
         Cookie[] cookies = request.getCookies();
         if (cookies != null) {
             for (Cookie cookie : cookies) {
-                if (cookie.getName().equals("user-valid") & cookie.getValue() != null) {
+                if (cookie.getName().equals("token") & cookie.getValue() != null) {
                     return true;
                 }
             }
@@ -40,10 +43,25 @@ public class SecurityService {
         users.add(user);
     }
 
+
     public void deleteExistingUser(User user) {
         users.remove(user);
         if (authenticatedUser != null && authenticatedUser.equals(user)) {
             authenticatedUser = null;
         }
     }
+    public User authenticateUser(User user) {
+        for (User registeredUser : users) {
+            if (registeredUser.equals(user)) {
+                authenticatedUser = registeredUser;
+            }
+        }
+        return null;
+    }
+
+    public User getAuthenticatedUser() {
+        return authenticatedUser;
+    }
+
+
 }

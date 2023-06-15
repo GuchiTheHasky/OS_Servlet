@@ -1,19 +1,21 @@
 package the.husky;
 
+import jakarta.servlet.DispatcherType;
 import org.eclipse.jetty.server.Server;
+import org.eclipse.jetty.servlet.FilterHolder;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 import the.husky.dao.jdbc.JdbcUserDao;
 import the.husky.dao.jdbc.JdbcVehicleDao;
-import the.husky.entity.user.User;
 import the.husky.service.UserService;
 import the.husky.service.VehicleService;
+import the.husky.web.security.filter.SecurityFilterGeneral;
 import the.husky.web.security.SecurityService;
 import the.husky.web.servlet.*;
 import the.husky.web.servlet.userservlet.*;
 import the.husky.web.servlet.vehicleservlet.*;
 
-import java.util.List;
+import java.util.EnumSet;
 
 public class Main {
     public static void main(String[] args) throws Exception {
@@ -21,10 +23,9 @@ public class Main {
         JdbcUserDao userDao = new JdbcUserDao();
         UserService userService = new UserService(userDao);
 
-        List<User> users = userService.getAll();
-        SecurityService securityService = new SecurityService(users, userService);
+        SecurityService securityService = new SecurityService(userService);
 
-        LoginServlet loginServlet = new LoginServlet();
+        LoginServlet loginServlet = new LoginServlet(securityService);
         LogoServlet logoServlet = new LogoServlet();
         FaviconServlet faviconServlet = new FaviconServlet();
 
@@ -59,8 +60,16 @@ public class Main {
         contextHandler.addServlet(new ServletHolder(editVehicleServlet), "/vehicle/edit");
         contextHandler.addServlet(new ServletHolder(vehicleFilterServlet), "/vehicle/filter");
 
+        contextHandler.addFilter
+                (new FilterHolder
+                        (new SecurityFilterGeneral(securityService)), "/*", EnumSet.of(DispatcherType.REQUEST));
+//        // todo /* фільтр працює на всі сторінки, можна зробити /user
+
+
         Server server = new Server(1025);
         server.setHandler(contextHandler);
         server.start();
     }
 }
+
+// todo: можна зробити ContentTypeFilter і сетити тайп
