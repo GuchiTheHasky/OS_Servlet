@@ -18,6 +18,7 @@ public class SecurityFilterLogin implements Filter {
 
         String username = request.getParameter("username");
         String password = request.getParameter("password");
+
         if (!username.equals("") || !password.equals("")) {
             filterChain.doFilter(request, response);
         } else {
