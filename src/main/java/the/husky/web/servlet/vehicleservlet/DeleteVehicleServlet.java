@@ -19,13 +19,7 @@ public class DeleteVehicleServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         int id = Integer.parseInt(request.getParameter("vehicle_id"));
-
-        Vehicle vehicle = service.getById(id);
-        if (vehicle != null) {
-            service.delete(id);
-            response.sendRedirect("/vehicle/all");
-        } else {
-            response.sendError(HttpServletResponse.SC_NOT_FOUND, "Vehicle not found");
-        }
+        service.delete(id);
+        response.sendRedirect("/vehicle/all");
     }
 }

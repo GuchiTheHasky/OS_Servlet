@@ -21,7 +21,7 @@ public class SecurityFilterAddVehicle implements Filter {
         int age = Integer.parseInt(request.getParameter("age"));
         double weight = Double.parseDouble(request.getParameter("weight"));
 
-        if (manufacturer == null || engineType == null || model == null || price <= 0 || age <= 0 || weight <= 0) {
+        if (manufacturer == null || engineType == null || model == null || price <= 0 || age < 0 || weight <= 0) {
             response.sendRedirect("/vehicle/all");
         } else {
             filterChain.doFilter(request, response);

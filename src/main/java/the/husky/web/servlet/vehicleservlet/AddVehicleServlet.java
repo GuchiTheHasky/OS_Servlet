@@ -4,7 +4,6 @@ import the.husky.entity.vehicle.EngineType;
 import the.husky.entity.vehicle.Vehicle;
 import the.husky.entity.vehicle.VehicleManufacturer;
 import the.husky.service.VehicleService;
-import the.husky.web.security.SecurityService;
 import the.husky.web.util.PageGenerator;
 
 import jakarta.servlet.ServletException;
