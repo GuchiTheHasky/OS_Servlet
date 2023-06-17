@@ -35,7 +35,11 @@ public class SecurityFilterEditUser implements Filter {
                 filterChain.doFilter(request, response);
             }
         } else {
-            filterChain.doFilter(request, response);
+            if (request.getParameter("id") == null) {
+                response.sendRedirect("/login");
+            } else {
+                filterChain.doFilter(request, response);
+            }
         }
     }
 }

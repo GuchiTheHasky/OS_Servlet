@@ -12,10 +12,9 @@ import java.util.List;
 @AllArgsConstructor
 public class SecurityFilterMain implements Filter {
 
-    private final List<String> PERMITTED_URI = List.of("/login", "/user/add", "/task", "/favicon",
+    private final List<String> PERMITTED_URI = List.of("/login", "/user/add", "/task", "/favicon.ico",
             "/image", "/vehicle/add", "/user/edit", "/user/details",
-            "/user/delete", "/vehicle/edit","/user/all", "/vehicle/all",  "/vehicle/filter"); //todo if req.getUri.startWith.log.getValue filter.doFilter(req, res);
-
+            "/user/delete", "/vehicle/edit","/user/all", "/vehicle/all",  "/vehicle/filter");
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain)
             throws IOException, ServletException {
@@ -26,6 +25,10 @@ public class SecurityFilterMain implements Filter {
             filterChain.doFilter(request, response);
         } else {
             response.sendError(HttpServletResponse.SC_NOT_FOUND, "Invalid request uri.");
+        }
+        if (request.getRequestURI().equalsIgnoreCase("/favicon.ico")) {
+            response.setContentType("image/vnd.microsoft.icon");
+            filterChain.doFilter(request, response);
         }
     }
 
@@ -38,25 +41,3 @@ public class SecurityFilterMain implements Filter {
         return false;
     }
 }
-
-
-
-
-
-//        if (request.getRequestURI().equals("/login")) {
-//            filterChain.doFilter(request, response);
-//            return; // todo можна замінити на else
-//        }
-//        if (request.getRequestURI().equals("/css")) { // todo
-//            filterChain.doFilter(request, response);
-//            return;
-//        }
-
-
-//        if (securityService.isAuthentificate()) {
-//            filterChain.doFilter(servletRequest, servletResponse);
-//        } else {
-//            response.sendRedirect("/login");
-//        }
-//
-//        System.out.println("Security filter");

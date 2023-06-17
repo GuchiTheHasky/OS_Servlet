@@ -3,10 +3,12 @@ package the.husky.web.security.filter.vehicle;
 import jakarta.servlet.*;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.AllArgsConstructor;
 import the.husky.web.security.SecurityService;
 
 import java.io.IOException;
 
+@AllArgsConstructor
 public class SecurityFilterVehicles implements Filter {
     private SecurityService securityService;
 

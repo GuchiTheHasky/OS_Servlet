@@ -20,7 +20,8 @@ public class VehicleFilterServlet extends HttpServlet {
     }
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
         String manufacturer = request.getParameter("manufacturer");
         List<Vehicle> filteredVehicles = service.filterByManufacturer(manufacturer);
         List<Vehicle> allVehicles = service.findAll();

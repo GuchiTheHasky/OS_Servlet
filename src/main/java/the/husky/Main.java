@@ -9,10 +9,12 @@ import the.husky.dao.jdbc.JdbcUserDao;
 import the.husky.dao.jdbc.JdbcVehicleDao;
 import the.husky.service.UserService;
 import the.husky.service.VehicleService;
+import the.husky.web.security.filter.SecurityFilterFavicon;
 import the.husky.web.security.filter.user.SecurityFilterAddUser;
 import the.husky.web.security.filter.SecurityFilterLogin;
 import the.husky.web.security.filter.SecurityFilterMain;
 import the.husky.web.security.SecurityService;
+import the.husky.web.security.filter.user.SecurityFilterEditUser;
 import the.husky.web.security.filter.user.SecurityFilterUsers;
 import the.husky.web.security.filter.vehicle.SecurityFilterAddVehicle;
 import the.husky.web.security.filter.vehicle.SecurityFilterDeleteVehicle;
@@ -70,6 +72,9 @@ public class Main {
                         (new SecurityFilterMain()), "/*", EnumSet.of(DispatcherType.REQUEST));
         contextHandler.addFilter
                 (new FilterHolder
+                        (new SecurityFilterFavicon()), "/favicon.ico", EnumSet.of(DispatcherType.REQUEST));
+        contextHandler.addFilter
+                (new FilterHolder
                         (new SecurityFilterLogin(securityService)), "/login", EnumSet.of(DispatcherType.REQUEST));
         contextHandler.addFilter
                 (new FilterHolder
@@ -92,9 +97,12 @@ public class Main {
                         EnumSet.of(DispatcherType.REQUEST));
         contextHandler.addFilter
                 (new FilterHolder(
+                        new SecurityFilterEditUser(userService)), "/user/edit",
+                        EnumSet.of(DispatcherType.REQUEST));
+        contextHandler.addFilter
+                (new FilterHolder(
                         new SecurityFilterUsers(securityService)), "/vehicle/all",
                         EnumSet.of(DispatcherType.REQUEST));
-
 
         Server server = new Server(1025);
         server.setHandler(contextHandler);

@@ -20,8 +20,6 @@ public class SecurityService {
     private UserService userService;
     private User authenticatedUser;
 
-
-
     public SecurityService(UserService service) throws DataAccessException {
         this.users = service.getAll();
         this.userService = service;
@@ -59,10 +57,4 @@ public class SecurityService {
         }
         return null;
     }
-
-    public User getAuthenticatedUser() {
-        return authenticatedUser;
-    }
-
-
 }

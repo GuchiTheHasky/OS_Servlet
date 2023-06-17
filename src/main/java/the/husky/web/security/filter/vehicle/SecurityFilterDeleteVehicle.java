@@ -18,7 +18,7 @@ public class SecurityFilterDeleteVehicle implements Filter {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         HttpServletResponse response = (HttpServletResponse) servletResponse;
 
-        if (request.getMethod().equalsIgnoreCase("POST")) { // todo ?? думаю не треба
+        if (request.getMethod().equalsIgnoreCase("POST")) {
             int id = Integer.parseInt(request.getParameter("vehicle_id"));
             if (service.getById(id) != null) {
                 filterChain.doFilter(request, response);
