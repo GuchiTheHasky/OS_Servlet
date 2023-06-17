@@ -80,7 +80,8 @@ public class Main {
                         (new SecurityFilterFavicon()), "/favicon.ico", EnumSet.of(DispatcherType.REQUEST));
         contextHandler.addFilter
                 (new FilterHolder
-                        (new SecurityFilterLogin(securityService)), "/login", EnumSet.of(DispatcherType.REQUEST));
+                        (new SecurityFilterLogin(securityService)), "/login",
+                        EnumSet.of(DispatcherType.REQUEST));
         contextHandler.addFilter
                 (new FilterHolder
                         (new SecurityFilterAddUser(userService)), "/user/add",
@@ -114,7 +115,3 @@ public class Main {
         server.start();
     }
 }
-
-// todo: можна зробити ContentTypeFilter і сетити тайп
-// TODO: перейти на war
-// todo: перейти на pom.xml
