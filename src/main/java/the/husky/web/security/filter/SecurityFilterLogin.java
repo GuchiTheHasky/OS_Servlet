@@ -20,7 +20,7 @@ public class SecurityFilterLogin implements Filter {
 
         if (request.getMethod().equalsIgnoreCase("GET")) {
             filterChain.doFilter(request, response);
-        } else {
+        } else if (request.getMethod().equalsIgnoreCase("POST")) {
             String username = request.getParameter("username");
             String password = request.getParameter("password");
 

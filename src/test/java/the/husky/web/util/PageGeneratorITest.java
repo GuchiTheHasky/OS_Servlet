@@ -1,5 +1,6 @@
 package the.husky.web.util;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -8,7 +9,8 @@ public class PageGeneratorITest {
     private final PageGenerator GENERATOR = new PageGenerator();
 
     @Test
-    public void teat() {
+    @DisplayName("Test, generate page to String, check content.")
+    public void testGeneratePageHtmlToString() {
         String expectedPageContent = getExpectedPageContent().replaceAll("\n", "\r\n");
         String actualPageContent = GENERATOR.getPage("wrong_answer.html");
 

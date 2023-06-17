@@ -18,10 +18,12 @@ public class SecurityFilterVehicles implements Filter {
         HttpServletResponse response = (HttpServletResponse) servletResponse;
 
         if (request.getMethod().equalsIgnoreCase("GET")) {
-            if (!securityService.isAuthenticate(request)) {
+
+            if (securityService.isAuthenticate(request)) {
                 filterChain.doFilter(request, response);
+            } else {
+                response.sendRedirect("/login");
             }
-            response.sendRedirect("/login");
         }
     }
 }

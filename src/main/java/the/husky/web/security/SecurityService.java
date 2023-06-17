@@ -29,7 +29,8 @@ public class SecurityService {
         Cookie[] cookies = request.getCookies();
         if (cookies != null) {
             for (Cookie cookie : cookies) {
-                if (cookie.getName().equals("token") & cookie.getValue() != null) {
+                if (cookie.getName().equals("token")
+                        && cookie.getValue() != null) {
                     return true;
                 }
             }
@@ -56,5 +57,9 @@ public class SecurityService {
             }
         }
         return null;
+    }
+
+    private User getAuthenticatedUser() {
+        return authenticatedUser;
     }
 }

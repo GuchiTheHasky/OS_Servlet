@@ -1,5 +1,6 @@
 package the.husky.dao.jdbc;
 
+import lombok.extern.slf4j.Slf4j;
 import the.husky.dao.VehicleDao;
 import the.husky.dao.jdbc.mapper.VehicleRowMapper;
 import the.husky.entity.vehicle.EngineType;
@@ -9,11 +10,11 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@Slf4j
 public class JdbcVehicleDao implements VehicleDao {
     private static final VehicleRowMapper VEHICLE_ROW_MAPPER = new VehicleRowMapper();
     private static final String SELECT_ALL = "SELECT vehicle_id, manufacture, enginetype, model, price, age, weight " +
             "FROM \"vehicle\"";
-
     private static final String INSERT = "INSERT " +
             "INTO \"vehicle\" (manufacture, enginetype, model, price, age, weight) VALUES(?, ?, ?, ?, ?, ?)";
     private static final String DELETE = "DELETE FROM \"vehicle\" WHERE vehicle_id = ?";
@@ -25,21 +26,20 @@ public class JdbcVehicleDao implements VehicleDao {
 
     @Override
     public List<Vehicle> findAll() {
-        List<Vehicle> vehicles = new ArrayList<>();
+
         try (Connection connection = connect();
              PreparedStatement statement = connection.prepareStatement(SELECT_ALL);
              ResultSet resultSet = statement.executeQuery()) {
-
+            List<Vehicle> vehicles = new ArrayList<>();
             while (resultSet.next()) {
                 Vehicle vehicle = VEHICLE_ROW_MAPPER.mapRow(resultSet);
                 vehicles.add(vehicle);
             }
-
+            return vehicles;
         } catch (SQLException e) {
-            e.printStackTrace();
+            log.error("Can't find vehicles.");
             throw new RuntimeException(e);
         }
-        return vehicles;
     }
 
     @Override
@@ -56,7 +56,7 @@ public class JdbcVehicleDao implements VehicleDao {
             statement.executeUpdate();
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            log.error("Can't add vehicle.");
             throw new RuntimeException(e);
         }
     }
@@ -68,7 +68,7 @@ public class JdbcVehicleDao implements VehicleDao {
             statement.setInt(1, id);
             statement.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            log.error("Can't delete vehicle.");
             throw new RuntimeException(e);
         }
     }
@@ -88,7 +88,7 @@ public class JdbcVehicleDao implements VehicleDao {
             statement.executeUpdate();
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            log.error("Can't update vehicle");
             throw new RuntimeException(e);
         }
     }
@@ -104,16 +104,17 @@ public class JdbcVehicleDao implements VehicleDao {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            log.error("Can't find vehicle by id.");
+            throw new RuntimeException(e);
         }
         return null;
     }
 
     @Override
     public List<Vehicle> filterByManufacturer(String manufacturer) {
-        List<Vehicle> filteredVehicles = new ArrayList<>();
         try (Connection connection = connect();
              PreparedStatement statement = connection.prepareStatement(SELECT_BY_MANUFACTURE)) {
+            List<Vehicle> filteredVehicles = new ArrayList<>();
             statement.setString(1, manufacturer);
 
             try (ResultSet resultSet = statement.executeQuery()) {
@@ -122,35 +123,30 @@ public class JdbcVehicleDao implements VehicleDao {
                     filteredVehicles.add(vehicle);
                 }
             }
+            return filteredVehicles;
         } catch (SQLException e) {
-            e.printStackTrace();
+            log.error("Can't find vehicle by manufacture.");
             throw new RuntimeException(e);
         }
-
-        return filteredVehicles;
     }
-
 
     @Override
     public List<Vehicle> filterByEngineType(EngineType type) {
-        List<Vehicle> filteredVehicles = new ArrayList<>();
-
         try (Connection connection = connect();
              PreparedStatement statement = connection.prepareStatement(SELECT_BY_ENGINE_TYPE)) {
             statement.setString(1, type.getType());
-
+            List<Vehicle> filteredVehicles = new ArrayList<>();
             try (ResultSet resultSet = statement.executeQuery()) {
                 while (resultSet.next()) {
                     Vehicle vehicle = VEHICLE_ROW_MAPPER.mapRow(resultSet);
                     filteredVehicles.add(vehicle);
                 }
             }
+            return filteredVehicles;
         } catch (SQLException e) {
-            e.printStackTrace();
+            log.error("Can't find vehicle by engine type.");
             throw new RuntimeException(e);
         }
-
-        return filteredVehicles;
     }
 
     private Connection connect() throws SQLException {

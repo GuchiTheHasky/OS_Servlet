@@ -12,9 +12,9 @@ import java.util.List;
 @AllArgsConstructor
 public class SecurityFilterMain implements Filter {
 
-    private final List<String> PERMITTED_URI = List.of("/login", "/user/add", "/task", "/favicon.ico",
+    private final List<String> PERMITTED_URI = List.of("/login", "/css/*", "/user/add", "/task", "/favicon.ico",
             "/image", "/vehicle/add", "/user/edit", "/user/details",
-            "/user/delete", "/vehicle/edit","/user/all", "/vehicle/all",  "/vehicle/filter");
+            "/user/delete", "/vehicle/edit","/user/all", "/vehicle/all", "/vehicle/filter");
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain)
             throws IOException, ServletException {
@@ -34,7 +34,7 @@ public class SecurityFilterMain implements Filter {
 
     private boolean isRequestPermitted(HttpServletRequest request) {
         for (String uri : PERMITTED_URI) {
-            if (request.getRequestURI().equals(uri)) {
+            if (request.getRequestURI().startsWith(uri) || uri.contains("css")) {
                 return true;
             }
         }

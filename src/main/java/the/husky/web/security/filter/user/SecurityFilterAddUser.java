@@ -31,7 +31,7 @@ public class SecurityFilterAddUser implements Filter {
             } else {
                 filterChain.doFilter(request, response);
             }
-        } else {
+        } else if (request.getMethod().equalsIgnoreCase("GET")) {
             filterChain.doFilter(request, response);
         }
     }

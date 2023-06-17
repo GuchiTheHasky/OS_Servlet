@@ -18,6 +18,7 @@ import the.husky.web.security.filter.user.SecurityFilterEditUser;
 import the.husky.web.security.filter.user.SecurityFilterUsers;
 import the.husky.web.security.filter.vehicle.SecurityFilterAddVehicle;
 import the.husky.web.security.filter.vehicle.SecurityFilterDeleteVehicle;
+import the.husky.web.security.filter.vehicle.SecurityFilterVehicles;
 import the.husky.web.servlet.*;
 import the.husky.web.servlet.userservlet.*;
 import the.husky.web.servlet.vehicleservlet.*;
@@ -35,6 +36,7 @@ public class Main {
         LoginServlet loginServlet = new LoginServlet(securityService);
         LogoServlet logoServlet = new LogoServlet();
         FaviconServlet faviconServlet = new FaviconServlet();
+        CssStyleServlet cssStyleServlet = new CssStyleServlet();
 
         ValidationTaskServlet validationTaskServlet = new ValidationTaskServlet();
         AddUserServlet addUserServlet = new AddUserServlet(userService, securityService);
@@ -66,6 +68,9 @@ public class Main {
         contextHandler.addServlet(new ServletHolder(deleteVehicleServlet), "/vehicle/delete");
         contextHandler.addServlet(new ServletHolder(editVehicleServlet), "/vehicle/edit");
         contextHandler.addServlet(new ServletHolder(vehicleFilterServlet), "/vehicle/filter");
+        contextHandler.addServlet(new ServletHolder(cssStyleServlet), "/css/*");
+        contextHandler.addServlet(new ServletHolder(cssStyleServlet), "/user/css/*");
+        contextHandler.addServlet(new ServletHolder(cssStyleServlet), "/vehicle/css/*");
 
         contextHandler.addFilter
                 (new FilterHolder
@@ -101,7 +106,7 @@ public class Main {
                         EnumSet.of(DispatcherType.REQUEST));
         contextHandler.addFilter
                 (new FilterHolder(
-                        new SecurityFilterUsers(securityService)), "/vehicle/all",
+                        new SecurityFilterVehicles(securityService)), "/vehicle/all",
                         EnumSet.of(DispatcherType.REQUEST));
 
         Server server = new Server(1025);

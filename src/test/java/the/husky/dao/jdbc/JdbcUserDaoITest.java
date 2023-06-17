@@ -12,7 +12,6 @@ import static org.junit.jupiter.api.Assertions.*;
 public class JdbcUserDaoITest {
     private final JdbcUserDao DAO = new JdbcUserDao();
 
-
     @Test
     @SneakyThrows
     @DisplayName("Test, find all users.")
