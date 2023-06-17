@@ -27,7 +27,7 @@ public class EditVehicleServlet extends HttpServlet {
 
         Vehicle vehicle = service.getById(vehicleId);
 
-        List<Vehicle> vehicles = service.getAll();
+        List<Vehicle> vehicles = service.findAll();
 
         Map<String, Object> data = new HashMap<>();
         data.put("vehicles", vehicles);

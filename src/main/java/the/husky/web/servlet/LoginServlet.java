@@ -30,10 +30,7 @@ public class LoginServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        String username = request.getParameter("username");
-        String password = request.getParameter("password");
-
-        User user = buildUser(username, password);
+        User user = buildUser(request);
 
         if (securityService.authenticateUser(user) != null) {
             String token = generateToken();
@@ -44,7 +41,9 @@ public class LoginServlet extends HttpServlet {
         }
     }
 
-    private User buildUser(String name, String password) {
+    private User buildUser(HttpServletRequest request) {
+        String name = request.getParameter("username");
+        String password = request.getParameter("password");
         return User.builder()
                 .name(name)
                 .password(password)

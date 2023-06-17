@@ -17,5 +17,7 @@ CREATE TABLE vehicle
     weight      int check (weight > 0 )
 );
 
+select * from "public"."user";
+
 
 

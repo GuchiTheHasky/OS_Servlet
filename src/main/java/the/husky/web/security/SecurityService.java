@@ -27,7 +27,7 @@ public class SecurityService {
         this.userService = service;
     }
 
-    public static boolean isAuthenticate(HttpServletRequest request) {
+    public boolean isAuthenticate(HttpServletRequest request) {
         Cookie[] cookies = request.getCookies();
         if (cookies != null) {
             for (Cookie cookie : cookies) {
@@ -54,6 +54,7 @@ public class SecurityService {
         for (User registeredUser : users) {
             if (registeredUser.equals(user)) {
                 authenticatedUser = registeredUser;
+                return authenticatedUser;
             }
         }
         return null;

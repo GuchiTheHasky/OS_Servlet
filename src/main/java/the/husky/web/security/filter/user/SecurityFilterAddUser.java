@@ -21,12 +21,16 @@ public class SecurityFilterAddUser implements Filter {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         HttpServletResponse response = (HttpServletResponse) servletResponse;
 
-        String name = request.getParameter("username");
-        String password = request.getParameter("password");
+        if (request.getMethod().equalsIgnoreCase("POST")) {
+            String name = request.getParameter("user_name");
+            String password = request.getParameter("password");
 
-        if (name.isEmpty() || password.isEmpty() || isUserExist(name)) {
-            response.sendError(HttpServletResponse.SC_BAD_REQUEST,
-                    "Required fields is empty or user is already exist.");
+            if (name.isEmpty() || password.isEmpty() || isUserExist(name)) {
+                response.sendError(HttpServletResponse.SC_BAD_REQUEST,
+                        "Required fields is empty or user is already exist.");
+            } else {
+                filterChain.doFilter(request, response);
+            }
         } else {
             filterChain.doFilter(request, response);
         }

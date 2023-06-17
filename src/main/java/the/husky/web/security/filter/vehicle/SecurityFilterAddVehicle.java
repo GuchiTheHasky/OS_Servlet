@@ -14,15 +14,19 @@ public class SecurityFilterAddVehicle implements Filter {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         HttpServletResponse response = (HttpServletResponse) servletResponse;
 
-        String manufacturer = request.getParameter("manufacture");
-        String engineType = request.getParameter("engineType");
-        String model = request.getParameter("model");
-        double price = Double.parseDouble(request.getParameter("price"));
-        int age = Integer.parseInt(request.getParameter("age"));
-        double weight = Double.parseDouble(request.getParameter("weight"));
+        if (request.getMethod().equalsIgnoreCase("POST")) {
+            String manufacturer = request.getParameter("manufacture");
+            String engineType = request.getParameter("engineType");
+            String model = request.getParameter("model");
+            double price = Double.parseDouble(request.getParameter("price"));
+            int age = Integer.parseInt(request.getParameter("age"));
+            double weight = Double.parseDouble(request.getParameter("weight"));
 
-        if (manufacturer == null || engineType == null || model == null || price <= 0 || age < 0 || weight <= 0) {
-            response.sendRedirect("/vehicle/all");
+            if (manufacturer == null || engineType == null || model == null || price <= 0 || age < 0 || weight <= 0) {
+                response.sendRedirect("/vehicle/all");
+            } else {
+                filterChain.doFilter(request, response);
+            }
         } else {
             filterChain.doFilter(request, response);
         }

@@ -21,16 +21,19 @@ public class SecurityFilterEditUser implements Filter {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         HttpServletResponse response = (HttpServletResponse) servletResponse;
 
-        int id = Integer.parseInt(request.getParameter("id"));
-
-        User user = null;
-        try {
-            user = userService.getUserById(id);
-        } catch (DataAccessException e) {
-            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Invalid access to update data.");
-        }
-        if (user == null) {
-            response.sendError(HttpServletResponse.SC_NOT_FOUND, "User not found");
+        if (request.getMethod().equalsIgnoreCase("POST")) {
+            int id = Integer.parseInt(request.getParameter("id"));
+            User user = null;
+            try {
+                user = userService.getUserById(id);
+            } catch (DataAccessException e) {
+                response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Invalid access to update data.");
+            }
+            if (user == null) {
+                response.sendError(HttpServletResponse.SC_NOT_FOUND, "User not found");
+            } else {
+                filterChain.doFilter(request, response);
+            }
         } else {
             filterChain.doFilter(request, response);
         }

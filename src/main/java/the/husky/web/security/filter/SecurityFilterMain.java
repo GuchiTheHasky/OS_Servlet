@@ -3,16 +3,18 @@ package the.husky.web.security.filter;
 import jakarta.servlet.*;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.AllArgsConstructor;
+import the.husky.web.security.SecurityService;
 
 import java.io.IOException;
 import java.util.List;
 
-
+@AllArgsConstructor
 public class SecurityFilterMain implements Filter {
 
     private final List<String> PERMITTED_URI = List.of("/login", "/user/add", "/task", "/favicon",
-            "/image", "/user/all/*", "/vehicle/add", "/vehicle/all", "/user/edit", "/user/details",
-            "/user/delete", "/vehicle/edit", "/vehicle/filter"); //todo if req.getUri.startWith.log.getValue filter.doFilter(req, res);
+            "/image", "/vehicle/add", "/user/edit", "/user/details",
+            "/user/delete", "/vehicle/edit","/user/all", "/vehicle/all",  "/vehicle/filter"); //todo if req.getUri.startWith.log.getValue filter.doFilter(req, res);
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain)
@@ -23,7 +25,7 @@ public class SecurityFilterMain implements Filter {
         if (isRequestPermitted(request)) {
             filterChain.doFilter(request, response);
         } else {
-            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid request uri.");
+            response.sendError(HttpServletResponse.SC_NOT_FOUND, "Invalid request uri.");
         }
     }
 
@@ -38,9 +40,7 @@ public class SecurityFilterMain implements Filter {
 }
 
 
-//    private boolean isUserAuthenticated() {
-////        return securityService.getAuthenticatedUser() != null;
-////    }
+
 
 
 //        if (request.getRequestURI().equals("/login")) {

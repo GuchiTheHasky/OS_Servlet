@@ -7,7 +7,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import the.husky.entity.vehicle.Vehicle;
 import the.husky.entity.vehicle.VehicleManufacturer;
 import the.husky.service.VehicleService;
-import the.husky.web.security.SecurityService;
 
 import java.io.IOException;
 import java.util.List;
@@ -24,7 +23,7 @@ public class VehicleFilterServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String manufacturer = request.getParameter("manufacturer");
         List<Vehicle> filteredVehicles = service.filterByManufacturer(manufacturer);
-        List<Vehicle> allVehicles = service.getAll();
+        List<Vehicle> allVehicles = service.findAll();
         List<String> manufacturers = VehicleManufacturer.getManufacturers();
 
         if (manufacturer != null && !manufacturer.isEmpty()) {

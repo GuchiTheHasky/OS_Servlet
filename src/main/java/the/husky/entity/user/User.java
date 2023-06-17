@@ -27,8 +27,7 @@ public class User {
         if (this == obj) return true;
         if (obj == null || getClass() != obj.getClass()) return false;
         User user = (User) obj;
-        return userId == user.userId &&
-                Objects.equals(name, user.name) &&
-                Objects.equals(password, user.password);
+        return Objects.equals(name, user.name) &&
+               Objects.equals(password, user.password);
     }
 }

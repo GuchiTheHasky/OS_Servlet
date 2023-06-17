@@ -12,7 +12,7 @@ public class VehicleService {
         DAO = dao;
     }
 
-    public List<Vehicle> getAll() {
+    public List<Vehicle> findAll() {
         return DAO.findAll();
     }
 

@@ -18,12 +18,16 @@ public class SecurityFilterEditVehicle implements Filter {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         HttpServletResponse response = (HttpServletResponse) servletResponse;
 
-        int vehicleId = Integer.parseInt(request.getParameter("vehicle_id"));
+        if (request.getMethod().equalsIgnoreCase("POST")) {
+            int vehicleId = Integer.parseInt(request.getParameter("vehicle_id"));
 
-        if (service.getById(vehicleId) == null) {
-            response.sendRedirect(request.getContextPath() + "/vehicle/all");
-        } else if (!isValidVehicleData(request)) {
-            response.sendError(HttpServletResponse.SC_BAD_GATEWAY, "Invalid edit data");
+            if (service.getById(vehicleId) == null) {
+                response.sendRedirect(request.getContextPath() + "/vehicle/all");
+            } else if (!isValidVehicleData(request)) {
+                response.sendError(HttpServletResponse.SC_BAD_GATEWAY, "Invalid edit data");
+            } else {
+                filterChain.doFilter(request, response);
+            }
         } else {
             filterChain.doFilter(request, response);
         }

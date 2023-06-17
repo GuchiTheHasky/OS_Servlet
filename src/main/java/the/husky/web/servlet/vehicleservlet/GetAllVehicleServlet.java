@@ -9,7 +9,6 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import the.husky.web.security.SecurityService;
 import the.husky.web.util.PageGenerator;
 
 import java.io.IOException;
@@ -29,7 +28,7 @@ public class GetAllVehicleServlet extends HttpServlet {
         String manufacturerFilter = request.getParameter("manufacturer");
         String engineTypeFilter = request.getParameter("engineType");
 
-        List<Vehicle> vehicles = service.getAll();
+        List<Vehicle> vehicles = service.findAll();
         PageGenerator pageGenerator = PageGenerator.instance();
 
         if (manufacturerFilter != null && !manufacturerFilter.isEmpty()) {

@@ -18,11 +18,15 @@ public class SecurityFilterDeleteVehicle implements Filter {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         HttpServletResponse response = (HttpServletResponse) servletResponse;
 
-        int id = Integer.parseInt(request.getParameter("vehicle_id"));
-        if (service.getById(id) != null) {
-            filterChain.doFilter(request, response);
+        if (request.getMethod().equalsIgnoreCase("POST")) { // todo ?? думаю не треба
+            int id = Integer.parseInt(request.getParameter("vehicle_id"));
+            if (service.getById(id) != null) {
+                filterChain.doFilter(request, response);
+            } else {
+                response.sendError(HttpServletResponse.SC_NOT_FOUND, "Vehicle not found");
+            }
         } else {
-            response.sendError(HttpServletResponse.SC_NOT_FOUND, "Vehicle not found");
+            filterChain.doFilter(request, response);
         }
     }
 }

@@ -8,7 +8,9 @@ import the.husky.web.security.SecurityService;
 
 import java.io.IOException;
 
+@AllArgsConstructor
 public class SecurityFilterLogin implements Filter {
+    private SecurityService securityService;
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain)
@@ -16,12 +18,26 @@ public class SecurityFilterLogin implements Filter {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         HttpServletResponse response = (HttpServletResponse) servletResponse;
 
-        String username = request.getParameter("username");
-        String password = request.getParameter("password");
-        if (!username.equals("") || !password.equals("")) {
+        if (request.getMethod().equalsIgnoreCase("GET")) {
             filterChain.doFilter(request, response);
         } else {
-            response.sendRedirect("/login");
+
+
+            String username = request.getParameter("username");
+            String password = request.getParameter("password");
+
+            if (isValid(username) && isValid(password)) {
+                if (securityService.isAuthenticate(request)) {
+                    filterChain.doFilter(request, response);
+                }
+            } else {
+                response.sendRedirect("/login");
+            }
         }
     }
+
+    private boolean isValid(String value) {
+        return value != null && !value.isEmpty();
+    }
 }
+

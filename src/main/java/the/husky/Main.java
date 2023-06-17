@@ -13,6 +13,7 @@ import the.husky.web.security.filter.user.SecurityFilterAddUser;
 import the.husky.web.security.filter.SecurityFilterLogin;
 import the.husky.web.security.filter.SecurityFilterMain;
 import the.husky.web.security.SecurityService;
+import the.husky.web.security.filter.user.SecurityFilterUsers;
 import the.husky.web.security.filter.vehicle.SecurityFilterAddVehicle;
 import the.husky.web.security.filter.vehicle.SecurityFilterDeleteVehicle;
 import the.husky.web.servlet.*;
@@ -69,7 +70,7 @@ public class Main {
                         (new SecurityFilterMain()), "/*", EnumSet.of(DispatcherType.REQUEST));
         contextHandler.addFilter
                 (new FilterHolder
-                        (new SecurityFilterLogin()), "/login", EnumSet.of(DispatcherType.REQUEST));
+                        (new SecurityFilterLogin(securityService)), "/login", EnumSet.of(DispatcherType.REQUEST));
         contextHandler.addFilter
                 (new FilterHolder
                         (new SecurityFilterAddUser(userService)), "/user/add",
@@ -81,6 +82,18 @@ public class Main {
                 (new FilterHolder
                         (new SecurityFilterDeleteVehicle(vehicleService)), "/vehicle/delete",
                         EnumSet.of(DispatcherType.REQUEST));
+        contextHandler.addFilter
+                (new FilterHolder
+                        (new SecurityFilterDeleteVehicle(vehicleService)), "/vehicle/edit",
+                        EnumSet.of(DispatcherType.REQUEST));
+        contextHandler.addFilter
+                (new FilterHolder(
+                        new SecurityFilterUsers(securityService)), "/user/all",
+                        EnumSet.of(DispatcherType.REQUEST));
+        contextHandler.addFilter
+                (new FilterHolder(
+                        new SecurityFilterUsers(securityService)), "/vehicle/all",
+                        EnumSet.of(DispatcherType.REQUEST));
 
 
         Server server = new Server(1025);
@@ -90,3 +103,5 @@ public class Main {
 }
 
 // todo: можна зробити ContentTypeFilter і сетити тайп
+// TODO: перейти на war
+// todo: перейти на pom.xml
