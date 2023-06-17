@@ -1,4 +1,4 @@
-package the.husky.web.security;
+package the.husky.security;
 
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
@@ -11,7 +11,6 @@ import the.husky.service.UserService;
 
 import java.util.*;
 
-@Setter
 @Getter
 @NoArgsConstructor
 
@@ -57,9 +56,5 @@ public class SecurityService {
             }
         }
         return null;
-    }
-
-    private User getAuthenticatedUser() {
-        return authenticatedUser;
     }
 }

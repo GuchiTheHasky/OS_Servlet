@@ -1,5 +1,6 @@
 package the.husky.service;
 
+import lombok.RequiredArgsConstructor;
 import the.husky.dao.UserDao;
 import the.husky.entity.user.User;
 import the.husky.exception.DataAccessException;
@@ -7,39 +8,34 @@ import the.husky.exception.DataAccessException;
 import java.time.LocalDateTime;
 import java.util.List;
 
-
+@RequiredArgsConstructor
 public class UserService {
-
-    private final UserDao DAO;
-
-    public UserService(UserDao userDao) {
-        this.DAO = userDao;
-    }
+    private final UserDao userDao;
 
     public List<User> getAll() throws DataAccessException {
-        return DAO.findAll();
+        return userDao.findAll();
     }
 
     public void add(User user) throws DataAccessException {
         LocalDateTime time = LocalDateTime.now();
         user.setRegistrationTime(time);
-        DAO.add(user);
+        userDao.add(user);
     }
 
     public User getByName(String name) throws DataAccessException {
-        return DAO.findUserByName(name);
+        return userDao.findUserByName(name);
     }
 
     public User getUserById(int id) throws DataAccessException {
-        return DAO.findById(id);
+        return userDao.findById(id);
     }
 
     public void update(User user) throws DataAccessException {
-        DAO.update(user);
+        userDao.update(user);
     }
 
     public void delete(int id) throws DataAccessException {
-        DAO.delete(id);
+        userDao.delete(id);
     }
 }
 

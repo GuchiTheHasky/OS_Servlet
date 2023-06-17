@@ -3,7 +3,7 @@ package the.husky.web.servlet;
 import jakarta.servlet.http.Cookie;
 import lombok.AllArgsConstructor;
 import the.husky.entity.user.User;
-import the.husky.web.security.SecurityService;
+import the.husky.security.SecurityService;
 import the.husky.web.util.PageGenerator;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;

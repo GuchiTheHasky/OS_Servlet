@@ -36,7 +36,7 @@ public interface VehicleDao {
      * representing the updated vehicle information. This method is used to modify the details of an existing vehicle
      * in the database.
      */
-    void edit(Vehicle vehicle);
+    void update(Vehicle vehicle);
 
     /**
      * The getById method retrieves a vehicle record from the data source based on the provided ID. It takes an integer

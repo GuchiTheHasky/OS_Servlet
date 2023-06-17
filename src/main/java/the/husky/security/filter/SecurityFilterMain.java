@@ -1,10 +1,9 @@
-package the.husky.web.security.filter;
+package the.husky.security.filter;
 
 import jakarta.servlet.*;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
-import the.husky.web.security.SecurityService;
 
 import java.io.IOException;
 import java.util.List;

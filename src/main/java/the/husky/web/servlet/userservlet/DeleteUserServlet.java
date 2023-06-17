@@ -7,7 +7,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import the.husky.entity.user.User;
 import the.husky.exception.DataAccessException;
 import the.husky.service.UserService;
-import the.husky.web.security.SecurityService;
+import the.husky.security.SecurityService;
 
 import java.io.IOException;
 

@@ -4,7 +4,7 @@ import lombok.SneakyThrows;
 import the.husky.entity.user.User;
 import the.husky.exception.DataAccessException;
 import the.husky.service.UserService;
-import the.husky.web.security.SecurityService;
+import the.husky.security.SecurityService;
 import the.husky.web.util.PageGenerator;
 
 import jakarta.servlet.ServletException;

@@ -5,6 +5,7 @@ import the.husky.dao.VehicleDao;
 import the.husky.dao.jdbc.mapper.VehicleRowMapper;
 import the.husky.entity.vehicle.EngineType;
 import the.husky.entity.vehicle.Vehicle;
+import the.husky.exception.DataAccessException;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -26,7 +27,6 @@ public class JdbcVehicleDao implements VehicleDao {
 
     @Override
     public List<Vehicle> findAll() {
-
         try (Connection connection = connect();
              PreparedStatement statement = connection.prepareStatement(SELECT_ALL);
              ResultSet resultSet = statement.executeQuery()) {
@@ -37,8 +37,8 @@ public class JdbcVehicleDao implements VehicleDao {
             }
             return vehicles;
         } catch (SQLException e) {
-            log.error("Can't find vehicles.");
-            throw new RuntimeException(e);
+            log.error("Data access exception.");
+            throw new DataAccessException("Can't find vehicles.", e);
         }
     }
 
@@ -56,8 +56,8 @@ public class JdbcVehicleDao implements VehicleDao {
             statement.executeUpdate();
 
         } catch (SQLException e) {
-            log.error("Can't add vehicle.");
-            throw new RuntimeException(e);
+            log.error("Data access exception.");
+            throw new DataAccessException("Can't add vehicle: " + vehicle, e);
         }
     }
 
@@ -68,13 +68,13 @@ public class JdbcVehicleDao implements VehicleDao {
             statement.setInt(1, id);
             statement.executeUpdate();
         } catch (SQLException e) {
-            log.error("Can't delete vehicle.");
-            throw new RuntimeException(e);
+            log.error("Data access exception.");
+            throw new DataAccessException("Can't delete vehicle with this id: " + id, e);
         }
     }
 
     @Override
-    public void edit(Vehicle updatedVehicle) {
+    public void update(Vehicle updatedVehicle) {
         try (Connection connection = connect();
              PreparedStatement statement = connection.prepareStatement(UPDATE)) {
             statement.setString(1, updatedVehicle.getManufacture().getManufacture());
@@ -88,8 +88,8 @@ public class JdbcVehicleDao implements VehicleDao {
             statement.executeUpdate();
 
         } catch (SQLException e) {
-            log.error("Can't update vehicle");
-            throw new RuntimeException(e);
+            log.error("Data access exception.");
+            throw new DataAccessException("Can't update vehicle: " + updatedVehicle, e);
         }
     }
 
@@ -104,8 +104,8 @@ public class JdbcVehicleDao implements VehicleDao {
                 }
             }
         } catch (SQLException e) {
-            log.error("Can't find vehicle by id.");
-            throw new RuntimeException(e);
+            log.error("Data access exception.");
+            throw new DataAccessException("Can't find vehicle by this id: " + id, e);
         }
         return null;
     }
@@ -125,8 +125,8 @@ public class JdbcVehicleDao implements VehicleDao {
             }
             return filteredVehicles;
         } catch (SQLException e) {
-            log.error("Can't find vehicle by manufacture.");
-            throw new RuntimeException(e);
+            log.error("Data access exception.");
+            throw new DataAccessException("Can't find vehicle by this manufacturer: " + manufacturer, e);
         }
     }
 
@@ -144,8 +144,8 @@ public class JdbcVehicleDao implements VehicleDao {
             }
             return filteredVehicles;
         } catch (SQLException e) {
-            log.error("Can't find vehicle by engine type.");
-            throw new RuntimeException(e);
+            log.error("Data access exception.");
+            throw new DataAccessException("Can't find vehicle by this engine type: " + type, e);
         }
     }
 

@@ -1,8 +1,6 @@
 package the.husky.exception;
 
-import java.sql.SQLException;
-
-public class DataAccessException extends SQLException {
+public class DataAccessException extends RuntimeException {
     public DataAccessException(String message) {
         super(message);
     }

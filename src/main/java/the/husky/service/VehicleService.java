@@ -1,42 +1,40 @@
 package the.husky.service;
 
+import lombok.RequiredArgsConstructor;
 import the.husky.dao.VehicleDao;
 import the.husky.entity.vehicle.Vehicle;
 
 import java.util.List;
 
+@RequiredArgsConstructor
 public class VehicleService {
-    private final VehicleDao DAO;
-
-    public VehicleService(VehicleDao dao) {
-        DAO = dao;
-    }
+    private final VehicleDao vehicleDao;
 
     public List<Vehicle> findAll() {
-        return DAO.findAll();
+        return vehicleDao.findAll();
     }
 
     public void add(Vehicle vehicle) {
-        DAO.add(vehicle);
+        vehicleDao.add(vehicle);
     }
 
     public void delete(int id) {
-        DAO.delete(id);
+        vehicleDao.delete(id);
     }
 
     public Vehicle getById(int id) {
-        return DAO.findById(id);
+        return vehicleDao.findById(id);
     }
 
     public void edit(Vehicle vehicle) {
-        DAO.edit(vehicle);
+        vehicleDao.update(vehicle);
     }
 
     public List<Vehicle> filterByManufacturer(String manufacturer) {
-        return DAO.filterByManufacturer(manufacturer);
+        return vehicleDao.filterByManufacturer(manufacturer);
     }
 
     public List<Vehicle> filterByEngineType(String engineType) {
-        return DAO.filterByManufacturer(engineType);
+        return vehicleDao.filterByManufacturer(engineType);
     }
 }
