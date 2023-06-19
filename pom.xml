@@ -9,6 +9,8 @@
   <properties>
     <java.version>17</java.version>
     <jetty.servlet.version>11.0.15</jetty.servlet.version>
+    <maven-compiler-plugin.version>3.11.0</maven-compiler-plugin.version>
+    <jetty-maven-plugin.version>11.0.15</jetty-maven-plugin.version>
     <logback.classic.version>1.2.9</logback.classic.version>
     <slf4j.version>1.7.32</slf4j.version>
     <lombok.version>1.18.26</lombok.version>
@@ -21,6 +23,12 @@
   <build>
     <finalName>OS</finalName>
     <plugins>
+      <plugin>
+        <groupId>org.eclipse.jetty</groupId>
+        <artifactId>jetty-maven-plugin</artifactId>
+        <version>${jetty-maven-plugin.version}</version>
+      </plugin>
+
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>

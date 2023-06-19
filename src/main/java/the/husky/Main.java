@@ -7,19 +7,22 @@ import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 import the.husky.dao.jdbc.JdbcUserDao;
 import the.husky.dao.jdbc.JdbcVehicleDao;
-import the.husky.service.UserService;
-import the.husky.service.VehicleService;
+import the.husky.security.SecurityService;
 import the.husky.security.filter.SecurityFilterFavicon;
-import the.husky.security.filter.user.SecurityFilterAddUser;
 import the.husky.security.filter.SecurityFilterLogin;
 import the.husky.security.filter.SecurityFilterMain;
-import the.husky.security.SecurityService;
+import the.husky.security.filter.user.SecurityFilterAddUser;
 import the.husky.security.filter.user.SecurityFilterEditUser;
 import the.husky.security.filter.user.SecurityFilterUsers;
 import the.husky.security.filter.vehicle.SecurityFilterAddVehicle;
 import the.husky.security.filter.vehicle.SecurityFilterDeleteVehicle;
 import the.husky.security.filter.vehicle.SecurityFilterVehicles;
-import the.husky.web.servlet.*;
+import the.husky.service.UserService;
+import the.husky.service.VehicleService;
+import the.husky.web.servlet.CssStyleServlet;
+import the.husky.web.servlet.FaviconServlet;
+import the.husky.web.servlet.LoginServlet;
+import the.husky.web.servlet.LogoServlet;
 import the.husky.web.servlet.userservlet.*;
 import the.husky.web.servlet.vehicleservlet.*;
 
@@ -54,11 +57,14 @@ public class Main {
         VehicleFilterServlet vehicleFilterServlet = new VehicleFilterServlet(vehicleService);
 
         ServletContextHandler contextHandler = new ServletContextHandler(ServletContextHandler.SESSIONS);
+        String resourceBase = "src\\main\\resources";
+        contextHandler.setResourceBase(resourceBase);
+
         contextHandler.addServlet(new ServletHolder(loginServlet), "/login");
         contextHandler.addServlet(new ServletHolder(validationTaskServlet), "/task");
         contextHandler.addServlet(new ServletHolder(addUserServlet), "/user/add");
         contextHandler.addServlet(new ServletHolder(getAllUsersServlet), "/user/all/*");
-        contextHandler.addServlet(new ServletHolder(logoServlet), "/image");
+        contextHandler.addServlet(new ServletHolder(logoServlet), "/image.png");
         contextHandler.addServlet(new ServletHolder(faviconServlet), "/favicon.ico");
         contextHandler.addServlet(new ServletHolder(addVehicleServlet), "/vehicle/add");
         contextHandler.addServlet(new ServletHolder(getAllVehicleServlet), "/vehicle/all");
@@ -109,6 +115,7 @@ public class Main {
                 (new FilterHolder(
                         new SecurityFilterVehicles(securityService)), "/vehicle/all",
                         EnumSet.of(DispatcherType.REQUEST));
+
 
         Server server = new Server(1025);
         server.setHandler(contextHandler);

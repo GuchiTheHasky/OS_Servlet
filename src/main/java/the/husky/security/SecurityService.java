@@ -4,16 +4,14 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import the.husky.entity.user.User;
 import the.husky.exception.DataAccessException;
 import the.husky.service.UserService;
 
-import java.util.*;
+import java.util.List;
 
 @Getter
 @NoArgsConstructor
-
 public class SecurityService {
     private List<User> users;
     private UserService userService;

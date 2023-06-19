@@ -3,8 +3,8 @@ package the.husky.web.util;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
+import the.husky.exception.PageGeneratorException;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
@@ -12,12 +12,13 @@ import java.util.Collections;
 import java.util.Map;
 
 public class PageGenerator {
-    private static final String TEMPLATE = "src\\main\\resources\\template";
+    private static final String TEMPLATE = "template/";
     private static PageGenerator pageGenerator;
     private final Configuration cfg;
 
     public PageGenerator() {
         this.cfg = new Configuration(Configuration.DEFAULT_INCOMPATIBLE_IMPROVEMENTS);
+        cfg.setClassForTemplateLoading(PageGenerator.class, "/");
     }
 
     public static PageGenerator instance() {
@@ -33,11 +34,11 @@ public class PageGenerator {
 
     public String getPage(String fileName, Map<String, Object> data) {
         Writer stream = new StringWriter();
-        try {
-            Template template = cfg.getTemplate(TEMPLATE + File.separator + fileName);
+        try  {
+            Template template = cfg.getTemplate(TEMPLATE + fileName);
             template.process(data, stream);
         } catch (IOException | TemplateException e) {
-            throw new RuntimeException(">>>" + e.getMessage() + " \r\n" + e.getCause() + ">>>");
+            throw new PageGeneratorException(String.format("Failed to generate template: %s", fileName), e);
         }
         return stream.toString();
     }
