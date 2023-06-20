@@ -12,13 +12,13 @@ import java.util.Collections;
 import java.util.Map;
 
 public class PageGenerator {
-    private static final String TEMPLATE = "template/";
+    private static final String TEMPLATE_SOURCE_DIR = "/template";
     private static PageGenerator pageGenerator;
     private final Configuration cfg;
 
     public PageGenerator() {
         this.cfg = new Configuration(Configuration.DEFAULT_INCOMPATIBLE_IMPROVEMENTS);
-        cfg.setClassForTemplateLoading(PageGenerator.class, "/");
+        cfg.setClassForTemplateLoading(PageGenerator.class, TEMPLATE_SOURCE_DIR);
     }
 
     public static PageGenerator instance() {
@@ -28,17 +28,17 @@ public class PageGenerator {
         return pageGenerator;
     }
 
-    public String getPage(String fileName) {
-        return getPage(fileName, Collections.<String, Object>emptyMap());
+    public String getPage(String templateName) {
+        return getPage(templateName, Collections.<String, Object>emptyMap());
     }
 
-    public String getPage(String fileName, Map<String, Object> data) {
+    public String getPage(String templateName, Map<String, Object> data) {
         Writer stream = new StringWriter();
         try  {
-            Template template = cfg.getTemplate(TEMPLATE + fileName);
+            Template template = cfg.getTemplate(templateName);
             template.process(data, stream);
         } catch (IOException | TemplateException e) {
-            throw new PageGeneratorException(String.format("Failed to generate template: %s", fileName), e);
+            throw new PageGeneratorException(String.format("Failed to generate template: %s", templateName), e);
         }
         return stream.toString();
     }

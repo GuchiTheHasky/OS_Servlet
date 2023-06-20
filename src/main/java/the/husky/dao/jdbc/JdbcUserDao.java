@@ -110,7 +110,7 @@ public class JdbcUserDao implements UserDao {
             statement.executeUpdate();
         } catch (SQLException e) {
             log.error("Data access exception.");
-            throw new DataAccessException("Couldn't delete user with thouse id: " + id, e);
+            throw new DataAccessException("Couldn't delete user with those id: " + id, e);
         }
     }
 
