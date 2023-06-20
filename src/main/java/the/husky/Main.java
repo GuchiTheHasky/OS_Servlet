@@ -36,7 +36,7 @@ public class Main {
 
         SecurityService securityService = new SecurityService(userService);
 
-        LoginServlet loginServlet = new LoginServlet(securityService);
+        LoginServlet loginServlet = new LoginServlet();
         LogoServlet logoServlet = new LogoServlet();
         FaviconServlet faviconServlet = new FaviconServlet();
         CssStyleServlet cssStyleServlet = new CssStyleServlet();
