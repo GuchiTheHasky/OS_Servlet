@@ -37,4 +37,9 @@ public class GetAllUsersServlet extends HttpServlet {
         String page = pageGenerator.getPage("user_list.html", parameters);
         response.getWriter().write(page);
     }
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        doGet(req, resp);
+    }
 }
