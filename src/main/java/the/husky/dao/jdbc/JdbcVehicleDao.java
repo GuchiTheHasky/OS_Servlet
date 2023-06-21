@@ -37,13 +37,13 @@ public class JdbcVehicleDao implements VehicleDao {
             }
             return vehicles;
         } catch (SQLException e) {
-            log.error("Data access exception.");
-            throw new DataAccessException("Can't find vehicles.", e);
+            log.error("SQL or data connection refused; JdbcVehicleDao.class, method: findAll;", e);
+            throw new DataAccessException("Error retrieving vehicles. Please try again later.", e);
         }
     }
 
     @Override
-    public void add(Vehicle vehicle) {
+    public void save(Vehicle vehicle) {
         try (Connection connection = connect();
              PreparedStatement statement = connection.prepareStatement(INSERT)) {
             statement.setString(1, vehicle.getManufacture().getManufacture());
@@ -56,8 +56,8 @@ public class JdbcVehicleDao implements VehicleDao {
             statement.executeUpdate();
 
         } catch (SQLException e) {
-            log.error("Data access exception.");
-            throw new DataAccessException("Can't add vehicle: " + vehicle, e);
+            log.error("SQL or data connection refused; JdbcVehicleDao.class, method: save;", e);
+            throw new DataAccessException("Error saving vehicle. Please try again later.", e);
         }
     }
 
@@ -68,8 +68,9 @@ public class JdbcVehicleDao implements VehicleDao {
             statement.setInt(1, id);
             statement.executeUpdate();
         } catch (SQLException e) {
-            log.error("Data access exception.");
-            throw new DataAccessException("Can't delete vehicle with this id: " + id, e);
+            log.error("SQL or data connection refused; JdbcVehicleDao.class, method: delete;", e);
+            throw new DataAccessException(
+                    String.format("Error deleting vehicle with \"Id\": %d. Please try again later.", id), e);
         }
     }
 
@@ -88,8 +89,8 @@ public class JdbcVehicleDao implements VehicleDao {
             statement.executeUpdate();
 
         } catch (SQLException e) {
-            log.error("Data access exception.");
-            throw new DataAccessException("Can't update vehicle: " + updatedVehicle, e);
+            log.error("SQL or data connection refused; JdbcVehicleDao.class, method: update;", e);
+            throw new DataAccessException("Error updating vehicle. Please try again later.", e);
         }
     }
 
@@ -104,8 +105,9 @@ public class JdbcVehicleDao implements VehicleDao {
                 }
             }
         } catch (SQLException e) {
-            log.error("Data access exception.");
-            throw new DataAccessException("Can't find vehicle by this id: " + id, e);
+            log.error("SQL or data connection refused; JdbcVehicleDao.class, method: findById;", e);
+            throw new DataAccessException(
+                    String.format("Error finding vehicle with \"Id\": %d. Please try again later.", id), e);
         }
         return null;
     }
@@ -125,8 +127,8 @@ public class JdbcVehicleDao implements VehicleDao {
             }
             return filteredVehicles;
         } catch (SQLException e) {
-            log.error("Data access exception.");
-            throw new DataAccessException("Can't find vehicle by this manufacturer: " + manufacturer, e);
+            log.error("SQL or data connection refused; JdbcVehicleDao.class, method: filterByManufacturer;", e);
+            throw new DataAccessException("Error filtering vehicles by manufacturer. Please try again later.", e);
         }
     }
 
@@ -144,11 +146,12 @@ public class JdbcVehicleDao implements VehicleDao {
             }
             return filteredVehicles;
         } catch (SQLException e) {
-            log.error("Data access exception.");
-            throw new DataAccessException("Can't find vehicle by this engine type: " + type, e);
+            log.error("SQL or data connection refused; JdbcVehicleDao.class, method: filterByEngineType;", e);
+            throw new DataAccessException("Error filtering vehicles by engine type. Please try again later.", e);
         }
     }
 
+    // TODO:
     private Connection connect() throws SQLException {
         return DriverManager.getConnection("jdbc:postgresql://localhost:5432/OS", "postgres", "root");
     }

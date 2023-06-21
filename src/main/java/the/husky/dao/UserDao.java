@@ -22,14 +22,14 @@ public interface UserDao {
      * The add method adds a new user record to the data source. It takes a User object as a parameter,
      * representing the user to be added. This method is used to insert a new user into the database.
      */
-    void add(User user) throws DataAccessException;
+    void save(User user) throws DataAccessException;
 
     /**
      * This method searches for a user record in the data source based on the provided name.
      * It takes a String parameter name and returns the corresponding User object if found.
      * It allows you to retrieve a specific user by their name.
      */
-    User findUserByName(String name) throws DataAccessException;
+    User findByLogin(String name) throws DataAccessException;
 
     /**
      * The findById method retrieves a user record from the data source based on the provided ID.

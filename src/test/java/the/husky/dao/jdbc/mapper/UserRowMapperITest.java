@@ -1,7 +1,6 @@
 package the.husky.dao.jdbc.mapper;
 
 
-import lombok.SneakyThrows;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import the.husky.entity.user.User;
@@ -16,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class UserRowMapperITest {
     private final UserRowMapper MAPPER = new UserRowMapper();
-
+    // todo моки це не інтеграційний тест, а звичайний
     @Test
     public void testMapRow() throws SQLException {
         ResultSet resultSet = Mockito.mock(ResultSet.class);

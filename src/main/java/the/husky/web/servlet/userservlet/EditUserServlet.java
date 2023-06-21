@@ -24,7 +24,6 @@ public class EditUserServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         int id = Integer.parseInt(request.getParameter("id"));
-
         User user = userService.getUserById(id);
 
         Map<String, Object> params = new HashMap<>();
@@ -42,6 +41,8 @@ public class EditUserServlet extends HttpServlet {
         int id = Integer.parseInt(request.getParameter("id"));
         String name = request.getParameter("name");
         String password = request.getParameter("password");
+        // todo тут просто забілдити юзера і передати новий юзер в сервіс
+        // todo отримання і білдення юзера можна запаувати в метод
 
         User user = userService.getUserById(id);
 
@@ -50,8 +51,8 @@ public class EditUserServlet extends HttpServlet {
 
         try {
             userService.update(user);
-        } catch (DataAccessException e) {
-            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
+        } catch (DataAccessException e) { // todo цей кетч можна забрати
+             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
                     "An error occurred while updating the user in the database.");
         }
         response.sendRedirect("/user/all");

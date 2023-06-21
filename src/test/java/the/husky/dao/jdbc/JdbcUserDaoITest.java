@@ -39,7 +39,7 @@ public class JdbcUserDaoITest {
     @DisplayName("Test, find User by name.")
     public void testFindUserByName() {
         String name = "user";
-        User currentUser = DAO.findUserByName(name);
+        User currentUser = DAO.findByLogin(name);
         assertNotNull(currentUser);
 
         String expectedPassword = "user";

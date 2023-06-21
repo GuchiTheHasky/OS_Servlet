@@ -15,7 +15,7 @@ public class VehicleService {
     }
 
     public void add(Vehicle vehicle) {
-        vehicleDao.add(vehicle);
+        vehicleDao.save(vehicle);
     }
 
     public void delete(int id) {

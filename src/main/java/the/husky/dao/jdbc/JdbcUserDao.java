@@ -14,6 +14,7 @@ import java.util.List;
 public class JdbcUserDao implements UserDao {
     private static final UserRowMapper USER_ROW_MAPPER = new UserRowMapper();
     private static final String SELECT_ALL = "SELECT id, user_name, password, registration_time FROM \"user\"";
+    // TODO: 21.06.2023 замінити user to users, щоб забрати лапки
     private static final String INSERT = "INSERT INTO \"user\" (user_name, password, registration_time) VALUES(?, ?, ?)";
     private static final String GET_BY_NAME = "SELECT * FROM \"user\" WHERE user_name = ?";
     private static final String GET_BY_ID = "SELECT * FROM \"user\" WHERE id = ?";
@@ -33,13 +34,13 @@ public class JdbcUserDao implements UserDao {
             }
             return users;
         } catch (SQLException e) {
-            log.error("Data access exception.");
-            throw new DataAccessException("Couldn't find users.", e);
+            log.error("SQL or data connection refused; JdbcUserDao.class, method: findAll;", e);
+            throw new DataAccessException("Error retrieving users. Please try again later.", e);
         }
     }
 
     @Override
-    public void add(User user) throws DataAccessException {
+    public void save(User user) throws DataAccessException {
         try (Connection connection = connect();
              PreparedStatement statement = connection.prepareStatement(INSERT)) {
             statement.setString(1, user.getName());
@@ -48,24 +49,25 @@ public class JdbcUserDao implements UserDao {
 
             statement.executeUpdate();
         } catch (SQLException e) {
-            log.error("Data access exception.");
-            throw new DataAccessException("Couldn't add user: " + user, e);
+            log.error("SQL or data connection refused; JdbcUserDao.class, method: save;", e);
+            throw new DataAccessException("Error saving user. Please try again later.", e);
         }
     }
-
+    // todo: замінити User на Optional
     @Override
-    public User findUserByName(String name) throws DataAccessException {
+    public User findByLogin(String login) {
         try (Connection connection = connect();
              PreparedStatement statement = connection.prepareStatement(GET_BY_NAME)) {
-            statement.setString(1, name);
+            statement.setString(1, login);
+            // todo: ??
             try (ResultSet resultSet = statement.executeQuery()) {
                 if (resultSet.next()) {
                     return USER_ROW_MAPPER.mapRow(resultSet);
                 }
             }
         } catch (SQLException e) {
-            log.error("Data access exception.");
-            throw new DataAccessException("Couldn't find a user with this name: " + name, e);
+            log.error("SQL or data connection refused; JdbcUserDao.class, method: findByLogin;", e);
+            throw new DataAccessException("Error finding user by \"Login\". Please try again later.", e);
         }
         return null;
     }
@@ -81,8 +83,9 @@ public class JdbcUserDao implements UserDao {
                 }
             }
         } catch (SQLException e) {
-            log.error("Data access exception.");
-            throw new DataAccessException("Couldn't find a user with this Id: " + id, e);
+            log.error("SQL or data connection refused; JdbcUserDao.class, method: findById;", e);
+            throw new DataAccessException(
+                    String.format("Error finding user by \"Id\": %d. Please try again later.", id), e);
         }
         return null;
     }
@@ -97,8 +100,8 @@ public class JdbcUserDao implements UserDao {
 
             statement.executeUpdate();
         } catch (SQLException e) {
-            log.error("Data access exception.");
-            throw new DataAccessException("Couldn't update user: " + user, e);
+            log.error("SQL or data connection refused; JdbcUserDao.class, method: update;", e);
+            throw new DataAccessException("Error updating user. Please try again later.", e);
         }
     }
 
@@ -109,11 +112,13 @@ public class JdbcUserDao implements UserDao {
             statement.setInt(1, id);
             statement.executeUpdate();
         } catch (SQLException e) {
-            log.error("Data access exception.");
-            throw new DataAccessException("Couldn't delete user with those id: " + id, e);
+            log.error("SQL or data connection refused; JdbcUserDao.class, method: delete;", e);
+            throw new DataAccessException(
+                    String.format("Error deleting user by \"Id\": %d. Please try again later.", id), e);
         }
     }
 
+    // TODO: має бути якийсь дата соурс щоб це забрати
     private Connection connect() throws SQLException {
         return DriverManager.getConnection("jdbc:postgresql://localhost:5432/OS", "postgres", "root");
     }

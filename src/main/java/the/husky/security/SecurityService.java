@@ -1,7 +1,7 @@
 package the.husky.security;
 
-import jakarta.servlet.http.Cookie;
-import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.Cookie; // todo забрати звідси цю штуку
+import jakarta.servlet.http.HttpServletRequest; // todo забрати звідси цю штуку
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import the.husky.entity.user.User;

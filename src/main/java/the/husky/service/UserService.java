@@ -19,11 +19,11 @@ public class UserService {
     public void add(User user) throws DataAccessException {
         LocalDateTime time = LocalDateTime.now();
         user.setRegistrationTime(time);
-        userDao.add(user);
+        userDao.save(user);
     }
 
     public User getByName(String name) throws DataAccessException {
-        return userDao.findUserByName(name);
+        return userDao.findByLogin(name);
     }
 
     public User getUserById(int id) throws DataAccessException {

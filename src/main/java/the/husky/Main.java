@@ -57,6 +57,7 @@ public class Main {
         VehicleFilterServlet vehicleFilterServlet = new VehicleFilterServlet(vehicleService);
 
         ServletContextHandler contextHandler = new ServletContextHandler(ServletContextHandler.SESSIONS);
+        // TODO: 21.06.2023 видалити resourceBase
         String resourceBase = "src\\main\\resources";
         contextHandler.setResourceBase(resourceBase);
 
@@ -74,6 +75,8 @@ public class Main {
         contextHandler.addServlet(new ServletHolder(deleteVehicleServlet), "/vehicle/delete");
         contextHandler.addServlet(new ServletHolder(editVehicleServlet), "/vehicle/edit");
         contextHandler.addServlet(new ServletHolder(vehicleFilterServlet), "/vehicle/filter");
+
+        // TODO: 21.06.2023 має бути просто мапінг на /static
         contextHandler.addServlet(new ServletHolder(cssStyleServlet), "/css/*");
         contextHandler.addServlet(new ServletHolder(cssStyleServlet), "/user/css/*");
         contextHandler.addServlet(new ServletHolder(cssStyleServlet), "/vehicle/css/*");
@@ -122,3 +125,11 @@ public class Main {
         server.start();
     }
 }
+
+// TODO: 21.06.2023 все, включно з фавіконом, окрім темплейтів засунути в папку static
+// todo: common css це?
+// todo: закреслені aligne в html позабирати
+// todo: зробити акаунт на AWS ec2 і залити тули OS, але перед цим запакувати це в jar
+// todo: структура мейн спочатку всі dao, services, servlets filter ?
+// todo: залишити лише один фільтр і той повинен бути в папці web
+// todo: в сервлетах краще зробити кетч Error

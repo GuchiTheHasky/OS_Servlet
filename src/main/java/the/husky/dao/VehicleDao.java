@@ -22,7 +22,7 @@ public interface VehicleDao {
      * The add method adds a new vehicle record to the data source. It takes a Vehicle object as a parameter,
      * representing the vehicle to be added. This method is used to insert a new vehicle into the database.
      */
-    void add(Vehicle vehicle);
+    void save(Vehicle vehicle);
 
     /**
      * The delete method removes a vehicle record from the data source based on the provided ID. It takes an integer
