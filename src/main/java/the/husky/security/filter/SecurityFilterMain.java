@@ -19,16 +19,17 @@ public class SecurityFilterMain implements Filter {
             throws IOException, ServletException {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         HttpServletResponse response = (HttpServletResponse) servletResponse;
+        filterChain.doFilter(request, response);
 
-        if (isRequestPermitted(request)) {
-            filterChain.doFilter(request, response);
-        } else {
-            response.sendError(HttpServletResponse.SC_NOT_FOUND, "Invalid request uri.");
-        }
-        if (request.getRequestURI().equalsIgnoreCase("/favicon.ico")) {
-            response.setContentType("image/vnd.microsoft.icon");
-            filterChain.doFilter(request, response);
-        }
+//        if (isRequestPermitted(request)) {
+//            filterChain.doFilter(request, response);
+//        } else {
+//            response.sendError(HttpServletResponse.SC_NOT_FOUND, "Invalid request uri.");
+//        }
+//        if (request.getRequestURI().equalsIgnoreCase("/favicon.ico")) {
+//            response.setContentType("image/vnd.microsoft.icon");
+//            filterChain.doFilter(request, response);
+//        }
     }
 
     private boolean isRequestPermitted(HttpServletRequest request) {

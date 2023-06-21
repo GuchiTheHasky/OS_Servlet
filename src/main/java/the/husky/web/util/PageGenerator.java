@@ -18,6 +18,8 @@ public class PageGenerator {
 
     public PageGenerator() {
         this.cfg = new Configuration(Configuration.DEFAULT_INCOMPATIBLE_IMPROVEMENTS);
+
+        //cfg.setClassLoaderForTemplateLoading(Thread.currentThread().getContextClassLoader(), TEMPLATE_SOURCE_DIR);
         cfg.setClassForTemplateLoading(PageGenerator.class, TEMPLATE_SOURCE_DIR);
     }
 

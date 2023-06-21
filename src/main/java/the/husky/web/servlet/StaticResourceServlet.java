@@ -9,19 +9,22 @@ import lombok.Cleanup;
 import java.io.IOException;
 import java.io.InputStream;
 
-public class FaviconServlet extends HttpServlet {
-
+public class StaticResourceServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String uri = request.getRequestURI();
-        String faviconPath = "/static/favicon" + uri;
+        String resourcePath = request.getRequestURI();
 
-        @Cleanup InputStream inputStream = getServletContext().getResourceAsStream(faviconPath);
+        @Cleanup InputStream inputStream = getServletContext().getResourceAsStream(resourcePath);
 
         if (inputStream != null) {
-            response.setContentType("image/vnd.microsoft.icon"); // todo працювало без цього, не розумію чому..?
-            streamResourceContent(response, inputStream);
+            if (resourcePath.contains(".css")) {
+                response.setContentType("text/css; charset=utf-8");
+                streamResourceContent(response, inputStream);
+            } else if (resourcePath.contains(".png")) {
+                response.setContentType("image/png");
+                streamResourceContent(response, inputStream);
+            }
         } else {
             response.sendError(HttpServletResponse.SC_NOT_FOUND);
         }

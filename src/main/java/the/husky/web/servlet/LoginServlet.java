@@ -29,6 +29,7 @@ public class LoginServlet extends HttpServlet {
         } else {
             response.sendRedirect("/user/add");
         }
+
     }
 
     private User buildUser(HttpServletRequest request) {

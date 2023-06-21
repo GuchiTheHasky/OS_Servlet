@@ -19,36 +19,32 @@ import the.husky.security.filter.vehicle.SecurityFilterDeleteVehicle;
 import the.husky.security.filter.vehicle.SecurityFilterVehicles;
 import the.husky.service.UserService;
 import the.husky.service.VehicleService;
-import the.husky.web.servlet.CssStyleServlet;
-import the.husky.web.servlet.FaviconServlet;
-import the.husky.web.servlet.LoginServlet;
-import the.husky.web.servlet.LogoServlet;
+import the.husky.web.servlet.*;
 import the.husky.web.servlet.userservlet.*;
 import the.husky.web.servlet.vehicleservlet.*;
 
 import java.util.EnumSet;
+import java.util.Objects;
 
 public class Main {
     public static void main(String[] args) throws Exception {
 
         JdbcUserDao userDao = new JdbcUserDao();
-        UserService userService = new UserService(userDao);
+        JdbcVehicleDao vehicleDao = new JdbcVehicleDao();
 
+        UserService userService = new UserService(userDao);
+        VehicleService vehicleService = new VehicleService(vehicleDao);
         SecurityService securityService = new SecurityService(userService);
 
         LoginServlet loginServlet = new LoginServlet();
-        LogoServlet logoServlet = new LogoServlet();
+        StaticResourceServlet resourceServlet = new StaticResourceServlet();
         FaviconServlet faviconServlet = new FaviconServlet();
-        CssStyleServlet cssStyleServlet = new CssStyleServlet();
 
         ValidationTaskServlet validationTaskServlet = new ValidationTaskServlet();
         AddUserServlet addUserServlet = new AddUserServlet(userService, securityService);
         GetAllUsersServlet getAllUsersServlet = new GetAllUsersServlet(userService);
         EditUserServlet editUserServlet = new EditUserServlet(userService);
         DeleteUserServlet deleteUserServlet = new DeleteUserServlet(userService, securityService);
-
-        JdbcVehicleDao vehicleDao = new JdbcVehicleDao();
-        VehicleService vehicleService = new VehicleService(vehicleDao);
 
         AddVehicleServlet addVehicleServlet = new AddVehicleServlet(vehicleService);
         GetAllVehicleServlet getAllVehicleServlet = new GetAllVehicleServlet(vehicleService);
@@ -57,16 +53,15 @@ public class Main {
         VehicleFilterServlet vehicleFilterServlet = new VehicleFilterServlet(vehicleService);
 
         ServletContextHandler contextHandler = new ServletContextHandler(ServletContextHandler.SESSIONS);
-        // TODO: 21.06.2023 видалити resourceBase
-        String resourceBase = "src\\main\\resources";
+
+        String resourceBase = Objects.requireNonNull(Main.class.getResource("/template")).toExternalForm();
         contextHandler.setResourceBase(resourceBase);
 
         contextHandler.addServlet(new ServletHolder(loginServlet), "/login");
         contextHandler.addServlet(new ServletHolder(validationTaskServlet), "/task");
         contextHandler.addServlet(new ServletHolder(addUserServlet), "/user/add");
         contextHandler.addServlet(new ServletHolder(getAllUsersServlet), "/user/all/*");
-        contextHandler.addServlet(new ServletHolder(logoServlet), "/image.png");
-        contextHandler.addServlet(new ServletHolder(faviconServlet), "/favicon.ico");
+
         contextHandler.addServlet(new ServletHolder(addVehicleServlet), "/vehicle/add");
         contextHandler.addServlet(new ServletHolder(getAllVehicleServlet), "/vehicle/all");
         contextHandler.addServlet(new ServletHolder(editUserServlet), "/user/edit");
@@ -77,47 +72,13 @@ public class Main {
         contextHandler.addServlet(new ServletHolder(vehicleFilterServlet), "/vehicle/filter");
 
         // TODO: 21.06.2023 має бути просто мапінг на /static
-        contextHandler.addServlet(new ServletHolder(cssStyleServlet), "/css/*");
-        contextHandler.addServlet(new ServletHolder(cssStyleServlet), "/user/css/*");
-        contextHandler.addServlet(new ServletHolder(cssStyleServlet), "/vehicle/css/*");
+        contextHandler.addServlet(new ServletHolder(faviconServlet), "/favicon.ico");
 
-        contextHandler.addFilter
-                (new FilterHolder
-                        (new SecurityFilterMain()), "/*", EnumSet.of(DispatcherType.REQUEST));
-        contextHandler.addFilter
-                (new FilterHolder
-                        (new SecurityFilterFavicon()), "/favicon.ico", EnumSet.of(DispatcherType.REQUEST));
-        contextHandler.addFilter
-                (new FilterHolder
-                        (new SecurityFilterLogin(securityService)), "/login",
-                        EnumSet.of(DispatcherType.REQUEST));
-        contextHandler.addFilter
-                (new FilterHolder
-                        (new SecurityFilterAddUser(userService)), "/user/add",
-                        EnumSet.of(DispatcherType.REQUEST));
-        contextHandler.addFilter
-                (new FilterHolder
-                        (new SecurityFilterAddVehicle()), "/vehicle/add", EnumSet.of(DispatcherType.REQUEST));
-        contextHandler.addFilter
-                (new FilterHolder
-                        (new SecurityFilterDeleteVehicle(vehicleService)), "/vehicle/delete",
-                        EnumSet.of(DispatcherType.REQUEST));
-        contextHandler.addFilter
-                (new FilterHolder
-                        (new SecurityFilterDeleteVehicle(vehicleService)), "/vehicle/edit",
-                        EnumSet.of(DispatcherType.REQUEST));
-        contextHandler.addFilter
-                (new FilterHolder(
-                        new SecurityFilterUsers(securityService)), "/user/all",
-                        EnumSet.of(DispatcherType.REQUEST));
-        contextHandler.addFilter
-                (new FilterHolder(
-                        new SecurityFilterEditUser(userService)), "/user/edit",
-                        EnumSet.of(DispatcherType.REQUEST));
-        contextHandler.addFilter
-                (new FilterHolder(
-                        new SecurityFilterVehicles(securityService)), "/vehicle/all",
-                        EnumSet.of(DispatcherType.REQUEST));
+        contextHandler.addServlet(new ServletHolder(resourceServlet), "/static/*");
+
+//        contextHandler.addFilter
+//                (new FilterHolder
+//                        (new SecurityFilterMain()), "/*", EnumSet.of(DispatcherType.REQUEST));
 
 
         Server server = new Server(1025);
