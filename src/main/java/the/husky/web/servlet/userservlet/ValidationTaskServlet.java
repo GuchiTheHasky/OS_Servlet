@@ -28,7 +28,8 @@ public class ValidationTaskServlet extends HttpServlet {
         int expectedAnswer = num1 + num2;
 
         if (answer.trim().equals(String.valueOf(expectedAnswer))) {
-            request.getRequestDispatcher("/user_all").forward(request, response);
+            response.sendRedirect("/vehicle_all"); // переносить на потрібну сторінку
+            //request.getRequestDispatcher("/vehicle_all").forward(request, response); // урла залишається /task
         } else {
             String page = generator.getPage("wrong_answer.html");
             response.getWriter().write(page);

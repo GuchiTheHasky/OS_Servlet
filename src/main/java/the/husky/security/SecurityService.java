@@ -13,12 +13,12 @@ import java.util.List;
 @Getter
 @NoArgsConstructor
 public class SecurityService {
-    private List<User> users;
+    private List<User> usersCache;
     private UserService userService;
     private User authenticatedUser;
 
     public SecurityService(UserService service) throws DataAccessException {
-        this.users = service.getAll();
+        this.usersCache = service.getAll();
         this.userService = service;
     }
 
@@ -36,18 +36,19 @@ public class SecurityService {
     }
 
     public void addNewUser(User user) {
-        users.add(user);
+        userService.add(user);
+        usersCache.add(user);
     }
 
 
     public void deleteExistingUser(User user) {
-        users.remove(user);
+        usersCache.remove(user);
         if (authenticatedUser != null && authenticatedUser.equals(user)) {
             authenticatedUser = null;
         }
     }
     public User authenticateUser(User user) {
-        for (User registeredUser : users) {
+        for (User registeredUser : usersCache) {
             if (registeredUser.equals(user)) {
                 authenticatedUser = registeredUser;
                 return authenticatedUser;

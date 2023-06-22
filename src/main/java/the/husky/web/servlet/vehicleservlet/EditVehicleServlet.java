@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @AllArgsConstructor
 public class EditVehicleServlet extends HttpServlet {
@@ -25,7 +26,7 @@ public class EditVehicleServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         int vehicleId = Integer.parseInt(request.getParameter("vehicle_id"));
 
-        Vehicle vehicle = service.getById(vehicleId);
+        Optional<Vehicle> vehicle = service.getById(vehicleId);
 
         List<Vehicle> vehicles = service.findAll();
 
@@ -44,7 +45,7 @@ public class EditVehicleServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         int id = Integer.parseInt(request.getParameter("vehicle_id"));
 
-        Vehicle editedVehicle = service.getById(id);
+        Optional<Vehicle> editedVehicle = service.getById(id);
 
         String updatedManufacturerString = request.getParameter("manufacturer");
         VehicleManufacturer updatedManufacturer = VehicleManufacturer.valueOf(updatedManufacturerString);
@@ -55,14 +56,14 @@ public class EditVehicleServlet extends HttpServlet {
         int age = Integer.parseInt(request.getParameter("age"));
         int weight = Integer.parseInt(request.getParameter("weight"));
 
-        editedVehicle.setManufacture(updatedManufacturer);
-        editedVehicle.setEngineType(updatedEngineType);
-        editedVehicle.setModel(model);
-        editedVehicle.setPrice(price);
-        editedVehicle.setAge(age);
-        editedVehicle.setWeight(weight);
-
-        service.edit(editedVehicle);
+//        editedVehicle.setManufacture(updatedManufacturer);
+//        editedVehicle.setEngineType(updatedEngineType);
+//        editedVehicle.setModel(model);
+//        editedVehicle.setPrice(price);
+//        editedVehicle.setAge(age);
+//        editedVehicle.setWeight(weight);
+//
+//        service.edit(editedVehicle);
 
         response.sendRedirect(request.getContextPath() + "/vehicle/all");
     }

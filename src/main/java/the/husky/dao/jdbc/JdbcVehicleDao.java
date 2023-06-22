@@ -10,6 +10,7 @@ import the.husky.exception.DataAccessException;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 public class JdbcVehicleDao implements VehicleDao {
@@ -95,13 +96,13 @@ public class JdbcVehicleDao implements VehicleDao {
     }
 
     @Override
-    public Vehicle findById(int id) {
+    public Optional<Vehicle> findById(int id) {
         try (Connection connection = connect();
              PreparedStatement statement = connection.prepareStatement(GET_BY_ID)) {
             statement.setInt(1, id);
             try (ResultSet resultSet = statement.executeQuery()) {
                 if (resultSet.next()) {
-                    return VEHICLE_ROW_MAPPER.mapRow(resultSet);
+                    return Optional.ofNullable(VEHICLE_ROW_MAPPER.mapRow(resultSet));
                 }
             }
         } catch (SQLException e) {
@@ -109,7 +110,7 @@ public class JdbcVehicleDao implements VehicleDao {
             throw new DataAccessException(
                     String.format("Error finding vehicle with \"Id\": %d. Please try again later.", id), e);
         }
-        return null;
+        return Optional.empty();
     }
 
     @Override

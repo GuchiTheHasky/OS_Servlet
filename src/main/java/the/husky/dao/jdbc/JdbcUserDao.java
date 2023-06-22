@@ -9,6 +9,7 @@ import the.husky.exception.DataAccessException;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 public class JdbcUserDao implements UserDao {
@@ -55,31 +56,31 @@ public class JdbcUserDao implements UserDao {
     }
     // todo: замінити User на Optional
     @Override
-    public User findByLogin(String login) {
+    public Optional<User> findByLogin(String login) {
         try (Connection connection = connect();
              PreparedStatement statement = connection.prepareStatement(GET_BY_NAME)) {
             statement.setString(1, login);
             // todo: ??
             try (ResultSet resultSet = statement.executeQuery()) {
                 if (resultSet.next()) {
-                    return USER_ROW_MAPPER.mapRow(resultSet);
+                    return Optional.ofNullable(USER_ROW_MAPPER.mapRow(resultSet));
                 }
             }
         } catch (SQLException e) {
             log.error("SQL or data connection refused; JdbcUserDao.class, method: findByLogin;", e);
             throw new DataAccessException("Error finding user by \"Login\". Please try again later.", e);
         }
-        return null;
+        return Optional.empty();
     }
 
     @Override
-    public User findById(int id) {
+    public Optional<User> findById(int id) {
         try (Connection connection = connect();
              PreparedStatement statement = connection.prepareStatement(GET_BY_ID)) {
             statement.setInt(1, id);
             try (ResultSet resultSet = statement.executeQuery()) {
                 if (resultSet.next()) {
-                    return USER_ROW_MAPPER.mapRow(resultSet);
+                    return Optional.ofNullable(USER_ROW_MAPPER.mapRow(resultSet));
                 }
             }
         } catch (SQLException e) {
@@ -87,7 +88,7 @@ public class JdbcUserDao implements UserDao {
             throw new DataAccessException(
                     String.format("Error finding user by \"Id\": %d. Please try again later.", id), e);
         }
-        return null;
+        return Optional.empty();
     }
 
     @Override

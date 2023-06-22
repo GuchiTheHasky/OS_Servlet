@@ -10,6 +10,7 @@ import the.husky.service.UserService;
 import the.husky.security.SecurityService;
 
 import java.io.IOException;
+import java.util.Optional;
 
 public class DeleteUserServlet extends HttpServlet {
     private UserService service;
@@ -26,12 +27,12 @@ public class DeleteUserServlet extends HttpServlet {
         int id = Integer.parseInt(request.getParameter("id"));
 
         try {
-            User user = service.getUserById(id);
-            if (user != null) {
+            Optional<User> user = service.getUserById(id);
+            if (user.isPresent()) {
                 try {
                     service.delete(id);
-                    securityService.deleteExistingUser(user);
-                    response.sendRedirect("/user/all");
+                    securityService.deleteExistingUser(user.get());
+                    response.sendRedirect("/user_all");
                 } catch (DataAccessException e) {
                     response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Failed to delete user");
                 }

@@ -35,12 +35,12 @@ public class AddUserServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         User user = buildUser(request);
         try {
-            service.add(user);
+
             securityService.addNewUser(user);
 
             List<User> users = service.getAll();
             request.setAttribute("users", users);
-            request.getRequestDispatcher("/user/all").forward(request, response);
+            request.getRequestDispatcher("/user_all").forward(request, response);
         } catch (DataAccessException e) {
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Error adding user.");
         }

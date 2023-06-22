@@ -4,6 +4,7 @@ import the.husky.entity.vehicle.EngineType;
 import the.husky.entity.vehicle.Vehicle;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * The VehicleDao interface provides a set of methods for accessing and manipulating vehicle data in a data source.
@@ -43,7 +44,7 @@ public interface VehicleDao {
      * parameter id representing the unique identifier of the vehicle and returns the corresponding Vehicle object.
      * This method is useful for fetching a vehicle by its ID.
      */
-    Vehicle findById(int id);
+    Optional<Vehicle> findById(int id);
 
     /**
      * The filterByManufacturer method retrieves a list of vehicle records from the data source that match the provided

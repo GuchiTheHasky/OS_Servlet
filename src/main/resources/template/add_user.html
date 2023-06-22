@@ -11,7 +11,7 @@
 <div class="container" align="center">
     <h1>Add User</h1>
 
-    <form action="/user/add" method="post">
+    <form action="/user_add" method="post">
         <div>
             <label for="user_name">Name:</label>
             <input type="text" id="user_name" name="user_name">
@@ -34,7 +34,6 @@
 
 <#if errorMessage??>
 <div class="container" align="center">
-    <p></p>
     <p class="error-message"><strong>${errorMessage}</strong></p>
 </div>
 </#if>

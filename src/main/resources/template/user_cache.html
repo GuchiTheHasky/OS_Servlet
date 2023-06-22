@@ -30,17 +30,19 @@
             <td>${user.registrationTime?if_exists}</td>
             <td class="action-column">
                 <a href="/user/edit?id=${user.userId?if_exists}" class="edit-button">Edit</a>
-                <form action="/user/delete" method="get" onsubmit="return confirm('Are you sure you want to delete this user?');">
+
+                <form action="/user_delete" method="post" onsubmit="return confirm('Are you sure you want to delete this user?');">
                     <input type="hidden" name="id" value="${user.userId?if_exists}">
                     <button type="submit" class="delete-button">Delete</button>
                 </form>
+
             </td>
         </tr>
         </#list>
     </#if>
     </tbody>
     </table>
-    <a href="/user/add" class="add-button">Add User</a>
+    <a href="/user_add" class="add-button">Add User</a>
 </div>
 </body>
 </html>

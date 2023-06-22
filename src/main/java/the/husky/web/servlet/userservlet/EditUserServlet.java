@@ -15,6 +15,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 @AllArgsConstructor
 public class EditUserServlet extends HttpServlet {
@@ -24,7 +25,7 @@ public class EditUserServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         int id = Integer.parseInt(request.getParameter("id"));
-        User user = userService.getUserById(id);
+        Optional<User> user = userService.getUserById(id);
 
         Map<String, Object> params = new HashMap<>();
         params.put("user", user);
@@ -44,13 +45,13 @@ public class EditUserServlet extends HttpServlet {
         // todo тут просто забілдити юзера і передати новий юзер в сервіс
         // todo отримання і білдення юзера можна запаувати в метод
 
-        User user = userService.getUserById(id);
-
-        user.setName(name);
-        user.setPassword(password);
+        Optional<User> user = Optional.ofNullable(User.builder()
+                .name(name)
+                .password(password)
+                .build());
 
         try {
-            userService.update(user);
+            userService.update(user.get());
         } catch (DataAccessException e) { // todo цей кетч можна забрати
              response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
                     "An error occurred while updating the user in the database.");

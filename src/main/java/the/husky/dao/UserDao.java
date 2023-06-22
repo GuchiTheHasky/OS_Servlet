@@ -3,6 +3,7 @@ package the.husky.dao;
 import the.husky.entity.user.User;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * The UserDao interface provides a set of methods for accessing and manipulating user data in a data source.
@@ -28,14 +29,14 @@ public interface UserDao {
      * It takes a String parameter name and returns the corresponding User object if found.
      * It allows you to retrieve a specific user by their name.
      */
-    User findByLogin(String name);
+    Optional<User> findByLogin(String name);
 
     /**
      * The findById method retrieves a user record from the data source based on the provided ID.
      * It takes an integer parameter id representing the unique identifier of the user and returns
      * the corresponding User object. This method is useful for fetching a user by their ID.
      */
-    User findById(int id);
+    Optional<User> findById(int id);
 
     /**
      * The update method updates an existing user record in the data source. It takes a User object as a parameter,

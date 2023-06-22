@@ -49,6 +49,11 @@ public class GetAllVehicleServlet extends HttpServlet {
         response.getWriter().write(page);
     }
 
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        doGet(req, resp);
+    }
+
     private List<Vehicle> filterByManufacturer(List<Vehicle> vehicles, String manufacturerFilter) {
         List<Vehicle> filteredVehicles = new ArrayList<>();
         for (Vehicle vehicle : vehicles) {

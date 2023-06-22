@@ -54,7 +54,7 @@ public class Main {
         contextHandler.addServlet(new ServletHolder(getAllVehicleServlet), "/vehicle_all");
         contextHandler.addServlet(new ServletHolder(editUserServlet), "/user/edit");
         contextHandler.addServlet(new ServletHolder(editUserServlet), "/user/details");
-        contextHandler.addServlet(new ServletHolder(deleteUserServlet), "/user/delete");
+        contextHandler.addServlet(new ServletHolder(deleteUserServlet), "/user_delete");
         contextHandler.addServlet(new ServletHolder(deleteVehicleServlet), "/vehicle/delete");
         contextHandler.addServlet(new ServletHolder(editVehicleServlet), "/vehicle/edit");
         contextHandler.addServlet(new ServletHolder(vehicleFilterServlet), "/vehicle/filter");
