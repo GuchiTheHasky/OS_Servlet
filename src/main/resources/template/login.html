@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html>
 <head>
+
     <title>Login</title>
     <link rel="stylesheet" type="text/css" href="static/css/login_style.css">
-</head>
-<body>
 
+</head>
+
+<body>
 <div class="container">
     <h1>Input data:</h1>
     <form action="/login" method="post">
@@ -13,7 +15,8 @@
         <input type="password" name="password" placeholder="Password">
         <div class="btn-group">
             <input type="submit" value="Submit">
-            <a href="/user/add" class="button add-user-button">Add new user</a>
+<!--            <a href="/user/add" class="button add-user-button">Add new user</a>-->
+            <a href="/user_add" class="button add-user-button">Add new user</a>
         </div>
         <br/>
         <a href="/task">Forgot Password?</a>

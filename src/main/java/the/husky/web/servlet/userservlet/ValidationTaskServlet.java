@@ -18,7 +18,8 @@ public class ValidationTaskServlet extends HttpServlet {
     }
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
         String answer = request.getParameter("answer");
         PageGenerator generator = PageGenerator.instance();
 
@@ -27,7 +28,7 @@ public class ValidationTaskServlet extends HttpServlet {
         int expectedAnswer = num1 + num2;
 
         if (answer.trim().equals(String.valueOf(expectedAnswer))) {
-            request.getRequestDispatcher("/user/all").forward(request, response);
+            request.getRequestDispatcher("/user_all").forward(request, response);
         } else {
             String page = generator.getPage("wrong_answer.html");
             response.getWriter().write(page);

@@ -34,7 +34,7 @@ public class GetAllUsersServlet extends HttpServlet {
         PageGenerator pageGenerator = PageGenerator.instance();
         HashMap<String, Object> parameters = new HashMap<>();
         parameters.put("users", users);
-        String page = pageGenerator.getPage("user_list.html", parameters);
+        String page = pageGenerator.getPage("user_cache.html", parameters);
         response.getWriter().write(page);
     }
 

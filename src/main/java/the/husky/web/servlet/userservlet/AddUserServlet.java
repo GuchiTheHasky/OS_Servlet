@@ -1,6 +1,5 @@
 package the.husky.web.servlet.userservlet;
 
-import lombok.SneakyThrows;
 import the.husky.entity.user.User;
 import the.husky.exception.DataAccessException;
 import the.husky.service.UserService;

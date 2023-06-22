@@ -23,7 +23,7 @@ public class JdbcUserDao implements UserDao {
 
 
     @Override
-    public List<User> findAll() throws DataAccessException {
+    public List<User> findAll() {
         try (Connection connection = connect();
              PreparedStatement statement = connection.prepareStatement(SELECT_ALL);
              ResultSet resultSet = statement.executeQuery()) {
@@ -40,7 +40,7 @@ public class JdbcUserDao implements UserDao {
     }
 
     @Override
-    public void save(User user) throws DataAccessException {
+    public void save(User user) {
         try (Connection connection = connect();
              PreparedStatement statement = connection.prepareStatement(INSERT)) {
             statement.setString(1, user.getName());
@@ -73,7 +73,7 @@ public class JdbcUserDao implements UserDao {
     }
 
     @Override
-    public User findById(int id) throws DataAccessException {
+    public User findById(int id) {
         try (Connection connection = connect();
              PreparedStatement statement = connection.prepareStatement(GET_BY_ID)) {
             statement.setInt(1, id);
@@ -91,7 +91,7 @@ public class JdbcUserDao implements UserDao {
     }
 
     @Override
-    public void update(User user) throws DataAccessException {
+    public void update(User user) {
         try (Connection connection = connect();
              PreparedStatement statement = connection.prepareStatement(UPDATE)) {
             statement.setString(1, user.getName());
@@ -106,7 +106,7 @@ public class JdbcUserDao implements UserDao {
     }
 
     @Override
-    public void delete(int id) throws DataAccessException {
+    public void delete(int id) {
         try (Connection connection = connect();
              PreparedStatement statement = connection.prepareStatement(DELETE)) {
             statement.setInt(1, id);

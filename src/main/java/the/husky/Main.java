@@ -1,29 +1,17 @@
 package the.husky;
 
-import jakarta.servlet.DispatcherType;
 import org.eclipse.jetty.server.Server;
-import org.eclipse.jetty.servlet.FilterHolder;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 import the.husky.dao.jdbc.JdbcUserDao;
 import the.husky.dao.jdbc.JdbcVehicleDao;
 import the.husky.security.SecurityService;
-import the.husky.security.filter.SecurityFilterFavicon;
-import the.husky.security.filter.SecurityFilterLogin;
-import the.husky.security.filter.SecurityFilterMain;
-import the.husky.security.filter.user.SecurityFilterAddUser;
-import the.husky.security.filter.user.SecurityFilterEditUser;
-import the.husky.security.filter.user.SecurityFilterUsers;
-import the.husky.security.filter.vehicle.SecurityFilterAddVehicle;
-import the.husky.security.filter.vehicle.SecurityFilterDeleteVehicle;
-import the.husky.security.filter.vehicle.SecurityFilterVehicles;
 import the.husky.service.UserService;
 import the.husky.service.VehicleService;
 import the.husky.web.servlet.*;
 import the.husky.web.servlet.userservlet.*;
 import the.husky.web.servlet.vehicleservlet.*;
 
-import java.util.EnumSet;
 import java.util.Objects;
 
 public class Main {
@@ -59,11 +47,11 @@ public class Main {
 
         contextHandler.addServlet(new ServletHolder(loginServlet), "/login");
         contextHandler.addServlet(new ServletHolder(validationTaskServlet), "/task");
-        contextHandler.addServlet(new ServletHolder(addUserServlet), "/user/add");
-        contextHandler.addServlet(new ServletHolder(getAllUsersServlet), "/user/all/*");
+        contextHandler.addServlet(new ServletHolder(addUserServlet), "/user_add");
+        contextHandler.addServlet(new ServletHolder(getAllUsersServlet), "/user_all/*");
 
         contextHandler.addServlet(new ServletHolder(addVehicleServlet), "/vehicle/add");
-        contextHandler.addServlet(new ServletHolder(getAllVehicleServlet), "/vehicle/all");
+        contextHandler.addServlet(new ServletHolder(getAllVehicleServlet), "/vehicle_all");
         contextHandler.addServlet(new ServletHolder(editUserServlet), "/user/edit");
         contextHandler.addServlet(new ServletHolder(editUserServlet), "/user/details");
         contextHandler.addServlet(new ServletHolder(deleteUserServlet), "/user/delete");

@@ -27,7 +27,8 @@ public class LoginServlet extends HttpServlet {
         if (user.getUserId() > 0) {
             response.sendRedirect("/vehicle/all");
         } else {
-            response.sendRedirect("/user/add");
+            //response.sendRedirect("/user/add");
+            response.sendRedirect("/user_add");
         }
 
     }
