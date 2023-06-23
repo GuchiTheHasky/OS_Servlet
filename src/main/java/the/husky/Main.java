@@ -16,7 +16,6 @@ import java.util.Objects;
 
 public class Main {
     public static void main(String[] args) throws Exception {
-
         JdbcUserDao userDao = new JdbcUserDao();
         JdbcVehicleDao vehicleDao = new JdbcVehicleDao();
 
@@ -52,7 +51,7 @@ public class Main {
 
         contextHandler.addServlet(new ServletHolder(addVehicleServlet), "/vehicle/add");
         contextHandler.addServlet(new ServletHolder(getAllVehicleServlet), "/vehicle_all");
-        contextHandler.addServlet(new ServletHolder(editUserServlet), "/user/edit");
+        contextHandler.addServlet(new ServletHolder(editUserServlet), "/user_edit");
         contextHandler.addServlet(new ServletHolder(editUserServlet), "/user/details");
         contextHandler.addServlet(new ServletHolder(deleteUserServlet), "/user_delete");
         contextHandler.addServlet(new ServletHolder(deleteVehicleServlet), "/vehicle/delete");

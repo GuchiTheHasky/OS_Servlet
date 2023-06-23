@@ -28,7 +28,7 @@ public class JdbcVehicleDao implements VehicleDao {
 
     @Override
     public List<Vehicle> findAll() {
-        try (Connection connection = connect();
+        try (Connection connection = DataSourceConnector.getConnection();
              PreparedStatement statement = connection.prepareStatement(SELECT_ALL);
              ResultSet resultSet = statement.executeQuery()) {
             List<Vehicle> vehicles = new ArrayList<>();
@@ -45,7 +45,7 @@ public class JdbcVehicleDao implements VehicleDao {
 
     @Override
     public void save(Vehicle vehicle) {
-        try (Connection connection = connect();
+        try (Connection connection = DataSourceConnector.getConnection();
              PreparedStatement statement = connection.prepareStatement(INSERT)) {
             statement.setString(1, vehicle.getManufacture().getManufacture());
             statement.setString(2, vehicle.getEngineType().getType());
@@ -64,7 +64,7 @@ public class JdbcVehicleDao implements VehicleDao {
 
     @Override
     public void delete(int id) {
-        try (Connection connection = connect();
+        try (Connection connection = DataSourceConnector.getConnection();
              PreparedStatement statement = connection.prepareStatement(DELETE)) {
             statement.setInt(1, id);
             statement.executeUpdate();
@@ -77,7 +77,7 @@ public class JdbcVehicleDao implements VehicleDao {
 
     @Override
     public void update(Vehicle updatedVehicle) {
-        try (Connection connection = connect();
+        try (Connection connection = DataSourceConnector.getConnection();
              PreparedStatement statement = connection.prepareStatement(UPDATE)) {
             statement.setString(1, updatedVehicle.getManufacture().getManufacture());
             statement.setString(2, updatedVehicle.getEngineType().getType());
@@ -97,7 +97,7 @@ public class JdbcVehicleDao implements VehicleDao {
 
     @Override
     public Optional<Vehicle> findById(int id) {
-        try (Connection connection = connect();
+        try (Connection connection = DataSourceConnector.getConnection();
              PreparedStatement statement = connection.prepareStatement(GET_BY_ID)) {
             statement.setInt(1, id);
             try (ResultSet resultSet = statement.executeQuery()) {
@@ -115,7 +115,7 @@ public class JdbcVehicleDao implements VehicleDao {
 
     @Override
     public List<Vehicle> filterByManufacturer(String manufacturer) {
-        try (Connection connection = connect();
+        try (Connection connection = DataSourceConnector.getConnection();
              PreparedStatement statement = connection.prepareStatement(SELECT_BY_MANUFACTURE)) {
             List<Vehicle> filteredVehicles = new ArrayList<>();
             statement.setString(1, manufacturer);
@@ -135,7 +135,7 @@ public class JdbcVehicleDao implements VehicleDao {
 
     @Override
     public List<Vehicle> filterByEngineType(EngineType type) {
-        try (Connection connection = connect();
+        try (Connection connection = DataSourceConnector.getConnection();
              PreparedStatement statement = connection.prepareStatement(SELECT_BY_ENGINE_TYPE)) {
             statement.setString(1, type.getType());
             List<Vehicle> filteredVehicles = new ArrayList<>();
@@ -150,10 +150,5 @@ public class JdbcVehicleDao implements VehicleDao {
             log.error("SQL or data connection refused; JdbcVehicleDao.class, method: filterByEngineType;", e);
             throw new DataAccessException("Error filtering vehicles by engine type. Please try again later.", e);
         }
-    }
-
-    // TODO:
-    private Connection connect() throws SQLException {
-        return DriverManager.getConnection("jdbc:postgresql://localhost:5432/OS", "postgres", "root");
     }
 }

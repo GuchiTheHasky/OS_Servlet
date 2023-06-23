@@ -21,25 +21,25 @@ import java.util.Optional;
 public class EditUserServlet extends HttpServlet {
     private UserService userService;
 
-    @SneakyThrows
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        int id = Integer.parseInt(request.getParameter("id"));
+        String str = request.getParameter("id");
+        int id = parseIdParameter(str);
         Optional<User> user = userService.getUserById(id);
 
         Map<String, Object> params = new HashMap<>();
-        params.put("user", user);
+        params.put("user", user.get());
 
         response.setContentType("text/html;charset=utf-8");
         response.setStatus(HttpServletResponse.SC_OK);
 
-        response.getWriter().println(PageGenerator.instance().getPage("user_details.html", params));
+        response.getWriter().println(PageGenerator.instance().getPage("user_edit.html", params));
     }
 
     @SneakyThrows
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) {
-        int id = Integer.parseInt(request.getParameter("id"));
+        int id = parseIdParameter(request.getParameter("id"));
         String name = request.getParameter("name");
         String password = request.getParameter("password");
         // todo тут просто забілдити юзера і передати новий юзер в сервіс
@@ -57,5 +57,13 @@ public class EditUserServlet extends HttpServlet {
                     "An error occurred while updating the user in the database.");
         }
         response.sendRedirect("/user/all");
+    }
+
+    private int parseIdParameter(String idParam) {
+        try {
+            return Integer.parseInt(idParam);
+        } catch (NumberFormatException e) {
+            throw new IllegalArgumentException("Error, wrong ID.");
+        }
     }
 }

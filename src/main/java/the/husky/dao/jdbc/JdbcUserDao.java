@@ -1,5 +1,6 @@
 package the.husky.dao.jdbc;
 
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import the.husky.dao.UserDao;
 import the.husky.dao.jdbc.mapper.UserRowMapper;
@@ -25,7 +26,7 @@ public class JdbcUserDao implements UserDao {
 
     @Override
     public List<User> findAll() {
-        try (Connection connection = connect();
+        try (Connection connection = DataSourceConnector.getConnection();
              PreparedStatement statement = connection.prepareStatement(SELECT_ALL);
              ResultSet resultSet = statement.executeQuery()) {
             List<User> users = new ArrayList<>();
@@ -42,7 +43,7 @@ public class JdbcUserDao implements UserDao {
 
     @Override
     public void save(User user) {
-        try (Connection connection = connect();
+        try (Connection connection = DataSourceConnector.getConnection();
              PreparedStatement statement = connection.prepareStatement(INSERT)) {
             statement.setString(1, user.getName());
             statement.setString(2, user.getPassword());
@@ -57,7 +58,7 @@ public class JdbcUserDao implements UserDao {
     // todo: замінити User на Optional
     @Override
     public Optional<User> findByLogin(String login) {
-        try (Connection connection = connect();
+        try (Connection connection = DataSourceConnector.getConnection();
              PreparedStatement statement = connection.prepareStatement(GET_BY_NAME)) {
             statement.setString(1, login);
             // todo: ??
@@ -75,7 +76,7 @@ public class JdbcUserDao implements UserDao {
 
     @Override
     public Optional<User> findById(int id) {
-        try (Connection connection = connect();
+        try (Connection connection = DataSourceConnector.getConnection();
              PreparedStatement statement = connection.prepareStatement(GET_BY_ID)) {
             statement.setInt(1, id);
             try (ResultSet resultSet = statement.executeQuery()) {
@@ -93,7 +94,7 @@ public class JdbcUserDao implements UserDao {
 
     @Override
     public void update(User user) {
-        try (Connection connection = connect();
+        try (Connection connection = DataSourceConnector.getConnection();
              PreparedStatement statement = connection.prepareStatement(UPDATE)) {
             statement.setString(1, user.getName());
             statement.setString(2, user.getPassword());
@@ -108,7 +109,7 @@ public class JdbcUserDao implements UserDao {
 
     @Override
     public void delete(int id) {
-        try (Connection connection = connect();
+        try (Connection connection = DataSourceConnector.getConnection();
              PreparedStatement statement = connection.prepareStatement(DELETE)) {
             statement.setInt(1, id);
             statement.executeUpdate();
@@ -117,10 +118,5 @@ public class JdbcUserDao implements UserDao {
             throw new DataAccessException(
                     String.format("Error deleting user by \"Id\": %d. Please try again later.", id), e);
         }
-    }
-
-    // TODO: має бути якийсь дата соурс щоб це забрати
-    private Connection connect() throws SQLException {
-        return DriverManager.getConnection("jdbc:postgresql://localhost:5432/OS", "postgres", "root");
     }
 }

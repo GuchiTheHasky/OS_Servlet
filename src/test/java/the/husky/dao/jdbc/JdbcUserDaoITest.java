@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import the.husky.entity.user.User;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -28,10 +29,10 @@ public class JdbcUserDaoITest {
     @DisplayName("Test, find user by id.")
     public void testFindById() {
         int id = 1;
-        User user = DAO.findById(id);
+        Optional<User> user = DAO.findById(id);
         assertNotNull(user);
-        assertFalse(user.getName().isEmpty());
-        assertFalse(user.getPassword().isEmpty());
+        assertFalse(user.get().getName().isEmpty());
+        assertFalse(user.get().getPassword().isEmpty());
     }
 
     @Test
@@ -39,11 +40,11 @@ public class JdbcUserDaoITest {
     @DisplayName("Test, find User by name.")
     public void testFindUserByName() {
         String name = "user";
-        User currentUser = DAO.findByLogin(name);
+        Optional<User> currentUser = DAO.findByLogin(name);
         assertNotNull(currentUser);
 
         String expectedPassword = "user";
-        String actualPassword = currentUser.getPassword();
+        String actualPassword = currentUser.get().getPassword();
         assertEquals(expectedPassword, actualPassword);
     }
 }

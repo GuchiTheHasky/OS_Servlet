@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Test;
 import the.husky.entity.vehicle.Vehicle;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -27,13 +28,13 @@ public class JdbcVehicleDaoITest {
         Vehicle expectedVehicle = vehicles.get(0);
         int id = expectedVehicle.getVehicleId();
 
-        Vehicle actualVehicle = DAO.findById(id);
-        assertEquals(expectedVehicle.getVehicleId(), actualVehicle.getVehicleId());
-        assertEquals(expectedVehicle.getManufacture(), actualVehicle.getManufacture());
-        assertEquals(expectedVehicle.getEngineType(), actualVehicle.getEngineType());
-        assertEquals(expectedVehicle.getModel(), actualVehicle.getModel());
-        assertEquals(expectedVehicle.getAge(), actualVehicle.getAge());
-        assertEquals(expectedVehicle.getWeight(), actualVehicle.getWeight());
+        Optional<Vehicle> actualVehicle = DAO.findById(id);
+        assertEquals(expectedVehicle.getVehicleId(), actualVehicle.get().getVehicleId());
+        assertEquals(expectedVehicle.getManufacture(), actualVehicle.get().getManufacture());
+        assertEquals(expectedVehicle.getEngineType(), actualVehicle.get().getEngineType());
+        assertEquals(expectedVehicle.getModel(), actualVehicle.get().getModel());
+        assertEquals(expectedVehicle.getAge(), actualVehicle.get().getAge());
+        assertEquals(expectedVehicle.getWeight(), actualVehicle.get().getWeight());
     }
 
 }
