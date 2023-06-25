@@ -16,6 +16,7 @@
     <postgresql.version>42.6.0</postgresql.version>
     <freemarker.version>2.3.31</freemarker.version>
     <HikariCP.version>5.0.1</HikariCP.version>
+    <flyway-core.version>9.20.0</flyway-core.version>
     <mockito-core.version>5.3.1</mockito-core.version>
     <junit.jupiter.version>5.9.2</junit.jupiter.version>
   </properties>
@@ -121,6 +122,12 @@
       <groupId>com.zaxxer</groupId>
       <artifactId>HikariCP</artifactId>
       <version>${HikariCP.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.flywaydb</groupId>
+      <artifactId>flyway-core</artifactId>
+      <version>${flyway-core.version}</version>
     </dependency>
 
     <dependency>

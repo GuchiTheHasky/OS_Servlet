@@ -16,8 +16,16 @@ public class DeleteVehicleServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        int id = Integer.parseInt(request.getParameter("vehicle_id"));
+        String idStr = request.getParameter("vehicleId");
+        int id = parseIdParameter(idStr);
         service.delete(id);
         response.sendRedirect("/vehicle_all");
+    }
+    private int parseIdParameter(String idParam) {
+        try {
+            return Integer.parseInt(idParam);
+        } catch (NumberFormatException e) {
+            throw new IllegalArgumentException("Error, wrong ID.");
+        }
     }
 }

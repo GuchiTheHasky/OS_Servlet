@@ -41,7 +41,7 @@ public class DataSourceConnector {
         dataSource = new HikariDataSource(config);
     }
 
-    private static Properties loadProperties() {
+    public static Properties loadProperties() {
         Properties properties = new Properties();
         try (InputStream inputStream = DataSourceConnector.class.getClassLoader().getResourceAsStream(DB_PROPERTIES)) {
             properties.load(inputStream);
