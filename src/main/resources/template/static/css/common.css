@@ -1,117 +1,766 @@
-body {
-            background-color: #ffffff;
-            font-family: sans-serif;
-        }
-
-        .container {
-            width: 500px;
-            margin: 100px auto 0;
-            padding: 20px;
-        }
-
-        h1 {
-            text-align: center;
-        }
-
-        input[type="text"],
-        input[type="password"] {
-            width: 96%;
-            padding: 10px;
-            margin-bottom: 10px;
-            border: 1px solid #ccc;
-        }
-
-        .btn-group {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 10px;
-        }
-
-        input[type="submit"],
-        a.button {
-            background-color: darkblue;
-            color: #ffffff;
-            padding: 10px;
-            border: none;
-            cursor: pointer;
-            flex: 1;
-            text-decoration: none;
-            text-align: center;
-        }
-        input[type="submit"]:hover,
-        a.button:hover {
-            background-color: dodgerblue;
-        }
-
-        .add-user-button {
-            margin-left: 100px;
-        }
-
-        .image-container img {
-            position: absolute;
-            left: 42%;
-        }
+/* common.css */
 
 body {
-            font-family: Arial, sans-serif;
-            background-color: #f2f2f2;
-        }
+    font-family: Arial, sans-serif;
+    background-color: #111010;
+}
 
-        .container {
-            max-width: 400px;
-            margin: 0 auto;
-            padding: 20px;
-            background-color: #fff;
-            border-radius: 5px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-        }
+h1 {
+    font-size: 24px;
+    color: #333333;
+}
 
-        h1 {
-            text-align: center;
-            color: mediumaquamarine;
-            margin-bottom: 10px;
-        }
+h2 {
+    font-size: 60px; /*нічого не змінилось*/
+    color: pink;
+}
 
-        h5 {
-            text-align: center;
-            font-size: 24px;
-            margin-bottom: 40px;
-        }
+h5 { /* цифри для /task */
+    font-size: 24px;
+    color: #43cbcb;
+}
 
-        form {
-            text-align: center;
-        }
+a { /*Forgot Password? /login */
+    color: black;
+    text-decoration: none;
+}
 
-        .mb-3 {
-            margin-bottom: 15px;
-        }
+/* Login page styles */
+.login_container {
+    width: 300px;
+    height: 250px;
+    margin: auto;
+    margin-top: 50px;
+    padding: 80px;
+    background-color: #bcbcbc;
+    border-radius: 100px;
+}
 
-        label {
-            display: block;
-            font-weight: bold;
-        }
+.login-title { /* Input data: */
+    margin-bottom: 20px;
+    animation: fade-in 2s ease-in-out;
+}
 
-        input[type="text"] {
-            width: 100%;
-            padding: 10px;
-            font-size: 16px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            box-sizing: border-box;
-        }
+@keyframes fade-in { /* настройка анімації */
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 5;
+    }
+}
 
-        button[type="submit"] {
-            display: block;
-            width: 100%;
-            padding: 10px;
-            font-size: 16px;
-            background-color: #4CAF50;
-            color: #fff;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
+.login_container input[type="text"],
+.login_container input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    margin: auto;
+    margin-bottom: 10px;
+    border: 1px solid black;
+    border-radius: 55px;
+}
 
-        button[type="submit"]:hover {
-            background-color: #45a049;
+.login_buttons {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.login_buttons input[type="submit"] {
+    background-color: #333333;
+    color: #ffffff;
+    border: none;
+    padding: 12px 30px;
+    margin-right: 10px;
+    cursor: pointer;
+    border-radius: 55px;
+}
+
+.login_buttons input[type="submit"]:hover {
+    background-color: #3d85c6;
+    color: #f1c232;
+}
+
+.button.add-user-button {
+    background-color: #ffffff;
+    color: #333333;
+    border: 1px solid #333333;
+    padding: 10px 20px;
+    text-decoration: none;
+    border-radius: 55px;
+}
+
+.button.add-user-button:hover {
+    background-color: #f1c232;
+    color: #3d85c6;
+}
+
+.image_container {
+    text-align: center;
+    margin-top: 20px;
+}
+
+/* Task page styles */
+.task_container {
+    width: 500px;
+    height: 500px;
+    margin: 50px auto;
+    background-color: #ffffff;
+    border-radius: 55px;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.task_title {
+    margin-top: 50px;
+    text-align: center;
+}
+
+#num1,
+#num2,
+.operator {
+    display: inline-block;
+    vertical-align: middle;
+    color: #999999;
+    font-weight: bold;
+}
+.operator {
+color: #999999;
+}
+
+button.task_submit {
+    margin-top: 30px;
+    background-color: #333333;
+    color: #ffffff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 55px;
+    cursor: pointer;
+}
+
+button.task_submit:hover {
+    background-color: #3d85c6;
+    color: #f1c232;
+}
+
+#answer {
+    width: 95%;
+    padding: 10px;
+    border: 1px solid #cccccc;
+    border-radius: 55px;
+}
+
+/* Wrong Answer */
+
+.wrong_answer {
+    color: red;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+button.try_again {
+    background-color: #333333;
+    color: #ffffff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button.try_again {
+    background-color: #555555;
+}
+
+/* Add user */
+
+.add_user_container {
+    width: 300px;
+    height: 250px;
+    margin: auto;
+    margin-top: 50px;
+    padding: 80px;
+    background-color: #bcbcbc;
+    border-radius: 100px;
+}
+
+.add_user_title { /* Add user: */
+    margin-bottom: 20px;
+    animation: fade-in 2s ease-in-out;
+}
+
+@keyframes fade-in-2 { /* настройка анімації */
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 5;
+    }
+}
+
+.add_user_container input[type="text"],
+.add_user_container input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    margin: auto;
+    margin-bottom: 10px;
+    border: 1px solid black;
+    border-radius: 55px;
+}
+
+.add_user_buttons {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.add_user_buttons input[type="submit"] {
+    background-color: #333333;
+    color: #ffffff;
+    border: none;
+    padding: 12px 30px;
+    margin-right: 10px;
+    cursor: pointer;
+    border-radius: 55px;
+}
+
+.add_user_buttons input[type="submit"]:hover {
+    background-color: #3d85c6;
+    color: #f1c232;
+}
+
+.back-to-login {
+    background-color: #ffffff;
+    color: #333333;
+    border: 1px solid #333333;
+    padding: 10px 20px;
+    text-decoration: none;
+    border-radius: 55px;
+}
+
+.back-to-login:hover {
+    background-color: #f1c232;
+    color: #3d85c6;
+}
+
+.users_buttons {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.users_buttons a {
+    display: inline-block;
+    background-color: #333333;
+    color: #ffffff;
+    border: none;
+    padding: 12px 30px;
+    margin-right: 10px;
+    cursor: pointer;
+    text-decoration: none;
+    border-radius: 55px;
+}
+
+.users_buttons a.back-to-add:hover {
+    background-color: #3d85c6;
+    color: #f1c232;
+}
+
+.users_buttons a.back-to-login:hover {
+    background-color: #f1c232;
+    color: #3d85c6;
+}
+
+/* Users style */
+.container {
+    width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #ffffff;
+    border: 1px solid #cccccc;
+    border-radius: 5px;
+}
+
+.users_cache {
+    margin-bottom: 20px;
+    animation: fade-in 2s ease-in-out;
+}
+
+@keyframes fade-in { /* настройка анімації */
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 5;
+    }
+}
+
+#user-table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+}
+
+#user-table th,
+#user-table td {
+    padding: 10px;
+    border: 1px solid #cccccc;
+    max-height: 18px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: normal;
+    text-align: center;
+}
+
+#user-table th:first-child,
+#user-table td:first-child {
+  width: 50px;
+}
+
+#user-table th:nth-child(4),
+#user-table td:nth-child(4) {
+  width: 200px;
+}
+
+
+.action-column {
+    text-align: center;
+}
+
+#edit_user_button {
+    display: inline-block;
+    background-color: #333333;
+    color: #ffffff;
+    border: none;
+    padding: 10px 25px;
+    text-decoration: none;
+    border-radius: 5px;
+}
+
+#edit_user_button:hover {
+    background-color: green;
+    color: #f1c232;
+}
+
+.delete_user {
+    margin-top: 20px;
+}
+
+.delete_user .delete-button {
+    display: inline-block;
+    background-color: #ff0000;
+    color: #ffffff;
+    border: none;
+    padding: 10px 20px;
+    text-decoration: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.delete_user .delete-button:hover {
+    background-color: #cc0000;
+}
+
+/* Edit User*/
+
+body.edit_user {
+  background-color: #111010 !important;
+}
+
+.edit_user {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+}
+
+.edit_user form {
+  width: 500px;
+  padding: 40px;
+  border-radius: 55px;
+  background-color: #ffffff;
+}
+
+.edit_title {
+  margin-bottom: 20px;
+  text-align: center;
+  animation: fade-in 2s ease-in-out;
+}
+
+@keyframes fade-in {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.edit_user input[type="text"],
+.edit_user input[type="password"] {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 55px;
+  color: #111010 !important;
+}
+
+.edit_buttons {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.edit_buttons input[type="submit"],
+.edit_buttons a {
+  display: inline-block;
+  background-color: #333333;
+  color: #ffffff;
+  border: none;
+  padding: 12px 30px;
+  margin-right: 10px;
+  cursor: pointer;
+  text-decoration: none;
+  border-radius: 55px;
+}
+
+.edit_buttons input[type="submit"]:hover {
+  background-color: #3d85c6;
+  color: #f1c232;
+}
+
+.edit_buttons a:hover {
+    background-color: #f1c232;
+    color: #3d85c6;
+}
+
+.image_container {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.image_container img {
+  max-width: 100%;
+  height: auto;
+}
+
+.edit_user label {
+  color: #111010;
+}
+
+/* vehicle_list */
+
+#vehicles_title {
+        color: white;
+        animation: fadeIn 1s ease-in-out 2s;
+        text-align: center;
+    }
+
+    @keyframes fadeIn {
+        0% {
+            opacity: 0;
         }
+        100% {
+            opacity: 1;
+        }
+    }
+
+#by_manufacturer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    border-radius: 8px;
+    background-color: #ffffff;
+    max-width: 300px;
+    margin: 0 auto;
+}
+
+#by_manufacturer label {
+    font-size: 16px;
+    margin-bottom: 8px;
+}
+
+#by_manufacturer select {
+    padding: 8px 12px;
+    border: 1px solid #cccccc;
+    border-radius: 4px;
+    margin-bottom: 16px;
+    width: 200px;
+    font-size: 14px;
+}
+
+#by_manufacturer button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+#by_manufacturer button:hover {
+    background-color: #45a049;
+}
+
+#by_engine {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    border-radius: 8px;
+    background-color: #ffffff;
+    max-width: 300px;
+    margin: 0 auto;
+}
+
+#by_engine label {
+    font-size: 16px;
+    margin-bottom: 8px;
+}
+
+#by_engine select {
+    padding: 8px 12px;
+    border: 1px solid #cccccc;
+    border-radius: 4px;
+    margin-bottom: 16px;
+    width: 200px;
+    font-size: 14px;
+}
+
+#by_engine button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+#by_engine button:hover {
+    background-color: #45a049;
+}
+
+#by_manufacturer,
+#by_engine
+{
+    display: inline-block;
+    vertical-align: middle;
+}
+
+
+#vehicle_list {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+    background-color: #bcbcbc;
+}
+
+#vehicle_list th,
+#vehicle_list td {
+    padding: 10px;
+    border: 1px solid #cccccc;
+    max-height: 18px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    text-align: center;
+}
+
+#vehicle_list th:first-child,
+#vehicle_list td:first-child {
+    width: 120px;
+}
+
+#vehicle_list th:nth-child(4),
+#vehicle_list td:nth-child(4) {
+    width: 120px;
+}
+
+#vehicle_list th:nth-child(5),
+#vehicle_list td:nth-child(5) {
+    width: 80px;
+}
+
+#vehicle_list th:nth-child(6),
+#vehicle_list td:nth-child(6) {
+    width: 80px;
+}
+
+#edit_vehicle {
+    text-decoration: none;
+    background-color: #111010;
+    color: white;
+    padding: 6px 16px;
+    border-radius: 5px;
+}
+
+#edit_vehicle:hover {
+    background-color: #45a049;
+}
+
+#delete_vehicle .delete-button {
+    background-color: #f44336;
+    color: white;
+    padding: 6px 12px;
+    border-radius: 5px;
+    border: none;
+}
+
+#delete_vehicle .delete-button:hover {
+    background-color: #d32f2f;
+}
+
+/* Edit Vehicle */
+
+body#edit_vehicle_class_id {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #111010;
+}
+
+h1#edit_vehicle_title {
+    color: #333;
+    animation: fade-in 2s ease-in-out;
+}
+
+@keyframes fade-in {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 5;
+    }
+}
+
+
+form#edit_vehicle_title_container {
+    background-color: #fff;
+    border-radius: 55px;
+    padding: 20px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+label {
+    display: inline-block;
+    width: 100px;
+    margin-bottom: 10px;
+}
+
+input[type="text"],
+input[type="number"] {
+    width: 200px;
+    padding: 5px;
+    border-radius: 55px;
+}
+
+button#save_updated_vehicle {
+    margin-top: 10px;
+    padding: 8px 15px;
+    background-color: #111010;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 55px;
+}
+
+button#save_updated_vehicle:hover {
+    background-color: #3d85c6;
+    color: #f1c232;
+}
+
+div#add_new_vehicle_in_list {
+    text-align: right;
+    margin-top: -35px;
+}
+
+div#add_new_vehicle_in_list a {
+    display: inline-block;
+    padding: 8px 15px;
+    background-color: green;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+}
+
+/* Add Vehicle */
+
+body#add_vehicle_class_container {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #111010;
+}
+
+h1#add_vehicle_class_title {
+    color: #333;
+    text-align: center;
+    animation: fade-in 2s ease-in-out;
+}
+
+@keyframes fade-in {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+form#add_vehicle_form {
+    margin-top: 20px;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 55px;
+    height: 700px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+
+label {
+    display: block;
+    margin-bottom: 10px;
+    color: #555;
+}
+
+select,
+input[type="text"] {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+input[type="submit"] {
+    margin-top: 20px;
+    padding: 10px 15px;
+    background-color: #4CAF50;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+div#add_new_vehicle_in_list {
+    text-align: right;
+    margin-top: -35px;
+}
+
+div#add_new_vehicle_in_list a {
+    display: inline-block;
+    padding: 8px 15px;
+    background-color: green;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+}
+
+

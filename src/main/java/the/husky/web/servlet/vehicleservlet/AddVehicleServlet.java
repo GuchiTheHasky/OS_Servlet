@@ -31,7 +31,7 @@ public class AddVehicleServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         Vehicle vehicle = buildVehicle(req);
         service.add(vehicle);
-        resp.sendRedirect("/vehicle/all");
+        resp.sendRedirect("/vehicle_all");
     }
 
     private Vehicle buildVehicle(HttpServletRequest request) {

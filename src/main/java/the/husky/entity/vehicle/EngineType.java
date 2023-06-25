@@ -30,7 +30,7 @@ public enum EngineType {
 
     public static EngineType getEngineType(String type) {
         for (EngineType engineType : values()) {
-            if (engineType.type.equals(type)) {
+            if (engineType.type.equalsIgnoreCase(type)) {
                 return engineType;
             }
         }

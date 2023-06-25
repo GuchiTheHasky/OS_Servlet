@@ -3,27 +3,28 @@
 <head>
 
     <title>Login</title>
-    <link rel="stylesheet" type="text/css" href="static/css/login_style.css">
+    <link rel="stylesheet" type="text/css" href="static/css/common.css">
 
 </head>
 
 <body>
-<div class="container">
-    <h1>Input data:</h1>
+<div class="login_container">
+    <h1 class="login-title">Input data:</h1>
     <form action="/login" method="post">
         <input type="text" name="username" placeholder="Username">
         <input type="password" name="password" placeholder="Password">
-        <div class="btn-group">
+
+        <div class="login_buttons">
             <input type="submit" value="Submit">
-<!--            <a href="/user/add" class="button add-user-button">Add new user</a>-->
             <a href="/user_add" class="button add-user-button">Add new user</a>
         </div>
+
         <br/>
         <a href="/task">Forgot Password?</a>
     </form>
 </div>
 
-<div class="image-container">
+<div class="image_container">
     <img src="static/img/image.png">
 </div>
 

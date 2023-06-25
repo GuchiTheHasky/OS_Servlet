@@ -1,56 +1,55 @@
 <!DOCTYPE html>
 <html>
 <head>
+
     <meta charset="UTF-8">
     <title>Edit Vehicle</title>
+    <link rel="stylesheet" href="static/css/common.css">
+
 </head>
-<body>
-<h2>Edit Vehicle</h2>
+<body id="edit_vehicle_class_id">
 
-<ul>
-    <#list vehicles as vehicle>
-    <li><a href="/vehicle/edit?vehicle_id=${vehicle.vehicleId}">${vehicle.model}</a></li>
-</#list>
-</ul>
+<form id="edit_vehicle_title_container" method="POST" action="/vehicle_edit">
 
-<form action="/vehicle/edit" method="post">
-    <input type="hidden" name="vehicle_id" value="${vehicle.vehicleId}">
+    <h1 id="edit_vehicle_title">Edit Vehicle</h1>
 
+    <input type="hidden" name="vehicleId" value="${vehicle.vehicleId}">
     <label for="manufacturer">Manufacturer:</label>
-    <select name="manufacturer" id="manufacturer" required>
-        <option value="SUBARU">Subaru</option>
-        <option value="KIA">Kia</option>
-        <option value="VOLVO">Volvo</option>
-        <option value="BMW">BMW</option>
-        <option value="HONDA">Honda</option>
-        <option value="FORD">Ford</option>
-        <option value="GM">GM</option>
-        <option value="MAZDA">Mazda</option>
-        <option value="TOYOTA">Toyota</option>
-        <option value="MITSUBISHI">Mitsubishi</option>
-    </select>
+    <input type="text" id="manufacturer" name="manufacturer" value="${vehicle.manufacture}">
 
-    <label for="engineType">Engine Type:</label>
-    <select name="engineType" id="engineType" required>
-        <option value="GASOLINE">Gasoline</option>
-        <option value="DIESEL">Diesel</option>
-        <option value="ELECTRIC">Electric</option>
-        <option value="HYBRID">Hybrid</option>
-    </select>
+    <br/>
+
+    <label for="enginetype">Engine Type:</label>
+    <input type="text" id="enginetype" name="enginetype" value="${vehicle.engineType}">
+
+    <br/>
 
     <label for="model">Model:</label>
-    <input type="text" name="model" id="model" required>
+    <input type="text" id="model" name="model" value="${vehicle.model}">
+
+    <br/>
 
     <label for="price">Price:</label>
-    <input type="number" name="price" id="price" required>
+    <input type="number" id="price" name="price" value="${vehicle.price}">
+
+    <br/>
 
     <label for="age">Age:</label>
-    <input type="number" name="age" id="age" required>
+    <input type="number" id="age" name="age" value="${vehicle.age}">
+
+    <br/>
 
     <label for="weight">Weight:</label>
-    <input type="number" name="weight" id="weight" required>
+    <input type="number" id="weight" name="weight" value="${vehicle.weight}">
 
-    <input type="submit" value="Edit">
+    <br/>
+
+    <button id="save_updated_vehicle" type="submit">Save</button>
 </form>
+
+<div class="image_container">
+    <img src="static/img/image.png">
+</div>
+
 </body>
 </html>

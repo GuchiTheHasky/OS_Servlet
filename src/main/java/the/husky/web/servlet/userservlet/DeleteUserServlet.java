@@ -24,7 +24,8 @@ public class DeleteUserServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        int id = Integer.parseInt(request.getParameter("id"));
+        String idStr = request.getParameter("id");
+        int id = parseIdParameter(idStr);
 
         try {
             Optional<User> user = service.getUserById(id);
@@ -41,6 +42,14 @@ public class DeleteUserServlet extends HttpServlet {
             }
         } catch (DataAccessException e) {
             throw new ServletException("Failed to retrieve user", e);
+        }
+    }
+
+    private int parseIdParameter(String idParam) {
+        try {
+            return Integer.parseInt(idParam);
+        } catch (NumberFormatException e) {
+            throw new IllegalArgumentException("Error, wrong ID.");
         }
     }
 }

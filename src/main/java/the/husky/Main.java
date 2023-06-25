@@ -1,17 +1,21 @@
 package the.husky;
 
+import jakarta.servlet.DispatcherType;
 import org.eclipse.jetty.server.Server;
+import org.eclipse.jetty.servlet.FilterHolder;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 import the.husky.dao.jdbc.JdbcUserDao;
 import the.husky.dao.jdbc.JdbcVehicleDao;
 import the.husky.security.SecurityService;
+import the.husky.security.filter.SecurityFilterMain;
 import the.husky.service.UserService;
 import the.husky.service.VehicleService;
 import the.husky.web.servlet.*;
 import the.husky.web.servlet.userservlet.*;
 import the.husky.web.servlet.vehicleservlet.*;
 
+import java.util.EnumSet;
 import java.util.Objects;
 
 public class Main {
@@ -23,7 +27,7 @@ public class Main {
         VehicleService vehicleService = new VehicleService(vehicleDao);
         SecurityService securityService = new SecurityService(userService);
 
-        LoginServlet loginServlet = new LoginServlet();
+        LoginServlet loginServlet = new LoginServlet(securityService);
         StaticResourceServlet resourceServlet = new StaticResourceServlet();
         FaviconServlet faviconServlet = new FaviconServlet();
 
@@ -49,35 +53,25 @@ public class Main {
         contextHandler.addServlet(new ServletHolder(addUserServlet), "/user_add");
         contextHandler.addServlet(new ServletHolder(getAllUsersServlet), "/user_all/*");
 
-        contextHandler.addServlet(new ServletHolder(addVehicleServlet), "/vehicle/add");
+        contextHandler.addServlet(new ServletHolder(addVehicleServlet), "/vehicle_add");
         contextHandler.addServlet(new ServletHolder(getAllVehicleServlet), "/vehicle_all");
-        contextHandler.addServlet(new ServletHolder(editUserServlet), "/user_edit");
+        contextHandler.addServlet(new ServletHolder(editUserServlet), "/user_edit/*");
         contextHandler.addServlet(new ServletHolder(editUserServlet), "/user/details");
         contextHandler.addServlet(new ServletHolder(deleteUserServlet), "/user_delete");
         contextHandler.addServlet(new ServletHolder(deleteVehicleServlet), "/vehicle/delete");
-        contextHandler.addServlet(new ServletHolder(editVehicleServlet), "/vehicle/edit");
+        contextHandler.addServlet(new ServletHolder(editVehicleServlet), "/vehicle_edit");
         contextHandler.addServlet(new ServletHolder(vehicleFilterServlet), "/vehicle/filter");
 
-        // TODO: 21.06.2023 має бути просто мапінг на /static
         contextHandler.addServlet(new ServletHolder(faviconServlet), "/favicon.ico");
 
         contextHandler.addServlet(new ServletHolder(resourceServlet), "/static/*");
 
 //        contextHandler.addFilter
 //                (new FilterHolder
-//                        (new SecurityFilterMain()), "/*", EnumSet.of(DispatcherType.REQUEST));
-
+//                        (new SecurityFilterMain(securityService)), "/*", EnumSet.of(DispatcherType.REQUEST));
 
         Server server = new Server(1025);
         server.setHandler(contextHandler);
         server.start();
     }
 }
-
-// TODO: 21.06.2023 все, включно з фавіконом, окрім темплейтів засунути в папку static
-// todo: common css це?
-// todo: закреслені aligne в html позабирати
-// todo: зробити акаунт на AWS ec2 і залити тули OS, але перед цим запакувати це в jar
-// todo: структура мейн спочатку всі dao, services, servlets filter ?
-// todo: залишити лише один фільтр і той повинен бути в папці web
-// todo: в сервлетах краще зробити кетч Error

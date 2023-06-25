@@ -18,6 +18,6 @@ public class DeleteVehicleServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         int id = Integer.parseInt(request.getParameter("vehicle_id"));
         service.delete(id);
-        response.sendRedirect("/vehicle/all");
+        response.sendRedirect("/vehicle_all");
     }
 }

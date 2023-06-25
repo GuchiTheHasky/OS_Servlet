@@ -16,10 +16,16 @@
     </script>
 </head>
 <body>
-<div class="container">
-    <h1>I'm not a robot!</h1>
+<div class="task_container">
+    <h1 class="task_title">I'm not a robot!</h1>
     <br/>
-    <h5><span id="num1"></span> + <span id="num2"></span> = </h5>
+    <h5>
+        <span id="num1"></span>
+        <span class="operator">+</span>
+        <span id="num2"></span>
+        <span class="operator">=</span>
+    </h5>
+
     <form action="/task" method="post">
         <div class="mb-3">
             <label for="answer">Enter the answer:</label>
@@ -27,7 +33,7 @@
         </div>
         <input type="hidden" id="hiddenNum1" name="num1">
         <input type="hidden" id="hiddenNum2" name="num2">
-        <button type="submit">Submit</button>
+        <button type="submit" class="task_submit">Submit</button>
     </form>
 </div>
 

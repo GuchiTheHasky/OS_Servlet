@@ -18,8 +18,6 @@ public class PageGenerator {
 
     public PageGenerator() {
         this.cfg = new Configuration(Configuration.DEFAULT_INCOMPATIBLE_IMPROVEMENTS);
-
-        //cfg.setClassLoaderForTemplateLoading(Thread.currentThread().getContextClassLoader(), TEMPLATE_SOURCE_DIR);
         cfg.setClassForTemplateLoading(PageGenerator.class, TEMPLATE_SOURCE_DIR);
     }
 
@@ -36,7 +34,7 @@ public class PageGenerator {
 
     public String getPage(String templateName, Map<String, Object> data) {
         Writer stream = new StringWriter();
-        try  {
+        try {
             Template template = cfg.getTemplate(templateName);
             template.process(data, stream);
         } catch (IOException | TemplateException e) {

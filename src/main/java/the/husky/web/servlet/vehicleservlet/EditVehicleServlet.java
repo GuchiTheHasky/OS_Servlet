@@ -24,15 +24,15 @@ public class EditVehicleServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        int vehicleId = Integer.parseInt(request.getParameter("vehicle_id"));
+        String vehicleId = request.getParameter("vehicle_id");
+        int id = parseIdParameter(vehicleId);
 
-        Optional<Vehicle> vehicle = service.getById(vehicleId);
+        Optional<Vehicle> vehicle = service.getById(id);
 
-        List<Vehicle> vehicles = service.findAll();
 
         Map<String, Object> data = new HashMap<>();
-        data.put("vehicles", vehicles);
-        data.put("vehicle", vehicle);
+        data.put("vehicle", vehicle.get());
+
 
         response.setContentType("text/html;charset=utf-8");
         response.setStatus(HttpServletResponse.SC_OK);
@@ -43,28 +43,36 @@ public class EditVehicleServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        int id = Integer.parseInt(request.getParameter("vehicle_id"));
+        Vehicle updatedVehicle = buildVehicle(request);
+        service.edit(updatedVehicle);
+        response.sendRedirect("/vehicle_all");
+    }
 
-        Optional<Vehicle> editedVehicle = service.getById(id);
-
-        String updatedManufacturerString = request.getParameter("manufacturer");
-        VehicleManufacturer updatedManufacturer = VehicleManufacturer.valueOf(updatedManufacturerString);
-        String updatedEngineTypeString = request.getParameter("engineType");
-        EngineType updatedEngineType = EngineType.valueOf(updatedEngineTypeString);
+    private Vehicle buildVehicle(HttpServletRequest request) {
+        String idStr = request.getParameter("vehicleId");
+        int id = parseIdParameter(idStr);
+        String manufacture = request.getParameter("manufacturer");
+        String engineType = request.getParameter("enginetype");
         String model = request.getParameter("model");
-        double price = Double.parseDouble(request.getParameter("price"));
+        int price = Integer.parseInt(request.getParameter("price"));
         int age = Integer.parseInt(request.getParameter("age"));
         int weight = Integer.parseInt(request.getParameter("weight"));
+        return Vehicle.builder()
+                .vehicleId(id)
+                .manufacture(VehicleManufacturer.getByManufacture(manufacture))
+                .engineType(EngineType.getEngineType(engineType))
+                .model(model)
+                .price(price)
+                .age(age)
+                .weight(weight)
+                .build();
+    }
 
-//        editedVehicle.setManufacture(updatedManufacturer);
-//        editedVehicle.setEngineType(updatedEngineType);
-//        editedVehicle.setModel(model);
-//        editedVehicle.setPrice(price);
-//        editedVehicle.setAge(age);
-//        editedVehicle.setWeight(weight);
-//
-//        service.edit(editedVehicle);
-
-        response.sendRedirect(request.getContextPath() + "/vehicle/all");
+    private int parseIdParameter(String idParam) {
+        try {
+            return Integer.parseInt(idParam);
+        } catch (NumberFormatException e) {
+            throw new IllegalArgumentException("Error, wrong ID.");
+        }
     }
 }

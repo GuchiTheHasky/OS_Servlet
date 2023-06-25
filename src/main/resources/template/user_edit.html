@@ -3,22 +3,30 @@
 <head>
   <meta charset="UTF-8">
   <title>Edit User Details</title>
-  <link rel="stylesheet" type="text/css" href="static/css/user_edit_style.css">
+  <link rel="stylesheet" type="text/css" href="static/css/common.css">
 </head>
-<body>
-<h1>Edit User</h1>
+<body class="edit_user">
 <form action="/user_edit" method="post">
-  <input type="hidden" name="id" value="${user.userId?if_exists}" />
-  <label for="name">Name:</label>
+
+  <h1 class="edit_title">Edit User</h1>
+
+  <input type="hidden" class="input_new_login" name="id" value="${user.userId?if_exists}" />
+  <label for="name">Login:</label>
   <input type="text" id="name" name="name" value="${user.name?if_exists}" required /><br>
   <label for="password">Password:</label>
-  <input type="password" id="password" name="password" value="${user.password?if_exists}" required /><br>
-  <input type="submit" value="Update" />
+  <input type="password" class="input_new_password" id="password" name="password" value="${user.password?if_exists}" required /><br>
 
-  <div>
+  <div class="edit_buttons">
+    <input type="submit" value="Update" />
     <a href="/user_all" class="back_to_users">Cancel</a>
   </div>
+
 </form>
+
+<div class="image_container">
+  <img src="static/img/image.png">
+</div>
+
 </body>
 </html>
 

@@ -3,12 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <title>Add Vehicle</title>
-    <link rel="stylesheet" type="text/css" href="css/add_vehicle_style.css">
+    <link rel="stylesheet" type="text/css" href="static/css/common.css">
 
 </head>
-<body>
-<h1>Add Vehicle</h1>
-<form action="/vehicle/add" method="post">
+
+<body id="add_vehicle_class_container">
+
+<form id="add_vehicle_form" action="/vehicle_add" method="post">
+
+    <h1 id="add_vehicle_class_title">Add Vehicle</h1>
+
     <label for="manufacture">Manufacturer:</label>
     <select name="manufacture" id="manufacture">
         <option value="SUBARU">Subaru</option>
@@ -22,6 +26,7 @@
         <option value="TOYOTA">Toyota</option>
         <option value="MITSUBISHI">Mitsubishi</option>
     </select>
+
     <br>
 
     <label for="engineType">Engine Type:</label>
@@ -31,10 +36,12 @@
         <option value="Hybrid">Hybrid</option>
         <option value="Electric">Electric</option>
     </select>
+
     <br>
 
     <label for="model">Model:</label>
     <input type="text" name="model" id="model">
+
     <br>
 
     <label for="price">Price:</label>
@@ -49,7 +56,12 @@
     <input type="text" name="weight" id="weight">
     <br>
 
-    <input type="submit" value="Save">
+    <input id="save_vehicle" type="submit" value="Save">
 </form>
+
+<div class="image_container">
+    <img src="static/img/image.png">
+</div>
+
 </body>
 </html>

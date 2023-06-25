@@ -40,7 +40,7 @@ public class AddUserServlet extends HttpServlet {
 
             List<User> users = service.getAll();
             request.setAttribute("users", users);
-            request.getRequestDispatcher("/user_all").forward(request, response);
+            response.sendRedirect("/user_all");
         } catch (DataAccessException e) {
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Error adding user.");
         }
