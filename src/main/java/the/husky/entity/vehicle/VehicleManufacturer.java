@@ -22,7 +22,6 @@ public enum VehicleManufacturer {
     TOYOTA("TOYOTA", "Toyota"),
     MITSUBISHI("MITSUBISHI MOTORS CORPORATION", "Mitsubishi");
 
-
     private String manufactureId;
     private String manufacture;
 

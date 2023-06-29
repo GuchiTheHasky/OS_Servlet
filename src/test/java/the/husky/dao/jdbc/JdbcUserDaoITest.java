@@ -31,7 +31,7 @@ public class JdbcUserDaoITest {
         int id = 1;
         Optional<User> user = DAO.findById(id);
         assertNotNull(user);
-        assertFalse(user.get().getName().isEmpty());
+        assertFalse(user.get().getLogin().isEmpty());
         assertFalse(user.get().getPassword().isEmpty());
     }
 

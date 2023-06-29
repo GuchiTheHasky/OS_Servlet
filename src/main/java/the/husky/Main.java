@@ -24,19 +24,17 @@ import java.util.EnumSet;
 import java.util.Objects;
 import java.util.Properties;
 
-
-
 @Slf4j
 public class Main {
     public static void main(String[] args) throws Exception {
         Properties properties = DataSourceConnector.loadProperties();
 
-        final String jdbcUrl = properties.getProperty("jdbc.url");
-        final String jdbcUser = properties.getProperty("jdbc.user");
-        final String jdbcPassword = properties.getProperty("jdbc.password");
-        Flyway flyway = Flyway.configure().dataSource(jdbcUrl, jdbcUser, jdbcPassword)
-                .load();
-        flyway.migrate();
+//        final String jdbcUrl = properties.getProperty("spring.flyway.url");
+//        final String jdbcUser = properties.getProperty("spring.flyway.user");
+//        final String jdbcPassword = properties.getProperty("spring.flyway.password");
+//        Flyway flyway = Flyway.configure().dataSource(jdbcUrl, jdbcUser, jdbcPassword)
+//                .load();
+//        flyway.migrate();
 
         JdbcUserDao userDao = new JdbcUserDao();
         JdbcVehicleDao vehicleDao = new JdbcVehicleDao();
@@ -50,10 +48,10 @@ public class Main {
         FaviconServlet faviconServlet = new FaviconServlet();
 
         ValidationTaskServlet validationTaskServlet = new ValidationTaskServlet();
-        AddUserServlet addUserServlet = new AddUserServlet(userService, securityService);
+        AddUserServlet addUserServlet = new AddUserServlet(securityService);
         GetAllUsersServlet getAllUsersServlet = new GetAllUsersServlet(userService);
         EditUserServlet editUserServlet = new EditUserServlet(userService);
-        DeleteUserServlet deleteUserServlet = new DeleteUserServlet(userService, securityService);
+        DeleteUserServlet deleteUserServlet = new DeleteUserServlet(securityService);
 
         AddVehicleServlet addVehicleServlet = new AddVehicleServlet(vehicleService);
         GetAllVehicleServlet getAllVehicleServlet = new GetAllVehicleServlet(vehicleService);
@@ -69,14 +67,14 @@ public class Main {
         contextHandler.addServlet(new ServletHolder(loginServlet), "/login");
         contextHandler.addServlet(new ServletHolder(validationTaskServlet), "/task");
         contextHandler.addServlet(new ServletHolder(addUserServlet), "/user_add");
-        contextHandler.addServlet(new ServletHolder(getAllUsersServlet), "/user_all/*");
+        contextHandler.addServlet(new ServletHolder(getAllUsersServlet), "/user_all");
 
         contextHandler.addServlet(new ServletHolder(addVehicleServlet), "/vehicle_add");
         contextHandler.addServlet(new ServletHolder(getAllVehicleServlet), "/vehicle_all");
         contextHandler.addServlet(new ServletHolder(editUserServlet), "/user_edit/*");
         contextHandler.addServlet(new ServletHolder(editUserServlet), "/user/details");
-        contextHandler.addServlet(new ServletHolder(deleteUserServlet), "/user_delete");
-        contextHandler.addServlet(new ServletHolder(deleteVehicleServlet), "/vehicle_delete");
+        contextHandler.addServlet(new ServletHolder(deleteUserServlet), "/user/delete");
+        contextHandler.addServlet(new ServletHolder(deleteVehicleServlet), "/vehicle/delete");
         contextHandler.addServlet(new ServletHolder(editVehicleServlet), "/vehicle_edit");
         contextHandler.addServlet(new ServletHolder(vehicleFilterServlet), "/vehicle/filter");
 
@@ -86,7 +84,7 @@ public class Main {
 
         contextHandler.addFilter
                 (new FilterHolder
-                        (new SecurityFilterMain(securityService)), "/*", EnumSet.of(DispatcherType.REQUEST));
+                        (new SecurityFilterMain()), "/*", EnumSet.of(DispatcherType.REQUEST));
 
         Server server = new Server(1025);
         server.setHandler(contextHandler);

@@ -13,7 +13,6 @@ import java.io.IOException;
 public class LoginServlet extends HttpServlet {
     private SecurityService securityService;
 
-
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         PageGenerator pageGenerator = PageGenerator.instance();
@@ -21,19 +20,6 @@ public class LoginServlet extends HttpServlet {
         response.getWriter().write(page);
     }
 
-    //    @Override
-//    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-//        User user = buildUser(request);
-//        if (securityService.isAuthenticate(user)) {
-//            String password = user.getPassword();
-//            String token = securityService.getToken(password);
-//            user.setToken(token);
-//            response.addCookie(new Cookie("token", token));
-//            response.sendRedirect("/vehicle_all");
-//        } else {
-//            response.sendRedirect("/user_add");
-//        }
-//    }
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         User user = buildUser(request);
@@ -51,10 +37,10 @@ public class LoginServlet extends HttpServlet {
     }
 
     private User buildUser(HttpServletRequest request) {
-        String name = request.getParameter("username");
+        String name = request.getParameter("login");
         String password = request.getParameter("password");
         return User.builder()
-                .name(name)
+                .login(name)
                 .password(password)
                 .build();
     }

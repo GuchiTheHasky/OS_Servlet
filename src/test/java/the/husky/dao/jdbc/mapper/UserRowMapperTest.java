@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-public class UserRowMapperITest {
+public class UserRowMapperTest {
     private final UserRowMapper MAPPER = new UserRowMapper();
     // todo моки це не інтеграційний тест, а звичайний
     @Test
@@ -27,7 +27,7 @@ public class UserRowMapperITest {
         User user = MAPPER.mapRow(resultSet);
 
         assertEquals(1, user.getUserId());
-        assertEquals("Obi-Wan Kenobi", user.getName());
+        assertEquals("Obi-Wan Kenobi", user.getLogin());
         assertEquals("master", user.getPassword());
         assertNotNull(user.getRegistrationTime());
     }

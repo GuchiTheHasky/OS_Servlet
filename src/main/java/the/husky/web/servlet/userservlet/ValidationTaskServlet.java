@@ -1,5 +1,7 @@
 package the.husky.web.servlet.userservlet;
 
+import jakarta.servlet.http.HttpSession;
+import the.husky.entity.user.User;
 import the.husky.web.util.PageGenerator;
 
 import jakarta.servlet.ServletException;
@@ -8,6 +10,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
+import java.util.Optional;
 
 public class ValidationTaskServlet extends HttpServlet {
     @Override
@@ -28,8 +31,10 @@ public class ValidationTaskServlet extends HttpServlet {
         int expectedAnswer = num1 + num2;
 
         if (answer.trim().equals(String.valueOf(expectedAnswer))) {
-            response.sendRedirect("/vehicle_all"); // переносить на потрібну сторінку
-            //request.getRequestDispatcher("/vehicle_all").forward(request, response); // урла залишається /task
+            HttpSession session = request.getSession(true);
+            Optional<User> user = Optional.of(new User());
+            session.setAttribute("user", user.get());
+            response.sendRedirect("/user_all");
         } else {
             String page = generator.getPage("wrong_answer.html");
             response.getWriter().write(page);

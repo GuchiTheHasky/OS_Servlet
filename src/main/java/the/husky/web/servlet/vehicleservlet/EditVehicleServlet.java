@@ -1,5 +1,9 @@
 package the.husky.web.servlet.vehicleservlet;
 
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
 import the.husky.entity.vehicle.EngineType;
 import the.husky.entity.vehicle.Vehicle;
@@ -7,14 +11,8 @@ import the.husky.entity.vehicle.VehicleManufacturer;
 import the.husky.service.VehicleService;
 import the.husky.web.util.PageGenerator;
 
-import jakarta.servlet.ServletException;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -29,10 +27,8 @@ public class EditVehicleServlet extends HttpServlet {
 
         Optional<Vehicle> vehicle = service.getById(id);
 
-
         Map<String, Object> data = new HashMap<>();
         data.put("vehicle", vehicle.get());
-
 
         response.setContentType("text/html;charset=utf-8");
         response.setStatus(HttpServletResponse.SC_OK);
@@ -45,7 +41,7 @@ public class EditVehicleServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         Vehicle updatedVehicle = buildVehicle(request);
         service.edit(updatedVehicle);
-        response.sendRedirect("/vehicle_all");
+        response.sendRedirect("/vehicle/all");
     }
 
     private Vehicle buildVehicle(HttpServletRequest request) {

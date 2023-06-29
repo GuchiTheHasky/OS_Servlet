@@ -12,13 +12,13 @@ import java.util.Objects;
 @AllArgsConstructor
 public class User {
     private int userId;
-    private String name;
+    private String login;
     private String password;
     private LocalDateTime registrationTime;
     private String token;
 
-    public User(String name, String password) {
-        this.name = name;
+    public User(String login, String password) {
+        this.login = login;
         this.password = password;
     }
 
@@ -27,7 +27,7 @@ public class User {
         if (this == obj) return true;
         if (obj == null || getClass() != obj.getClass()) return false;
         User user = (User) obj;
-        return Objects.equals(name, user.name) &&
-               Objects.equals(password, user.password);
+        return Objects.equals(login, user.login) &&
+                Objects.equals(password, user.password);
     }
 }

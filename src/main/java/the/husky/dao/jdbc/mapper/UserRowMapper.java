@@ -10,13 +10,13 @@ public class UserRowMapper {
 
     public User mapRow(ResultSet resultSet) throws SQLException {
         int id = resultSet.getInt("id");
-        String name = resultSet.getString("user_name");
+        String login = resultSet.getString("login");
         String password = resultSet.getString("password");
         Timestamp registrationTime = resultSet.getTimestamp("registration_time");
 
         return User.builder()
                 .userId(id)
-                .name(name)
+                .login(login)
                 .password(password)
                 .registrationTime(registrationTime.toLocalDateTime())
                 .build();

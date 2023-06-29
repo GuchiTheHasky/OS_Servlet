@@ -7,7 +7,7 @@
   <version>1.0-SNAPSHOT</version>
 
   <properties>
-    <java.version>17</java.version>
+    <java.version>1.8</java.version>
     <jetty.servlet.version>11.0.15</jetty.servlet.version>
     <maven-compiler-plugin.version>3.11.0</maven-compiler-plugin.version>
     <jetty-maven-plugin.version>11.0.15</jetty-maven-plugin.version>
@@ -34,8 +34,8 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
         <configuration>
-          <source>${java.version}</source>
-          <target>${java.version}</target>
+          <source>9</source>
+          <target>9</target>
         </configuration>
       </plugin>
 

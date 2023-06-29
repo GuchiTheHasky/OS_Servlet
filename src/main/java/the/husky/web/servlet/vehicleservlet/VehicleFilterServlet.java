@@ -11,7 +11,6 @@ import the.husky.service.VehicleService;
 import java.io.IOException;
 import java.util.List;
 
-
 public class VehicleFilterServlet extends HttpServlet {
     private VehicleService service;
 

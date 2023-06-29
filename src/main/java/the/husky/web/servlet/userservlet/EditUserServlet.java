@@ -3,7 +3,6 @@ package the.husky.web.servlet.userservlet;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
 import the.husky.entity.user.User;
-import the.husky.exception.DataAccessException;
 import the.husky.service.UserService;
 import the.husky.web.util.PageGenerator;
 
@@ -23,12 +22,10 @@ public class EditUserServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String str = request.getParameter("id");
-        int id = parseIdParameter(str);
-        Optional<User> user = userService.getUserById(id);
+        User user = getToUpdate(request);
 
         Map<String, Object> params = new HashMap<>();
-        params.put("user", user.get());
+        params.put("user", user);
 
         response.setContentType("text/html;charset=utf-8");
         response.setStatus(HttpServletResponse.SC_OK);
@@ -39,24 +36,30 @@ public class EditUserServlet extends HttpServlet {
     @SneakyThrows
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) {
+        User user = getNewUser(request);
+        userService.update(user);
+        response.sendRedirect("/user_all");
+    }
+
+    private User getToUpdate(HttpServletRequest request) {
+        String str = request.getParameter("id");
+        int id = parseIdParameter(str);
+        Optional<User> user = userService.getUserById(id);
+        return user.get();
+    }
+
+    private User getNewUser(HttpServletRequest request) {
         int id = parseIdParameter(request.getParameter("id"));
-        String name = request.getParameter("name");
+        String login = request.getParameter("login");
         String password = request.getParameter("password");
-        // todo тут просто забілдити юзера і передати новий юзер в сервіс
-        // todo отримання і білдення юзера можна запаувати в метод
 
         Optional<User> user = Optional.ofNullable(User.builder()
-                .name(name)
-                .password(password)
-                .build());
+            .userId(id)
+            .login(login)
+            .password(password)
+            .build());
 
-        try {
-            userService.update(user.get());
-        } catch (DataAccessException e) { // todo цей кетч можна забрати
-             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
-                    "An error occurred while updating the user in the database.");
-        }
-        response.sendRedirect("/user/all");
+        return user.get();
     }
 
     private int parseIdParameter(String idParam) {

@@ -11,7 +11,7 @@ import java.sql.SQLException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class VehicleRowMapperITest {
+public class VehicleRowMapperTest {
 
     private final VehicleRowMapper MAPPER = new VehicleRowMapper();
 

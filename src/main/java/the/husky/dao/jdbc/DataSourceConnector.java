@@ -17,7 +17,8 @@ public class DataSourceConnector {
     private static final String CONNECTION_TEST_QUERY = "SELECT 1";
     private static HikariDataSource dataSource;
 
-    public DataSourceConnector() {}
+    public DataSourceConnector() {
+    }
 
     public static synchronized Connection getConnection() throws SQLException {
         if (dataSource == null) {
@@ -50,11 +51,5 @@ public class DataSourceConnector {
             throw new DataAccessException("Connections lost, please try again later.", e);
         }
         return properties;
-    }
-
-    public static synchronized void closeDataSource() {
-        if (dataSource != null) {
-            dataSource.close();
-        }
     }
 }

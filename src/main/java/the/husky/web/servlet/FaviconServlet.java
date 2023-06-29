@@ -20,7 +20,7 @@ public class FaviconServlet extends HttpServlet {
         @Cleanup InputStream inputStream = getServletContext().getResourceAsStream(faviconPath);
 
         if (inputStream != null) {
-            response.setContentType("image/vnd.microsoft.icon"); // todo працювало без цього, не розумію чому..?
+            response.setContentType("image/vnd.microsoft.icon");
             streamResourceContent(response, inputStream);
         } else {
             response.sendError(HttpServletResponse.SC_NOT_FOUND);

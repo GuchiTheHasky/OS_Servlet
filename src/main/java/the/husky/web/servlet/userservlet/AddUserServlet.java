@@ -1,26 +1,19 @@
 package the.husky.web.servlet.userservlet;
 
-import the.husky.entity.user.User;
-import the.husky.exception.DataAccessException;
-import the.husky.service.UserService;
-import the.husky.security.SecurityService;
-import the.husky.web.util.PageGenerator;
-
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import the.husky.entity.user.User;
+import the.husky.security.SecurityService;
+import the.husky.web.util.PageGenerator;
 
 import java.io.IOException;
-import java.util.List;
 
 public class AddUserServlet extends HttpServlet {
-    private UserService service;
     private SecurityService securityService;
 
-
-    public AddUserServlet(UserService service, SecurityService securityService) {
-        this.service = service;
+    public AddUserServlet(SecurityService securityService) {
         this.securityService = securityService;
     }
 
@@ -34,21 +27,13 @@ public class AddUserServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         User user = buildUser(request);
-        try {
-
-            securityService.addNewUser(user);
-
-            List<User> users = service.getAll();
-            request.setAttribute("users", users);
-            response.sendRedirect("/user_all");
-        } catch (DataAccessException e) {
-            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Error adding user.");
-        }
+        securityService.addNewUser(user);
+        response.sendRedirect("/login");
     }
 
     private User buildUser(HttpServletRequest request) {
         return User.builder()
-                .name(request.getParameter("user_name"))
+                .login(request.getParameter("login"))
                 .password(request.getParameter("password"))
                 .build();
     }
