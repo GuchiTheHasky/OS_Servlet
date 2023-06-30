@@ -12,9 +12,11 @@
 
   <input type="hidden" class="input_new_login" name="id" value="${user.userId?if_exists}" />
   <label for="login">Login:</label>
-  <input type="text" id="login" name="login" value="${user.login?if_exists}" required /><br>
+  <input type="text" id="login" name="login" value="${user.login?if_exists}" required />
+  <br/>
   <label for="password">Password:</label>
-  <input type="password" class="input_new_password" id="password" name="password" value="${user.password?if_exists}" required /><br>
+  <input type="password" class="input_new_password" id="password" name="password" value="${user.password?if_exists}" required />
+  <br/>
 
   <div class="edit_buttons">
     <input type="submit" value="Update" />
