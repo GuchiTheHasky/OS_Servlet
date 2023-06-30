@@ -19,7 +19,7 @@ public class DeleteVehicleServlet extends HttpServlet {
         String idStr = request.getParameter("vehicleId");
         int id = parseIdParameter(idStr);
         service.delete(id);
-        response.sendRedirect("/vehicle/all");
+        response.sendRedirect("/vehicle_all");
     }
 
     private int parseIdParameter(String idParam) {

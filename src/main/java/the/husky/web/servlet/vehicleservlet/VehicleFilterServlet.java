@@ -33,6 +33,6 @@ public class VehicleFilterServlet extends HttpServlet {
         }
 
         request.setAttribute("manufacturers", manufacturers);
-        request.getRequestDispatcher("/vehicle/all").forward(request, response);
+        request.getRequestDispatcher("/vehicle_all").forward(request, response);
     }
 }

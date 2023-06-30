@@ -29,12 +29,13 @@ public class Main {
     public static void main(String[] args) throws Exception {
         Properties properties = DataSourceConnector.loadProperties();
 
-//        final String jdbcUrl = properties.getProperty("spring.flyway.url");
-//        final String jdbcUser = properties.getProperty("spring.flyway.user");
-//        final String jdbcPassword = properties.getProperty("spring.flyway.password");
-//        Flyway flyway = Flyway.configure().dataSource(jdbcUrl, jdbcUser, jdbcPassword)
-//                .load();
-//        flyway.migrate();
+        final String jdbcUrl = properties.getProperty("spring.flyway.url");
+        final String jdbcUser = properties.getProperty("spring.flyway.user");
+        final String jdbcPassword = properties.getProperty("spring.flyway.password");
+        Flyway flyway = Flyway.configure().dataSource(jdbcUrl, jdbcUser, jdbcPassword)
+                .load();
+        flyway.baseline();
+        flyway.migrate();
 
         JdbcUserDao userDao = new JdbcUserDao();
         JdbcVehicleDao vehicleDao = new JdbcVehicleDao();
@@ -86,7 +87,7 @@ public class Main {
                 (new FilterHolder
                         (new SecurityFilterMain()), "/*", EnumSet.of(DispatcherType.REQUEST));
 
-        Server server = new Server(1025);
+        Server server = new Server(80);
         server.setHandler(contextHandler);
         server.start();
     }
