@@ -14,8 +14,9 @@ public class StaticResourceServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String resourcePath = request.getRequestURI();
+        String relativePath = resourcePath.substring(1);
 
-        @Cleanup InputStream inputStream = getServletContext().getResourceAsStream(resourcePath);
+        @Cleanup InputStream inputStream = getClass().getClassLoader().getResourceAsStream(relativePath);
 
         if (inputStream != null) {
             if (resourcePath.contains(".css")) {
@@ -23,6 +24,9 @@ public class StaticResourceServlet extends HttpServlet {
                 streamResourceContent(response, inputStream);
             } else if (resourcePath.contains(".png")) {
                 response.setContentType("image/png");
+                streamResourceContent(response, inputStream);
+            } else if (resourcePath.contains(".ico")) {
+                response.setContentType("image/vnd.microsoft.icon");
                 streamResourceContent(response, inputStream);
             }
         } else {

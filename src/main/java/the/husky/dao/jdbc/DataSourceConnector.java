@@ -29,9 +29,9 @@ public class DataSourceConnector {
 
     private static void initializeDataSource() {
         Properties properties = loadProperties();
-        String jdbcUrl = properties.getProperty("jdbc.url");
-        String jdbcUser = properties.getProperty("jdbc.user");
-        String jdbcPassword = properties.getProperty("jdbc.password");
+        String jdbcUrl = properties.getProperty("db.local.url");
+        String jdbcUser = properties.getProperty("db.user");
+        String jdbcPassword = properties.getProperty("db.password");
 
         HikariConfig config = new HikariConfig();
         config.setJdbcUrl(jdbcUrl);

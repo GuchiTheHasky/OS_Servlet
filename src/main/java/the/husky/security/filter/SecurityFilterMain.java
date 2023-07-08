@@ -12,7 +12,7 @@ import java.util.List;
 @AllArgsConstructor
 public class SecurityFilterMain implements Filter {
 
-    private final List<String> PERMITTED_URI = List.of("/login", "/task", "/user_add", "/favicon.ico", "image.png",
+    private final List<String> PERMITTED_URI = List.of("/login", "/task", "/user_add", "image.png",
             "/static", "/wrong_answer.html");
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain)
