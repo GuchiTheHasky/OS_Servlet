@@ -33,7 +33,7 @@ public class EditVehicleServlet extends HttpServlet {
         response.setContentType("text/html;charset=utf-8");
         response.setStatus(HttpServletResponse.SC_OK);
 
-        String page = PageGenerator.instance().getPage("edit_vehicle.html", data);
+        String page = PageGenerator.instance().getPage("vehicle_edit.html", data);
         response.getWriter().write(page);
     }
 

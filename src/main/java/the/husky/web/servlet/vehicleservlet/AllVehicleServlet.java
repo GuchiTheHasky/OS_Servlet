@@ -45,7 +45,7 @@ public class AllVehicleServlet extends HttpServlet {
         parameters.put("manufacturers", VehicleManufacturer.getManufacturers());
         parameters.put("engineTypes", EngineType.getAllEngineTypes());
 
-        String page = pageGenerator.getPage("vehicle_list.html", parameters);
+        String page = pageGenerator.getPage("vehicle_all.html", parameters);
         response.getWriter().write(page);
     }
 

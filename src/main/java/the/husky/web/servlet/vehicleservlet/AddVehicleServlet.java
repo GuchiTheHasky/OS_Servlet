@@ -23,7 +23,7 @@ public class AddVehicleServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         PageGenerator pageGenerator = PageGenerator.instance();
-        String page = pageGenerator.getPage("add_vehicle.html");
+        String page = pageGenerator.getPage("vehicle_add.html");
         response.getWriter().write(page);
     }
 

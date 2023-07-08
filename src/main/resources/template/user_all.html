@@ -37,6 +37,7 @@
             <td>${user.login?if_exists}</td>
             <td>${user.password?if_exists}</td>
             <td>${user.registrationTime?if_exists}</td>
+
             <td class="action-column">
                 <a href="/user_edit?id=${user.userId?if_exists}" id="edit_user_button">Edit</a>
 
@@ -47,8 +48,8 @@
                     <input type="hidden" name="id" value="${user.userId?if_exists}">
                     <button type="submit" class="delete-button">Delete</button>
                 </form>
-
             </td>
+
         </tr>
         </#list>
     </#if>
