@@ -13,17 +13,17 @@ import java.util.HashMap;
 import java.util.List;
 
 public class GetAllUsersServlet extends HttpServlet {
-    private UserService service;
+    private UserService userService;
 
-    public GetAllUsersServlet(UserService service) {
-        this.service = service;
+    public GetAllUsersServlet(UserService userService) {
+        this.userService = userService;
     }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        List<User> users = service.getAll();
+        List<User> users = userService.getAll();
 
         PageGenerator pageGenerator = PageGenerator.instance();
         HashMap<String, Object> parameters = new HashMap<>();

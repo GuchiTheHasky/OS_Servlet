@@ -18,14 +18,14 @@ import java.util.Optional;
 
 @AllArgsConstructor
 public class EditVehicleServlet extends HttpServlet {
-    private VehicleService service;
+    private VehicleService vehicleService;
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String vehicleId = request.getParameter("vehicle_id");
         int id = parseIdParameter(vehicleId);
 
-        Optional<Vehicle> vehicle = service.getById(id);
+        Optional<Vehicle> vehicle = vehicleService.getById(id);
 
         Map<String, Object> data = new HashMap<>();
         data.put("vehicle", vehicle.get());
@@ -40,7 +40,7 @@ public class EditVehicleServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         Vehicle updatedVehicle = buildVehicle(request);
-        service.edit(updatedVehicle);
+        vehicleService.edit(updatedVehicle);
         response.sendRedirect("/vehicle_all");
     }
 

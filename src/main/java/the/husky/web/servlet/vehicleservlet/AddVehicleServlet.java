@@ -14,10 +14,10 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 public class AddVehicleServlet extends HttpServlet {
-    private VehicleService service;
+    private VehicleService vehicleService;
 
     public AddVehicleServlet(VehicleService vehicleService) {
-        service = vehicleService;
+        this.vehicleService = vehicleService;
     }
 
     @Override
@@ -30,7 +30,7 @@ public class AddVehicleServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         Vehicle vehicle = buildVehicle(req);
-        service.add(vehicle);
+        vehicleService.add(vehicle);
         resp.sendRedirect("/vehicle_all");
     }
 

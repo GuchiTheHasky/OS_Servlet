@@ -8,17 +8,17 @@ import the.husky.service.VehicleService;
 import java.io.IOException;
 
 public class DeleteVehicleServlet extends HttpServlet {
-    private VehicleService service;
+    private VehicleService vehicleService;
 
-    public DeleteVehicleServlet(VehicleService service) {
-        this.service = service;
+    public DeleteVehicleServlet(VehicleService vehicleService) {
+        this.vehicleService = vehicleService;
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String idStr = request.getParameter("vehicleId");
         int id = parseIdParameter(idStr);
-        service.delete(id);
+        vehicleService.delete(id);
         response.sendRedirect("/vehicle_all");
     }
 

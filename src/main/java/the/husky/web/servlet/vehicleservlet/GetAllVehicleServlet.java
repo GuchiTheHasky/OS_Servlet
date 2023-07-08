@@ -17,10 +17,10 @@ import java.util.HashMap;
 import java.util.List;
 
 public class GetAllVehicleServlet extends HttpServlet {
-    private VehicleService service;
+    private VehicleService vehicleService;
 
-    public GetAllVehicleServlet(VehicleService service) {
-        this.service = service;
+    public GetAllVehicleServlet(VehicleService vehicleService) {
+        this.vehicleService = vehicleService;
     }
 
     @Override
@@ -29,7 +29,7 @@ public class GetAllVehicleServlet extends HttpServlet {
         String manufacturerFilter = request.getParameter("manufacturer");
         String engineTypeFilter = request.getParameter("engineType");
 
-        List<Vehicle> vehicles = service.findAll();
+        List<Vehicle> vehicles = vehicleService.findAll();
         PageGenerator pageGenerator = PageGenerator.instance();
 
         if (manufacturerFilter != null && !manufacturerFilter.isEmpty()) {

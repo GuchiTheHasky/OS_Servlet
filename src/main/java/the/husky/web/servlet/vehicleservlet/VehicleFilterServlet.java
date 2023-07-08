@@ -12,18 +12,18 @@ import java.io.IOException;
 import java.util.List;
 
 public class VehicleFilterServlet extends HttpServlet {
-    private VehicleService service;
+    private VehicleService vehicleService;
 
-    public VehicleFilterServlet(VehicleService service) {
-        this.service = service;
+    public VehicleFilterServlet(VehicleService vehicleService) {
+        this.vehicleService = vehicleService;
     }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String manufacturer = request.getParameter("manufacturer");
-        List<Vehicle> filteredVehicles = service.filterByManufacturer(manufacturer);
-        List<Vehicle> allVehicles = service.findAll();
+        List<Vehicle> filteredVehicles = vehicleService.filterByManufacturer(manufacturer);
+        List<Vehicle> allVehicles = vehicleService.findAll();
         List<String> manufacturers = VehicleManufacturer.getManufacturers();
 
         if (manufacturer != null && !manufacturer.isEmpty()) {
