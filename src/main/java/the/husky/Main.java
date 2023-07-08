@@ -53,7 +53,6 @@ public class Main {
         AllVehicleServlet allVehicleServlet = new AllVehicleServlet(vehicleService);
         DeleteVehicleServlet deleteVehicleServlet = new DeleteVehicleServlet(vehicleService);
         EditVehicleServlet editVehicleServlet = new EditVehicleServlet(vehicleService);
-        VehicleFilterServlet vehicleFilterServlet = new VehicleFilterServlet(vehicleService);
 
         ServletContextHandler contextHandler = new ServletContextHandler(ServletContextHandler.SESSIONS);
 
@@ -72,7 +71,6 @@ public class Main {
         contextHandler.addServlet(new ServletHolder(deleteUserServlet), "/user/delete");
         contextHandler.addServlet(new ServletHolder(deleteVehicleServlet), "/vehicle/delete");
         contextHandler.addServlet(new ServletHolder(editVehicleServlet), "/vehicle_edit");
-        contextHandler.addServlet(new ServletHolder(vehicleFilterServlet), "/vehicle/filter");
 
         contextHandler.addServlet(new ServletHolder(resourceServlet), "/static/*");
 
@@ -86,8 +84,4 @@ public class Main {
     }
 }
 
-// todo: VehicleFilterServlet не потрібний на 5-й хвилині є пояснення
-// todo: SecurityFilterMain забрати суфікс Main
-// todo: не треба сервлету для фавікона + можна додати тіку + заюзати IOUtils + треба перевірити, можливо справиться без тіки
 // todo: з 10-ї хвилини пояснення по токену
-// todo:
