@@ -16,10 +16,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class GetAllVehicleServlet extends HttpServlet {
+public class AllVehicleServlet extends HttpServlet {
     private VehicleService vehicleService;
 
-    public GetAllVehicleServlet(VehicleService vehicleService) {
+    public AllVehicleServlet(VehicleService vehicleService) {
         this.vehicleService = vehicleService;
     }
 

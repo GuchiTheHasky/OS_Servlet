@@ -12,10 +12,10 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 
-public class GetAllUsersServlet extends HttpServlet {
+public class AllUsersServlet extends HttpServlet {
     private UserService userService;
 
-    public GetAllUsersServlet(UserService userService) {
+    public AllUsersServlet(UserService userService) {
         this.userService = userService;
     }
 

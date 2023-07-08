@@ -45,12 +45,12 @@ public class Main {
 
         ValidationTaskServlet validationTaskServlet = new ValidationTaskServlet();
         AddUserServlet addUserServlet = new AddUserServlet(securityService);
-        GetAllUsersServlet getAllUsersServlet = new GetAllUsersServlet(userService);
+        AllUsersServlet allUsersServlet = new AllUsersServlet(userService);
         EditUserServlet editUserServlet = new EditUserServlet(userService);
         DeleteUserServlet deleteUserServlet = new DeleteUserServlet(securityService);
 
         AddVehicleServlet addVehicleServlet = new AddVehicleServlet(vehicleService);
-        GetAllVehicleServlet getAllVehicleServlet = new GetAllVehicleServlet(vehicleService);
+        AllVehicleServlet allVehicleServlet = new AllVehicleServlet(vehicleService);
         DeleteVehicleServlet deleteVehicleServlet = new DeleteVehicleServlet(vehicleService);
         EditVehicleServlet editVehicleServlet = new EditVehicleServlet(vehicleService);
         VehicleFilterServlet vehicleFilterServlet = new VehicleFilterServlet(vehicleService);
@@ -63,10 +63,10 @@ public class Main {
         contextHandler.addServlet(new ServletHolder(loginServlet), "/login");
         contextHandler.addServlet(new ServletHolder(validationTaskServlet), "/task");
         contextHandler.addServlet(new ServletHolder(addUserServlet), "/user_add");
-        contextHandler.addServlet(new ServletHolder(getAllUsersServlet), "/user_all");
+        contextHandler.addServlet(new ServletHolder(allUsersServlet), "/user_all");
 
         contextHandler.addServlet(new ServletHolder(addVehicleServlet), "/vehicle_add");
-        contextHandler.addServlet(new ServletHolder(getAllVehicleServlet), "/vehicle_all");
+        contextHandler.addServlet(new ServletHolder(allVehicleServlet), "/vehicle_all");
         contextHandler.addServlet(new ServletHolder(editUserServlet), "/user_edit/*");
         contextHandler.addServlet(new ServletHolder(editUserServlet), "/user/details");
         contextHandler.addServlet(new ServletHolder(deleteUserServlet), "/user/delete");
