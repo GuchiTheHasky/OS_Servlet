@@ -9,7 +9,7 @@ import org.eclipse.jetty.servlet.ServletHolder;
 import the.husky.dao.jdbc.JdbcUserDao;
 import the.husky.dao.jdbc.JdbcVehicleDao;
 import the.husky.security.SecurityService;
-import the.husky.security.filter.SecurityFilterMain;
+import the.husky.security.filter.SecurityFilter;
 import the.husky.service.UserService;
 import the.husky.service.VehicleService;
 import the.husky.web.servlet.LoginServlet;
@@ -78,7 +78,7 @@ public class Main {
 
         contextHandler.addFilter
                 (new FilterHolder
-                        (new SecurityFilterMain()), "/*", EnumSet.of(DispatcherType.REQUEST));
+                        (new SecurityFilter()), "/*", EnumSet.of(DispatcherType.REQUEST));
 
         Server server = new Server(1025);
         server.setHandler(contextHandler);

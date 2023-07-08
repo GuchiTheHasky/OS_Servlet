@@ -23,16 +23,7 @@ public class StaticResourceServlet extends HttpServlet {
         @Cleanup InputStream inputStream = getClass().getClassLoader().getResourceAsStream(relativePath);
 
         if (inputStream != null) {
-            if (resourcePath.contains(".css")) {
-                response.setContentType("text/css; charset=utf-8");
-                streamResourceContent(response, inputStream);
-            } else if (resourcePath.contains(".png")) {
-                response.setContentType("image/png");
-                streamResourceContent(response, inputStream);
-            } else if (resourcePath.contains(".ico")) {
-                response.setContentType("image/vnd.microsoft.icon");
-                streamResourceContent(response, inputStream);
-            }
+            streamResourceContent(response, inputStream);
         } else {
             response.sendError(HttpServletResponse.SC_NOT_FOUND);
         }
