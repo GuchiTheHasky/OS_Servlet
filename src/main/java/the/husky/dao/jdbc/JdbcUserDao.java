@@ -113,11 +113,17 @@ public class JdbcUserDao implements UserDao {
     }
 
     private int getIntValue(Optional<Integer> value) {
-        return value.orElseThrow(() -> new DataAccessException("Value is not present"));
+        return value.orElseThrow(() -> {
+            log.error("Value is not present");
+            return new DataAccessException("Value is not present");
+        });
     }
 
     private String getStringValue(Optional<String> value) {
-        return value.orElseThrow(() -> new DataAccessException("Value is not present"));
+        return value.orElseThrow(() -> {
+            log.error("Value is not present");
+            return new DataAccessException("Value is not present");
+        });
     }
     private Timestamp getDateValue(Optional<LocalDateTime> optionalDateTime) {
         return optionalDateTime.map(Timestamp::valueOf).orElse(null);

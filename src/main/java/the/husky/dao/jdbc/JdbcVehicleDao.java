@@ -50,10 +50,10 @@ public class JdbcVehicleDao implements VehicleDao {
              PreparedStatement statement = connection.prepareStatement(INSERT)) {
             statement.setString(1, vehicle.getManufacture().getManufacture());
             statement.setString(2, vehicle.getEngineType().getType());
-            statement.setString(3, vehicle.getModel());
-            statement.setDouble(4, vehicle.getPrice());
-            statement.setInt(5, vehicle.getAge());
-            statement.setInt(6, vehicle.getWeight());
+            statement.setString(3, getStringValue(vehicle.getModel()));
+            statement.setDouble(4, getDoubleValue(vehicle.getPrice()));
+            statement.setInt(5, getIntValue(vehicle.getAge()));
+            statement.setInt(6, getIntValue(vehicle.getWeight()));
 
             statement.executeUpdate();
 
@@ -82,11 +82,11 @@ public class JdbcVehicleDao implements VehicleDao {
              PreparedStatement statement = connection.prepareStatement(UPDATE)) {
             statement.setString(1, updatedVehicle.getManufacture().getManufacture());
             statement.setString(2, updatedVehicle.getEngineType().getType());
-            statement.setString(3, updatedVehicle.getModel());
-            statement.setDouble(4, updatedVehicle.getPrice());
-            statement.setInt(5, updatedVehicle.getAge());
-            statement.setInt(6, updatedVehicle.getWeight());
-            statement.setInt(7, updatedVehicle.getVehicleId());
+            statement.setString(3, getStringValue(updatedVehicle.getModel()));
+            statement.setDouble(4, getDoubleValue(updatedVehicle.getPrice()));
+            statement.setInt(5, getIntValue(updatedVehicle.getAge()));
+            statement.setInt(6, getIntValue(updatedVehicle.getWeight()));
+            statement.setInt(7, getIntValue(updatedVehicle.getVehicleId()));
 
             statement.executeUpdate();
 
@@ -112,5 +112,26 @@ public class JdbcVehicleDao implements VehicleDao {
                     String.format("Error finding vehicle with \"Id\": %d. Please try again later.", id), e);
         }
         return Optional.empty();
+    }
+
+    private int getIntValue(Optional<Integer> value) {
+        return value.orElseThrow(() -> {
+            log.error("Value is not present");
+            return new DataAccessException("Value is not present");
+        });
+    }
+
+    private Double getDoubleValue(Optional<Double> value) {
+        return value.orElseThrow(() -> {
+            log.error("Value is not present");
+            return new DataAccessException("Value is not present");
+        });
+    }
+
+    private String getStringValue(Optional<String> value) {
+        return value.orElseThrow(() -> {
+            log.error("Value is not present");
+            return new DataAccessException("Value is not present");
+        });
     }
 }

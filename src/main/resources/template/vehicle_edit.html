@@ -14,7 +14,7 @@
 
     <h1 id="edit_vehicle_title">Edit Vehicle</h1>
 
-    <input type="hidden" name="vehicleId" value="${vehicle.vehicleId}">
+    <input type="hidden" name="vehicleId" value="${vehicle.vehicleId.orElse(null)}">
     <label for="manufacturer">Manufacturer:</label>
     <input type="text" id="manufacturer" name="manufacturer" value="${vehicle.manufacture}">
 
@@ -26,22 +26,22 @@
     <br/>
 
     <label for="model">Model:</label>
-    <input type="text" id="model" name="model" value="${vehicle.model}" required/>
+    <input type="text" id="model" name="model" value="${vehicle.model.orElse(null)}" required/>
 
     <br/>
 
     <label for="price">Price:</label>
-    <input type="number" id="price" name="price" value="${vehicle.price}" required/>
+    <input type="number" id="price" name="price" value="${vehicle.price.orElse(null)}" required/>
 
     <br/>
 
     <label for="age">Age:</label>
-    <input type="number" id="age" name="age" value="${vehicle.age}" required/>
+    <input type="number" id="age" name="age" value="${vehicle.age.orElse(null)}" required/>
 
     <br/>
 
     <label for="weight">Weight:</label>
-    <input type="number" id="weight" name="weight" value="${vehicle.weight}" required/>
+    <input type="number" id="weight" name="weight" value="${vehicle.weight.orElse(null)}" required/>
 
     <br/>
 
