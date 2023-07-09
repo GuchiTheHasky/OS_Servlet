@@ -25,7 +25,7 @@ public class AllVehicleServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+            throws IOException {
         String manufacturerFilter = request.getParameter("manufacturer");
         String engineTypeFilter = request.getParameter("engineType");
 

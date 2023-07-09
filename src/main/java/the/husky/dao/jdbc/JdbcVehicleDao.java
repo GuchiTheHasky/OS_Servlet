@@ -2,12 +2,15 @@ package the.husky.dao.jdbc;
 
 import lombok.extern.slf4j.Slf4j;
 import the.husky.dao.VehicleDao;
+import the.husky.dao.connector.DataSourceConnector;
 import the.husky.dao.jdbc.mapper.VehicleRowMapper;
-import the.husky.entity.vehicle.EngineType;
 import the.husky.entity.vehicle.Vehicle;
 import the.husky.exception.DataAccessException;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -23,8 +26,6 @@ public class JdbcVehicleDao implements VehicleDao {
     private static final String UPDATE = "UPDATE \"vehicle\" " +
             "SET manufacture=?, enginetype=?, model=?, price=?, age=?, weight=? WHERE vehicle_id=?";
     private static final String GET_BY_ID = "SELECT * FROM \"vehicle\" WHERE vehicle_id = ?";
-    private static final String SELECT_BY_MANUFACTURE = "SELECT * FROM \"vehicle\" WHERE manufacture = ?";
-    private static final String SELECT_BY_ENGINE_TYPE = "SELECT * FROM \"vehicle\" WHERE enginetype = ?";
 
     @Override
     public List<Vehicle> findAll() {
@@ -111,44 +112,5 @@ public class JdbcVehicleDao implements VehicleDao {
                     String.format("Error finding vehicle with \"Id\": %d. Please try again later.", id), e);
         }
         return Optional.empty();
-    }
-
-    @Override
-    public List<Vehicle> filterByManufacturer(String manufacturer) {
-        try (Connection connection = DataSourceConnector.getConnection();
-             PreparedStatement statement = connection.prepareStatement(SELECT_BY_MANUFACTURE)) {
-            List<Vehicle> filteredVehicles = new ArrayList<>();
-            statement.setString(1, manufacturer);
-
-            try (ResultSet resultSet = statement.executeQuery()) {
-                while (resultSet.next()) {
-                    Vehicle vehicle = VEHICLE_ROW_MAPPER.mapRow(resultSet);
-                    filteredVehicles.add(vehicle);
-                }
-            }
-            return filteredVehicles;
-        } catch (SQLException e) {
-            log.error("SQL or data connection refused; JdbcVehicleDao.class, method: filterByManufacturer;", e);
-            throw new DataAccessException("Error filtering vehicles by manufacturer. Please try again later.", e);
-        }
-    }
-
-    @Override
-    public List<Vehicle> filterByEngineType(EngineType type) {
-        try (Connection connection = DataSourceConnector.getConnection();
-             PreparedStatement statement = connection.prepareStatement(SELECT_BY_ENGINE_TYPE)) {
-            statement.setString(1, type.getType());
-            List<Vehicle> filteredVehicles = new ArrayList<>();
-            try (ResultSet resultSet = statement.executeQuery()) {
-                while (resultSet.next()) {
-                    Vehicle vehicle = VEHICLE_ROW_MAPPER.mapRow(resultSet);
-                    filteredVehicles.add(vehicle);
-                }
-            }
-            return filteredVehicles;
-        } catch (SQLException e) {
-            log.error("SQL or data connection refused; JdbcVehicleDao.class, method: filterByEngineType;", e);
-            throw new DataAccessException("Error filtering vehicles by engine type. Please try again later.", e);
-        }
     }
 }

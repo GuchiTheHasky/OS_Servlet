@@ -1,4 +1,4 @@
-package the.husky.dao.jdbc;
+package the.husky.dao.connector;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;

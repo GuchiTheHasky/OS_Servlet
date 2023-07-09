@@ -1,4 +1,4 @@
-package the.husky.security.filter;
+package the.husky.web.filter;
 
 import jakarta.servlet.*;
 import jakarta.servlet.http.HttpServletRequest;

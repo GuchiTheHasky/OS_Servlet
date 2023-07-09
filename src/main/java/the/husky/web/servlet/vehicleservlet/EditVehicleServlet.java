@@ -1,6 +1,5 @@
 package the.husky.web.servlet.vehicleservlet;
 
-import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -21,7 +20,7 @@ public class EditVehicleServlet extends HttpServlet {
     private VehicleService vehicleService;
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String vehicleId = request.getParameter("vehicle_id");
         int id = parseIdParameter(vehicleId);
 

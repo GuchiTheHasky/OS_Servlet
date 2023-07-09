@@ -4,9 +4,9 @@ import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
+import java.util.Optional;
 
 @Builder
-@Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
@@ -15,7 +15,6 @@ public class User {
     private String login;
     private String password;
     private LocalDateTime registrationTime;
-    private String token;
 
     public User(String login, String password) {
         this.login = login;
@@ -29,5 +28,21 @@ public class User {
         User user = (User) obj;
         return Objects.equals(login, user.login) &&
                 Objects.equals(password, user.password);
+    }
+
+    public Optional<Integer> getUserId() {
+        return Optional.of(userId);
+    }
+
+    public Optional<String> getLogin() {
+        return Optional.ofNullable(login);
+    }
+
+    public Optional<String> getPassword() {
+        return Optional.ofNullable(password);
+    }
+
+    public Optional<LocalDateTime> getRegistrationTime() {
+        return Optional.ofNullable(registrationTime);
     }
 }

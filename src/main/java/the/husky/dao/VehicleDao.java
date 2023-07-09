@@ -45,18 +45,4 @@ public interface VehicleDao {
      * This method is useful for fetching a vehicle by its ID.
      */
     Optional<Vehicle> findById(int id);
-
-    /**
-     * The filterByManufacturer method retrieves a list of vehicle records from the data source that match the provided
-     * manufacturer. It takes a String parameter manufacturer representing the manufacturer name and returns a list of
-     * Vehicle objects. This method allows you to filter vehicles by their manufacturer.
-     */
-    List<Vehicle> filterByManufacturer(String manufacturer);
-
-    /**
-     * The filterByEngineType method retrieves a list of vehicle records from the data source that have the provided
-     * engine type. It takes an EngineType parameter type representing the engine type and returns a list of
-     * Vehicle objects. This method allows you to filter vehicles by their engine type.
-     */
-    List<Vehicle> filterByEngineType(EngineType type);
 }

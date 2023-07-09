@@ -16,7 +16,7 @@ import java.nio.channels.WritableByteChannel;
 public class StaticResourceServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+            throws IOException {
         String resourcePath = request.getRequestURI();
         String relativePath = resourcePath.substring(1);
 

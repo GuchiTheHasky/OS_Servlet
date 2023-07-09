@@ -9,22 +9,24 @@ import org.eclipse.jetty.servlet.ServletHolder;
 import the.husky.dao.jdbc.JdbcUserDao;
 import the.husky.dao.jdbc.JdbcVehicleDao;
 import the.husky.security.SecurityService;
-import the.husky.security.filter.SecurityFilter;
+import the.husky.web.filter.SecurityFilter;
 import the.husky.service.UserService;
 import the.husky.service.VehicleService;
 import the.husky.web.servlet.LoginServlet;
 import the.husky.web.servlet.StaticResourceServlet;
 import the.husky.web.servlet.userservlet.*;
-import the.husky.web.servlet.vehicleservlet.*;
+import the.husky.web.servlet.vehicleservlet.AddVehicleServlet;
+import the.husky.web.servlet.vehicleservlet.AllVehicleServlet;
+import the.husky.web.servlet.vehicleservlet.DeleteVehicleServlet;
+import the.husky.web.servlet.vehicleservlet.EditVehicleServlet;
 
 import java.util.EnumSet;
-import java.util.Objects;
 
 @Slf4j
 public class Main {
     public static void main(String[] args) throws Exception {
 //        Properties properties = DataSourceConnector.loadProperties();
-
+//
 //        final String jdbcUrl = properties.getProperty("db.flyway.url");
 //        final String jdbcUser = properties.getProperty("db.user");
 //        final String jdbcPassword = properties.getProperty("db.password");
@@ -56,9 +58,6 @@ public class Main {
 
         ServletContextHandler contextHandler = new ServletContextHandler(ServletContextHandler.SESSIONS);
 
-        String resourceBase = Objects.requireNonNull(Main.class.getResource("/template")).toExternalForm();
-        contextHandler.setResourceBase(resourceBase);
-
         contextHandler.addServlet(new ServletHolder(loginServlet), "/login");
         contextHandler.addServlet(new ServletHolder(validationTaskServlet), "/task");
         contextHandler.addServlet(new ServletHolder(addUserServlet), "/user_add");
@@ -85,3 +84,9 @@ public class Main {
 }
 
 // todo: з 10-ї хвилини пояснення по токену
+// заюзати javafaker для генерації випадкових даних
+// забрати прямий доступ до кешу
+// токен генерується в секьюріті сервісі
+// зробити кеш юзерів можливо мапу (id, password+sol)
+// юзер токен генерується секюріті сервісом, а куку можна в сервлеті робити
+// куку не можна робити в секюріті сервісі

@@ -14,7 +14,7 @@ public class LoginServlet extends HttpServlet {
     private SecurityService securityService;
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         PageGenerator pageGenerator = PageGenerator.instance();
         String page = pageGenerator.getPage("login.html");
         response.getWriter().write(page);
@@ -26,7 +26,7 @@ public class LoginServlet extends HttpServlet {
         boolean isAuthenticated = securityService.authenticate(user);
 
         if (isAuthenticated) {
-            String token = securityService.getToken(user.getPassword());
+            String token = securityService.getToken(user.getPassword().get());
             HttpSession session = request.getSession(true);
             session.setAttribute("user", user);
             response.addCookie(new Cookie("token", token));

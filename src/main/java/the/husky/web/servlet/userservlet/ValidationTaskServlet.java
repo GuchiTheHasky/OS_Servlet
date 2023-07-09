@@ -14,7 +14,7 @@ import java.util.Optional;
 
 public class ValidationTaskServlet extends HttpServlet {
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         PageGenerator pageGenerator = PageGenerator.instance();
         String page = pageGenerator.getPage("task.html");
         response.getWriter().write(page);

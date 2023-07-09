@@ -18,7 +18,7 @@ public class AddUserServlet extends HttpServlet {
     }
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse response) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse response) throws IOException {
         PageGenerator pageGenerator = PageGenerator.instance();
         String page = pageGenerator.getPage("user_add.html");
         response.getWriter().write(page);

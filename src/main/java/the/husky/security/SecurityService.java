@@ -42,7 +42,7 @@ public class SecurityService {
     }
 
     public void deleteExistingUser(User user) {
-        int id = user.getUserId();
+        int id = user.getUserId().get();
         userService.delete(id);
 
         usersCache.remove(user);

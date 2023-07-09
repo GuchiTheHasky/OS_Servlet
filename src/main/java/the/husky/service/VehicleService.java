@@ -30,12 +30,4 @@ public class VehicleService {
     public void edit(Vehicle vehicle) {
         vehicleDao.update(vehicle);
     }
-
-    public List<Vehicle> filterByManufacturer(String manufacturer) {
-        return vehicleDao.filterByManufacturer(manufacturer);
-    }
-
-    public List<Vehicle> filterByEngineType(String engineType) {
-        return vehicleDao.filterByManufacturer(engineType);
-    }
 }

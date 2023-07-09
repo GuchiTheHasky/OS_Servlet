@@ -1,15 +1,13 @@
 package the.husky.web.servlet.vehicleservlet;
 
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import the.husky.entity.vehicle.EngineType;
 import the.husky.entity.vehicle.Vehicle;
 import the.husky.entity.vehicle.VehicleManufacturer;
 import the.husky.service.VehicleService;
 import the.husky.web.util.PageGenerator;
-
-import jakarta.servlet.ServletException;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 
@@ -21,7 +19,7 @@ public class AddVehicleServlet extends HttpServlet {
     }
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         PageGenerator pageGenerator = PageGenerator.instance();
         String page = pageGenerator.getPage("vehicle_add.html");
         response.getWriter().write(page);

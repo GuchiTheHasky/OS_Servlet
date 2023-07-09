@@ -1,15 +1,13 @@
 package the.husky.web.servlet.userservlet;
 
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
 import the.husky.entity.user.User;
 import the.husky.service.UserService;
 import the.husky.web.util.PageGenerator;
-
-import jakarta.servlet.ServletException;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -21,7 +19,7 @@ public class EditUserServlet extends HttpServlet {
     private UserService userService;
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         User user = getToUpdate(request);
 
         Map<String, Object> params = new HashMap<>();
