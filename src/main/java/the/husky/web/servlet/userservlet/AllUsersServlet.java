@@ -1,6 +1,5 @@
 package the.husky.web.servlet.userservlet;
 
-import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -30,10 +29,5 @@ public class AllUsersServlet extends HttpServlet {
         parameters.put("users", users);
         String page = pageGenerator.getPage("user_all.html", parameters);
         response.getWriter().write(page);
-    }
-
-    @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        doGet(req, resp);
     }
 }

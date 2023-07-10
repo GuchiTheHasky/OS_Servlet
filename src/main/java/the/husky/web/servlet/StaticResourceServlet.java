@@ -1,6 +1,5 @@
 package the.husky.web.servlet;
 
-import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -29,7 +28,8 @@ public class StaticResourceServlet extends HttpServlet {
         }
     }
 
-    private void streamResourceContent(HttpServletResponse response, InputStream inputStream) throws IOException {
+    private void streamResourceContent(HttpServletResponse response, InputStream inputStream)
+            throws IOException {
         try (ReadableByteChannel inputChannel = Channels.newChannel(inputStream);
              WritableByteChannel outputChannel = Channels.newChannel(response.getOutputStream())) {
 

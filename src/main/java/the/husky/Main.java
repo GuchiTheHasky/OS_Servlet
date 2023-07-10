@@ -9,10 +9,12 @@ import org.eclipse.jetty.servlet.ServletHolder;
 import the.husky.dao.jdbc.JdbcUserDao;
 import the.husky.dao.jdbc.JdbcVehicleDao;
 import the.husky.security.SecurityService;
-import the.husky.web.filter.SecurityFilter;
+import the.husky.web.filter.WebFilter;
 import the.husky.service.UserService;
 import the.husky.service.VehicleService;
+import the.husky.web.servlet.AdminServlet;
 import the.husky.web.servlet.LoginServlet;
+import the.husky.web.servlet.LogoutServlet;
 import the.husky.web.servlet.StaticResourceServlet;
 import the.husky.web.servlet.userservlet.*;
 import the.husky.web.servlet.vehicleservlet.AddVehicleServlet;
@@ -42,10 +44,12 @@ public class Main {
         VehicleService vehicleService = new VehicleService(vehicleDao);
         SecurityService securityService = new SecurityService(userService);
 
+        AdminServlet adminServlet = new AdminServlet();
         LoginServlet loginServlet = new LoginServlet(securityService);
+        LogoutServlet logoutServlet = new LogoutServlet();
         StaticResourceServlet resourceServlet = new StaticResourceServlet();
 
-        ValidationTaskServlet validationTaskServlet = new ValidationTaskServlet();
+        ForgotPasswordServlet forgotPasswordServlet = new ForgotPasswordServlet();
         AddUserServlet addUserServlet = new AddUserServlet(securityService);
         AllUsersServlet allUsersServlet = new AllUsersServlet(userService);
         EditUserServlet editUserServlet = new EditUserServlet(userService);
@@ -58,8 +62,10 @@ public class Main {
 
         ServletContextHandler contextHandler = new ServletContextHandler(ServletContextHandler.SESSIONS);
 
+        contextHandler.addServlet(new ServletHolder(adminServlet), "/admin");
         contextHandler.addServlet(new ServletHolder(loginServlet), "/login");
-        contextHandler.addServlet(new ServletHolder(validationTaskServlet), "/task");
+        contextHandler.addServlet(new ServletHolder(logoutServlet), "/logout");
+        contextHandler.addServlet(new ServletHolder(forgotPasswordServlet), "/task");
         contextHandler.addServlet(new ServletHolder(addUserServlet), "/user_add");
         contextHandler.addServlet(new ServletHolder(allUsersServlet), "/user_all");
 
@@ -75,7 +81,7 @@ public class Main {
 
         contextHandler.addFilter
                 (new FilterHolder
-                        (new SecurityFilter()), "/*", EnumSet.of(DispatcherType.REQUEST));
+                        (new WebFilter()), "/*", EnumSet.of(DispatcherType.REQUEST));
 
         Server server = new Server(1025);
         server.setHandler(contextHandler);
@@ -90,3 +96,7 @@ public class Main {
 // зробити кеш юзерів можливо мапу (id, password+sol)
 // юзер токен генерується секюріті сервісом, а куку можна в сервлеті робити
 // куку не можна робити в секюріті сервісі
+// !!! перевірити конкатенацію шляхів
+//
+
+// Сесію генерує SecurityService, метод повинен приймати Credentials (сутність яка в собі логін і пароль тримає)

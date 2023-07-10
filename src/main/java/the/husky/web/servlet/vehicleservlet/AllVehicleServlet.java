@@ -1,14 +1,12 @@
 package the.husky.web.servlet.vehicleservlet;
 
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import the.husky.entity.vehicle.EngineType;
 import the.husky.entity.vehicle.Vehicle;
 import the.husky.entity.vehicle.VehicleManufacturer;
 import the.husky.service.VehicleService;
-
-import jakarta.servlet.ServletException;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import the.husky.web.util.PageGenerator;
 
 import java.io.IOException;
@@ -47,11 +45,6 @@ public class AllVehicleServlet extends HttpServlet {
 
         String page = pageGenerator.getPage("vehicle_all.html", parameters);
         response.getWriter().write(page);
-    }
-
-    @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        doGet(req, resp);
     }
 
     private List<Vehicle> filterByManufacturer(List<Vehicle> vehicles, String manufacturerFilter) {

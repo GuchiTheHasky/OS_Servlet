@@ -7,13 +7,13 @@ import lombok.AllArgsConstructor;
 import the.husky.entity.vehicle.EngineType;
 import the.husky.entity.vehicle.Vehicle;
 import the.husky.entity.vehicle.VehicleManufacturer;
+import the.husky.exception.ParseRequestException;
 import the.husky.service.VehicleService;
 import the.husky.web.util.PageGenerator;
 
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 
 @AllArgsConstructor
 public class EditVehicleServlet extends HttpServlet {
@@ -24,10 +24,10 @@ public class EditVehicleServlet extends HttpServlet {
         String vehicleId = request.getParameter("vehicle_id");
         int id = parseIdParameter(vehicleId);
 
-        Optional<Vehicle> vehicle = vehicleService.getById(id);
+        Vehicle vehicle = vehicleService.getById(id);
 
         Map<String, Object> data = new HashMap<>();
-        data.put("vehicle", vehicle.get());
+        data.put("vehicle", vehicle);
 
         response.setContentType("text/html;charset=utf-8");
         response.setStatus(HttpServletResponse.SC_OK);
@@ -67,7 +67,7 @@ public class EditVehicleServlet extends HttpServlet {
         try {
             return Integer.parseInt(idParam);
         } catch (NumberFormatException e) {
-            throw new IllegalArgumentException("Error, wrong ID.");
+            throw new ParseRequestException("Error, wrong ID.");
         }
     }
 }

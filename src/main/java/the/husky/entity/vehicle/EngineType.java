@@ -3,6 +3,7 @@ package the.husky.entity.vehicle;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import the.husky.exception.InvalidTypeException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +33,7 @@ public enum EngineType {
                 return engineType;
             }
         }
-        throw new IllegalArgumentException("Invalid engine type.");
+        throw new InvalidTypeException("Invalid engine type.");
     }
 }
 

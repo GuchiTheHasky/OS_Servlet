@@ -1,10 +1,9 @@
 package the.husky.web.servlet.userservlet;
 
-import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import the.husky.entity.user.User;
+import the.husky.exception.ParseRequestException;
 import the.husky.security.SecurityService;
 
 import java.io.IOException;
@@ -17,12 +16,11 @@ public class DeleteUserServlet extends HttpServlet {
     }
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String idStr = request.getParameter("id");
         int id = parseIdParameter(idStr);
 
-        User user = securityService.getById(id);
-        securityService.deleteExistingUser(user);
+        securityService.deleteUser(id);
         response.sendRedirect("/user_all");
     }
 
@@ -30,7 +28,7 @@ public class DeleteUserServlet extends HttpServlet {
         try {
             return Integer.parseInt(idParam);
         } catch (NumberFormatException e) {
-            throw new IllegalArgumentException("Error, wrong ID.");
+            throw new ParseRequestException("Error, wrong ID.");
         }
     }
 }

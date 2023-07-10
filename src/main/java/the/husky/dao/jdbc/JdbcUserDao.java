@@ -8,7 +8,6 @@ import the.husky.entity.user.User;
 import the.husky.exception.DataAccessException;
 
 import java.sql.*;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -44,9 +43,9 @@ public class JdbcUserDao implements UserDao {
     public void save(User user) {
         try (Connection connection = DataSourceConnector.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(INSERT)) {
-            preparedStatement.setString(1, getStringValue(user.getLogin()));
-            preparedStatement.setString(2, getStringValue(user.getPassword()));
-            preparedStatement.setTimestamp(3, getDateValue(user.getRegistrationTime()));
+            preparedStatement.setString(1, user.getLogin());
+            preparedStatement.setString(2, user.getPassword());
+            preparedStatement.setTimestamp(3, Timestamp.valueOf(user.getRegistrationTime()));
 
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
@@ -88,9 +87,9 @@ public class JdbcUserDao implements UserDao {
     public void update(User user) {
         try (Connection connection = DataSourceConnector.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(UPDATE)) {
-            preparedStatement.setString(1, getStringValue(user.getLogin()));
-            preparedStatement.setString(2, getStringValue(user.getPassword()));
-            preparedStatement.setInt(3, getIntValue(user.getUserId()));
+            preparedStatement.setString(1, user.getLogin());
+            preparedStatement.setString(2, user.getPassword());
+            preparedStatement.setInt(3, user.getUserId());
 
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
@@ -110,22 +109,5 @@ public class JdbcUserDao implements UserDao {
             throw new DataAccessException(
                     String.format("Error deleting user by \"Id\": %d. Please try again later.", id), e);
         }
-    }
-
-    private int getIntValue(Optional<Integer> value) {
-        return value.orElseThrow(() -> {
-            log.error("Value is not present");
-            return new DataAccessException("Value is not present");
-        });
-    }
-
-    private String getStringValue(Optional<String> value) {
-        return value.orElseThrow(() -> {
-            log.error("Value is not present");
-            return new DataAccessException("Value is not present");
-        });
-    }
-    private Timestamp getDateValue(Optional<LocalDateTime> optionalDateTime) {
-        return optionalDateTime.map(Timestamp::valueOf).orElse(null);
     }
 }

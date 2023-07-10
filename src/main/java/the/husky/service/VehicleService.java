@@ -5,7 +5,6 @@ import the.husky.dao.VehicleDao;
 import the.husky.entity.vehicle.Vehicle;
 
 import java.util.List;
-import java.util.Optional;
 
 @RequiredArgsConstructor
 public class VehicleService {
@@ -23,8 +22,8 @@ public class VehicleService {
         vehicleDao.delete(id);
     }
 
-    public Optional<Vehicle> getById(int id) {
-        return vehicleDao.findById(id);
+    public Vehicle getById(int id) {
+        return vehicleDao.findById(id).orElseThrow();
     }
 
     public void edit(Vehicle vehicle) {

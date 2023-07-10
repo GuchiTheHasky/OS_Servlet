@@ -6,13 +6,13 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
 import the.husky.entity.user.User;
+import the.husky.exception.ParseRequestException;
 import the.husky.service.UserService;
 import the.husky.web.util.PageGenerator;
 
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 
 @AllArgsConstructor
 public class EditUserServlet extends HttpServlet {
@@ -42,8 +42,7 @@ public class EditUserServlet extends HttpServlet {
     private User getToUpdate(HttpServletRequest request) {
         String str = request.getParameter("id");
         int id = parseIdParameter(str);
-        Optional<User> user = userService.getUserById(id);
-        return user.get();
+        return userService.getUserById(id);
     }
 
     private User getNewUser(HttpServletRequest request) {
@@ -51,20 +50,18 @@ public class EditUserServlet extends HttpServlet {
         String login = request.getParameter("login");
         String password = request.getParameter("password");
 
-        Optional<User> user = Optional.ofNullable(User.builder()
-            .userId(id)
-            .login(login)
-            .password(password)
-            .build());
-
-        return user.get();
+        return User.builder()
+                .userId(id)
+                .login(login)
+                .password(password)
+                .build();
     }
 
     private int parseIdParameter(String idParam) {
         try {
             return Integer.parseInt(idParam);
         } catch (NumberFormatException e) {
-            throw new IllegalArgumentException("Error, wrong ID.");
+            throw new ParseRequestException("Error, wrong ID.");
         }
     }
 }

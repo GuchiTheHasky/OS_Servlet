@@ -22,12 +22,12 @@ public class UserService {
         userDao.save(user);
     }
 
-    public Optional<User> getByName(String name) {
-        return userDao.findByLogin(name);
+    public User getByName(String name) {
+        return userDao.findByLogin(name).orElseThrow();
     }
 
-    public Optional<User> getUserById(int id) {
-        return userDao.findById(id);
+    public User getUserById(int id) {
+        return userDao.findById(id).orElseThrow();
     }
 
     public void update(User user) {

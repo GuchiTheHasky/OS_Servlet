@@ -3,6 +3,7 @@ package the.husky.entity.vehicle;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import the.husky.exception.InvalidTypeException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,7 +40,7 @@ public enum VehicleManufacturer {
                 return manufacturer;
             }
         }
-        throw new IllegalArgumentException("Invalid vehicle manufacturer: " + manufacture);
+        throw new InvalidTypeException("Invalid vehicle manufacturer: " + manufacture);
     }
 }
 

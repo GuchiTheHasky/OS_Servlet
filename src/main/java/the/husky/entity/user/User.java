@@ -4,10 +4,10 @@ import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
-import java.util.Optional;
 
 @Builder
 @Setter
+@Getter
 @NoArgsConstructor
 @AllArgsConstructor
 public class User {
@@ -28,21 +28,5 @@ public class User {
         User user = (User) obj;
         return Objects.equals(login, user.login) &&
                 Objects.equals(password, user.password);
-    }
-
-    public Optional<Integer> getUserId() {
-        return Optional.of(userId);
-    }
-
-    public Optional<String> getLogin() {
-        return Optional.ofNullable(login);
-    }
-
-    public Optional<String> getPassword() {
-        return Optional.ofNullable(password);
-    }
-
-    public Optional<LocalDateTime> getRegistrationTime() {
-        return Optional.ofNullable(registrationTime);
     }
 }

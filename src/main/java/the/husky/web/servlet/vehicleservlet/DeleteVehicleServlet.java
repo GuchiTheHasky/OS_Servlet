@@ -3,6 +3,7 @@ package the.husky.web.servlet.vehicleservlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import the.husky.exception.ParseRequestException;
 import the.husky.service.VehicleService;
 
 import java.io.IOException;
@@ -26,7 +27,7 @@ public class DeleteVehicleServlet extends HttpServlet {
         try {
             return Integer.parseInt(idParam);
         } catch (NumberFormatException e) {
-            throw new IllegalArgumentException("Error, wrong ID.");
+            throw new ParseRequestException("Error, wrong ID.");
         }
     }
 }

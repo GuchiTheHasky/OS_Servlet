@@ -1,18 +1,14 @@
 package the.husky.web.servlet.userservlet;
 
-import jakarta.servlet.http.HttpSession;
+import jakarta.servlet.http.*;
 import the.husky.entity.user.User;
+import the.husky.security.Credentials;
 import the.husky.web.util.PageGenerator;
-
-import jakarta.servlet.ServletException;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 import java.util.Optional;
 
-public class ValidationTaskServlet extends HttpServlet {
+public class ForgotPasswordServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         PageGenerator pageGenerator = PageGenerator.instance();
@@ -22,7 +18,7 @@ public class ValidationTaskServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+            throws IOException {
         String answer = request.getParameter("answer");
         PageGenerator generator = PageGenerator.instance();
 
@@ -31,13 +27,17 @@ public class ValidationTaskServlet extends HttpServlet {
         int expectedAnswer = num1 + num2;
 
         if (answer.trim().equals(String.valueOf(expectedAnswer))) {
-            HttpSession session = request.getSession(true);
-            Optional<User> user = Optional.of(new User());
-            session.setAttribute("user", user.get());
-            response.sendRedirect("/user_all");
+            setCookies(response);
+            response.sendRedirect("/vehicle_all");
         } else {
             String page = generator.getPage("wrong_answer.html");
             response.getWriter().write(page);
         }
+    }
+
+    private void setCookies(HttpServletResponse response) {
+        Cookie cookie = new Cookie("user-token", "root");
+        cookie.setMaxAge(3600);
+        response.addCookie(cookie);
     }
 }
