@@ -1,4 +1,4 @@
-package the.husky.security;
+package the.husky.security.entity;
 
 import lombok.Builder;
 import lombok.Data;
