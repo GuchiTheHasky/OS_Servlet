@@ -6,13 +6,12 @@ import the.husky.entity.user.User;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 @RequiredArgsConstructor
 public class UserService {
     private final UserDao userDao;
 
-    public List<User> getAll() {
+    public List<User> findAll() {
         return userDao.findAll();
     }
 

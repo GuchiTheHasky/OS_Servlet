@@ -26,7 +26,7 @@ public class VehicleService {
         return vehicleDao.findById(id).orElseThrow();
     }
 
-    public void edit(Vehicle vehicle) {
+    public void update(Vehicle vehicle) {
         vehicleDao.update(vehicle);
     }
 }
