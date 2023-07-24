@@ -3,24 +3,22 @@ package the.husky.web.servlet.userservlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.AllArgsConstructor;
 import the.husky.exception.ParseRequestException;
-import the.husky.security.SecurityService;
+import the.husky.service.WebService;
 
 import java.io.IOException;
 
+@AllArgsConstructor
 public class DeleteUserServlet extends HttpServlet {
-    private SecurityService securityService;
-
-    public DeleteUserServlet(SecurityService securityService) {
-        this.securityService = securityService;
-    }
+    private WebService webService;
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String idStr = request.getParameter("id");
         int id = parseIdParameter(idStr);
 
-        securityService.deleteUser(id);
+        webService.getCacheService().deleteUser(id);
         response.sendRedirect("/user_all");
     }
 

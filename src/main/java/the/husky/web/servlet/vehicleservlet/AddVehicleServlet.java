@@ -3,20 +3,18 @@ package the.husky.web.servlet.vehicleservlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.AllArgsConstructor;
 import the.husky.entity.vehicle.EngineType;
 import the.husky.entity.vehicle.Vehicle;
 import the.husky.entity.vehicle.VehicleManufacturer;
-import the.husky.service.VehicleService;
+import the.husky.service.WebService;
 import the.husky.web.util.PageGenerator;
 
 import java.io.IOException;
 
+@AllArgsConstructor
 public class AddVehicleServlet extends HttpServlet {
-    private VehicleService vehicleService;
-
-    public AddVehicleServlet(VehicleService vehicleService) {
-        this.vehicleService = vehicleService;
-    }
+    private WebService webService;
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -28,7 +26,7 @@ public class AddVehicleServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         Vehicle vehicle = buildVehicle(req);
-        vehicleService.add(vehicle);
+        webService.getCacheService().addVehicle(vehicle);
         resp.sendRedirect("/vehicle_all");
     }
 
@@ -42,6 +40,7 @@ public class AddVehicleServlet extends HttpServlet {
                 .price(Double.parseDouble(request.getParameter("price")))
                 .age(Integer.parseInt(request.getParameter("age")))
                 .weight(Integer.parseInt(request.getParameter("weight")))
+                //.vehicleId()
                 .build();
     }
 }

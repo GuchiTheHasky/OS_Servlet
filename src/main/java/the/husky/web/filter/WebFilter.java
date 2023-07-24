@@ -7,6 +7,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
 
+import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.IOException;
 import java.util.List;
 
@@ -23,17 +24,23 @@ public class WebFilter implements Filter {
         HttpServletResponse response = (HttpServletResponse) servletResponse;
 
         String requestURI = request.getRequestURI();
-        if (requestURI.equals("/users_all")) {
+        if (isGodModeRequest(requestURI)) {
             if (isAdmin(request) || isPermittedURI(requestURI)) {
                 filterChain.doFilter(request, response);
+            } else {
+                response.sendRedirect("/login");
             }
         } else {
-            if (isUser(request) || isPermittedURI(requestURI)) {
+            if ((isUser(request) || isPermittedURI(requestURI)) || isAdmin(request)) {
                 filterChain.doFilter(request, response);
             } else {
                 response.sendRedirect("/login");
             }
         }
+    }
+
+    private boolean isGodModeRequest(String uri) {
+        return uri.contains("/user_all") || uri.contains("/user_edit/*") || uri.contains("/user/delete/*");
     }
 
     private boolean isPermittedURI(String uri) {

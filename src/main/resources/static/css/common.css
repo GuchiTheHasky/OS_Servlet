@@ -1,5 +1,113 @@
 /* common.css */
 
+#admin_title {
+  color: white;
+  text-align: center;
+  font-size: 48px;
+  margin-top: 40px;
+  animation-name: fade-in-admin;
+  animation-duration: 3s;
+}
+@keyframes fade-in-admin { /* настройка анімації */
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+.logout {
+  text-align: right;
+  margin-top: 20px;
+
+}
+
+.logout button {
+  background-color: #d9534f;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 100px;
+}
+
+.logout button:hover {
+  background-color: darkred;
+}
+
+#statistic_admin {
+  flex-direction: column;
+  border: 3px solid white;
+  padding: 10px;
+  width: 280px;
+  color: white;
+  border-radius: 100px;
+}
+
+#statistic_admin h3 {
+  text-align: center;
+  color: white
+  margin: 0;
+}
+
+#statistic_admin p {
+  text-align: center;
+  color: white;
+  margin: 10px 0;
+}
+
+#users_cache_admin {
+  display: inline-block;
+  background-color: green;
+  color: white;
+  padding: 10px 40px;
+  border-radius: 100px;
+}
+
+#users_cache_admin:hover {
+  background-color: darkgreen;
+}
+
+#add_new_user_admin {
+  display: inline-block;
+  background-color: green;
+  color: white;
+  padding: 10px 29px;
+  border-radius: 100px;
+}
+
+#add_new_user_admin:hover {
+  background-color: darkgreen;
+}
+
+#add_new_vehicle_admin {
+  display: inline-block;
+  background-color: green;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 100px;
+}
+
+#add_new_vehicle_admin:hover {
+  background-color: darkgreen;
+}
+
+#all_vehicles_admin {
+  display: inline-block;
+  background-color: green;
+  color: white;
+  padding: 10px 32px;
+  border-radius: 100px;
+}
+
+#all_vehicles_admin:hover {
+  background-color: darkgreen;
+}
+
+
+
 body {
     font-family: Arial, sans-serif;
     background-color: #111010;
@@ -762,5 +870,3 @@ div#add_new_vehicle_in_list a {
     text-decoration: none;
     border-radius: 5px;
 }
-
-

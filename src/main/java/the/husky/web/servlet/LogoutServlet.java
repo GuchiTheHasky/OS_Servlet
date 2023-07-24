@@ -9,9 +9,10 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 public class LogoutServlet extends HttpServlet {
+
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+            throws IOException {
         String tokenRole = tokenRole(request);
         assert tokenRole != null;
         Cookie cookie = new Cookie(tokenRole, "");

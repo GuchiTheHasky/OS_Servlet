@@ -1,14 +1,12 @@
 package the.husky.web.servlet.userservlet;
 
 import jakarta.servlet.http.*;
-import the.husky.entity.user.User;
-import the.husky.security.Credentials;
 import the.husky.web.util.PageGenerator;
 
 import java.io.IOException;
-import java.util.Optional;
 
 public class ForgotPasswordServlet extends HttpServlet {
+
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         PageGenerator pageGenerator = PageGenerator.instance();

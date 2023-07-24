@@ -12,13 +12,12 @@ public enum Role {
 
     private String role;
 
-
-    public static Role getRole(String role) {
-        for (Role value : values()) {
-            if (value.role.equalsIgnoreCase(role)) {
-                return value;
-            }
-        }
-        throw new InvalidTypeException("Invalid role type.");
-    }
+//    public static Role getRole(String role) {
+//        for (Role value : values()) {
+//            if (value.role.equalsIgnoreCase(role)) {
+//                return value;
+//            }
+//        }
+//        throw new InvalidTypeException("Invalid role type.");
+//    }
 }

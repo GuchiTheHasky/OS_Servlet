@@ -3,18 +3,16 @@ package the.husky.web.servlet.userservlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.AllArgsConstructor;
 import the.husky.entity.user.User;
-import the.husky.security.SecurityService;
+import the.husky.service.WebService;
 import the.husky.web.util.PageGenerator;
 
 import java.io.IOException;
 
+@AllArgsConstructor
 public class AddUserServlet extends HttpServlet {
-    private SecurityService securityService;
-
-    public AddUserServlet(SecurityService securityService) {
-        this.securityService = securityService;
-    }
+    private WebService webService;
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse response) throws IOException {
@@ -26,7 +24,7 @@ public class AddUserServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         User user = buildUser(request);
-        securityService.addUser(user);
+        webService.getCacheService().addUser(user);
         response.sendRedirect("/login");
     }
 
@@ -34,6 +32,7 @@ public class AddUserServlet extends HttpServlet {
         return User.builder()
                 .login(request.getParameter("login"))
                 .password(request.getParameter("password"))
+                //.userId()
                 .build();
     }
 }

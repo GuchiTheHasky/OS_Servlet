@@ -3,26 +3,24 @@ package the.husky.web.servlet.userservlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.AllArgsConstructor;
 import the.husky.entity.user.User;
-import the.husky.service.UserService;
+import the.husky.service.WebService;
 import the.husky.web.util.PageGenerator;
 
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 
+@AllArgsConstructor
 public class AllUsersServlet extends HttpServlet {
-    private UserService userService;
-
-    public AllUsersServlet(UserService userService) {
-        this.userService = userService;
-    }
+    private WebService webService;
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws IOException {
 
-        List<User> users = userService.getAll();
+        List<User> users = webService.getCacheService().getUsers();
 
         PageGenerator pageGenerator = PageGenerator.instance();
         HashMap<String, Object> parameters = new HashMap<>();

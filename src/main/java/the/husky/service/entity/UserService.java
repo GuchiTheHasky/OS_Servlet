@@ -1,4 +1,4 @@
-package the.husky.service;
+package the.husky.service.entity;
 
 import lombok.RequiredArgsConstructor;
 import the.husky.dao.UserDao;

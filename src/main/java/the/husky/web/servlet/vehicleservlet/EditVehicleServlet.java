@@ -8,7 +8,7 @@ import the.husky.entity.vehicle.EngineType;
 import the.husky.entity.vehicle.Vehicle;
 import the.husky.entity.vehicle.VehicleManufacturer;
 import the.husky.exception.ParseRequestException;
-import the.husky.service.VehicleService;
+import the.husky.service.WebService;
 import the.husky.web.util.PageGenerator;
 
 import java.io.IOException;
@@ -17,14 +17,14 @@ import java.util.Map;
 
 @AllArgsConstructor
 public class EditVehicleServlet extends HttpServlet {
-    private VehicleService vehicleService;
+    private WebService webService;
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String vehicleId = request.getParameter("vehicle_id");
         int id = parseIdParameter(vehicleId);
 
-        Vehicle vehicle = vehicleService.getById(id);
+        Vehicle vehicle = webService.getCacheService().getVehicleById(id);
 
         Map<String, Object> data = new HashMap<>();
         data.put("vehicle", vehicle);
@@ -39,7 +39,7 @@ public class EditVehicleServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         Vehicle updatedVehicle = buildVehicle(request);
-        vehicleService.edit(updatedVehicle);
+        webService.getCacheService().updateVehicle(updatedVehicle);
         response.sendRedirect("/vehicle_all");
     }
 
