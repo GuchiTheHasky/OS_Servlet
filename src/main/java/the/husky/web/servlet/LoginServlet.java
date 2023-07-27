@@ -2,7 +2,7 @@ package the.husky.web.servlet;
 
 import jakarta.servlet.http.*;
 import lombok.AllArgsConstructor;
-import the.husky.entity.user.User;
+import lombok.extern.slf4j.Slf4j;
 import the.husky.service.WebService;
 import the.husky.security.entity.Credentials;
 import the.husky.security.entity.Session;
@@ -10,6 +10,7 @@ import the.husky.web.util.PageGenerator;
 
 import java.io.IOException;
 
+@Slf4j
 @AllArgsConstructor
 public class LoginServlet extends HttpServlet {
     private WebService webService;
@@ -23,21 +24,19 @@ public class LoginServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        Credentials credentials = getCredentials(request);
+        Credentials credentials = createCredentials(request);
         validateCredentials(response, credentials);
 
         Session session = webService.getSecurityService().createSession(credentials);
         validateSession(response, session);
 
-        var tokenValue = webService.getSecurityService().generateToken(credentials.getPassword());
-
         if (session.getRole().getRole().equalsIgnoreCase("USER")) {
             String user = "user-token";
-            setCookies(response, tokenValue, user);
+            setCookies(response, session.getToken(), user);
             response.sendRedirect("/vehicle_all");
         } else if (session.getRole().getRole().equalsIgnoreCase("Admin")) {
             String admin = "admin-token";
-            setCookies(response, tokenValue, admin);
+            setCookies(response, session.getToken(), admin);
             response.sendRedirect("/admin");
         } else {
             response.sendRedirect("/login");
@@ -52,17 +51,19 @@ public class LoginServlet extends HttpServlet {
 
     private void validateSession(HttpServletResponse response, Session session) throws IOException {
         if (session == null) {
+            log.warn("Session is null");
             response.sendRedirect("/login");
         }
     }
 
     private void validateCredentials(HttpServletResponse response, Credentials credentials) throws IOException {
         if (credentials.getLogin().isEmpty() || credentials.getPassword().isEmpty()) {
+            log.warn("Credentials is empty");
             response.sendRedirect("/login");
         }
     }
 
-    private Credentials getCredentials(HttpServletRequest request) {
+    private Credentials createCredentials(HttpServletRequest request) {
         String login = request.getParameter("login");
         String password = request.getParameter("password");
         return Credentials.builder()

@@ -12,6 +12,7 @@ import the.husky.service.WebService;
 import the.husky.web.util.PageGenerator;
 
 import java.io.IOException;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -21,16 +22,10 @@ public class EditVehicleServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        String vehicleId = request.getParameter("vehicle_id");
-        int id = parseIdParameter(vehicleId);
+        Vehicle vehicle = getToUpdate(request);
 
-        Vehicle vehicle = webService.getCacheService().getVehicleById(id);
-
-        Map<String, Object> data = new HashMap<>();
+        Map<String, Object> data = Collections.synchronizedMap(new HashMap<>());
         data.put("vehicle", vehicle);
-
-        response.setContentType("text/html;charset=utf-8");
-        response.setStatus(HttpServletResponse.SC_OK);
 
         String page = PageGenerator.instance().getPage("vehicle_edit.html", data);
         response.getWriter().write(page);
@@ -43,24 +38,38 @@ public class EditVehicleServlet extends HttpServlet {
         response.sendRedirect("/vehicle_all");
     }
 
+    private Vehicle getToUpdate(HttpServletRequest request) {
+        String vehicleId = request.getParameter("vehicle_id");
+        int id = parseIdParameter(vehicleId);
+        return webService.getCacheService().getVehicleById(id);
+    }
+
     private Vehicle buildVehicle(HttpServletRequest request) {
         String idStr = request.getParameter("vehicleId");
         int id = parseIdParameter(idStr);
         String manufacture = request.getParameter("manufacturer");
         String engineType = request.getParameter("enginetype");
         String model = request.getParameter("model");
-        int price = Integer.parseInt(request.getParameter("price"));
-        int age = Integer.parseInt(request.getParameter("age"));
-        int weight = Integer.parseInt(request.getParameter("weight"));
+        String price = (request.getParameter("price"));
+        String age = (request.getParameter("age").trim());
+        String weight = (request.getParameter("weight"));
         return Vehicle.builder()
                 .vehicleId(id)
                 .manufacture(VehicleManufacturer.getByManufacture(manufacture))
                 .engineType(EngineType.getEngineType(engineType))
                 .model(model)
-                .price(price)
-                .age(age)
-                .weight(weight)
+                .price(convertPrice(Double.parseDouble(price)))
+                .age(Integer.parseInt(age))
+                .weight(convertWeight(Integer.parseInt(weight)))
                 .build();
+    }
+
+    private double convertPrice(Double price) {
+        return price < 0 ? 0 : price;
+    }
+
+    private int convertWeight(Integer weight) {
+        return weight <= 1500 ? 1500 : weight;
     }
 
     private int parseIdParameter(String idParam) {

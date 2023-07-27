@@ -5,17 +5,23 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
-import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
+import the.husky.security.entity.Session;
+import the.husky.service.WebService;
 
-import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.IOException;
 import java.util.List;
 
+@Slf4j
 @AllArgsConstructor
 public class WebFilter implements Filter {
+    private WebService webService;
 
     private final List<String> PERMITTED_URI = List.of("/login", "/task", "/user_add", "image.png",
             "/static", "/favicon.ico", "/wrong_answer.html");
+    private final List<String> USER_ACCESS_LEVEL_URI = List.of("/login", "/logout", "/task", "/user_add",
+            "image.png", "/static", "/favicon.ico", "/wrong_answer.html", "/vehicle_all", "/vehicle_add",
+            "/vehicle_edit", "/vehicle/delete");
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain)
@@ -23,55 +29,82 @@ public class WebFilter implements Filter {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         HttpServletResponse response = (HttpServletResponse) servletResponse;
 
-        String requestURI = request.getRequestURI();
-        if (isGodModeRequest(requestURI)) {
-            if (isAdmin(request) || isPermittedURI(requestURI)) {
-                filterChain.doFilter(request, response);
-            } else {
-                response.sendRedirect("/login");
-            }
+        if (isPermittedURI(request.getRequestURI())) {
+            filterChain.doFilter(request, response);
+            return;
+        }
+
+        String cookieToken = extractTokenValue(request);
+
+        if (cookieToken == null) {
+            response.sendRedirect("/login");
+            return;
+        }
+
+        Session currentSession = getSession(cookieToken);
+        validateSession(response, currentSession);
+
+        if (isAdmin(currentSession, cookieToken) && !isSessionTerminated(cookieToken)) {
+            filterChain.doFilter(request, response);
+        } else if (isUser(currentSession, cookieToken) &&
+                isUserAccessLevel(request) &&
+                !isSessionTerminated(cookieToken)) {
+            filterChain.doFilter(request, response);
         } else {
-            if ((isUser(request) || isPermittedURI(requestURI)) || isAdmin(request)) {
-                filterChain.doFilter(request, response);
-            } else {
-                response.sendRedirect("/login");
-            }
+            response.sendRedirect("/login");
         }
     }
 
-    private boolean isGodModeRequest(String uri) {
-        return uri.contains("/user_all") || uri.contains("/user_edit/*") || uri.contains("/user/delete/*");
+    private boolean isSessionTerminated(String token) {
+        return webService.getSecurityService().isSessionTerminated(token);
     }
 
-    private boolean isPermittedURI(String uri) {
-        for (String permittedUri : PERMITTED_URI) {
-            if (uri.contains(permittedUri)) {
+    private boolean isAdmin(Session session, String token) {
+        return session.getRole().getRole().equalsIgnoreCase("Admin") &&
+                session.getToken().equals(token);
+    }
+
+    private boolean isUser(Session session, String token) {
+        return session.getRole().getRole().equalsIgnoreCase("User") &&
+                session.getToken().equals(token);
+    }
+
+    private boolean isUserAccessLevel(HttpServletRequest request) {
+        for (String permittedUri : USER_ACCESS_LEVEL_URI) {
+            if (request.getRequestURI().contains(permittedUri)) {
                 return true;
             }
         }
         return false;
     }
 
-    @SneakyThrows
-    private boolean isUser(HttpServletRequest request) {
+    private Session getSession(String token) {
+        return webService.getSecurityService().getSession(token);
+    }
+
+    private String extractTokenValue(HttpServletRequest request) {
         Cookie[] cookies = request.getCookies();
         if (cookies != null) {
             for (Cookie cookie : cookies) {
-                if (cookie.getName().equals("user-token")) {
-                    return true;
+                if ("user-token".equals(cookie.getName()) || "admin-token".equals(cookie.getName())) {
+                    return cookie.getValue();
                 }
             }
         }
-        return false;
+        return null;
     }
 
-    private boolean isAdmin(HttpServletRequest request) {
-        Cookie[] cookies = request.getCookies();
-        if (cookies != null) {
-            for (Cookie cookie : cookies) {
-                if (cookie.getName().equals("admin-token")) {
-                    return true;
-                }
+    private void validateSession(HttpServletResponse response, Session session) throws IOException {
+        if (session == null) {
+            log.warn("Session is null");
+            response.sendRedirect("/login");
+        }
+    }
+
+    private boolean isPermittedURI(String uri) {
+        for (String permittedUri : PERMITTED_URI) {
+            if (uri.contains(permittedUri)) {
+                return true;
             }
         }
         return false;

@@ -9,8 +9,10 @@ import the.husky.service.WebService;
 import the.husky.web.util.PageGenerator;
 
 import java.io.IOException;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @AllArgsConstructor
 public class AllUsersServlet extends HttpServlet {
@@ -23,7 +25,7 @@ public class AllUsersServlet extends HttpServlet {
         List<User> users = webService.getCacheService().getUsers();
 
         PageGenerator pageGenerator = PageGenerator.instance();
-        HashMap<String, Object> parameters = new HashMap<>();
+        Map<String, Object> parameters = Collections.synchronizedMap(new HashMap<>());
         parameters.put("users", users);
         String page = pageGenerator.getPage("user_all.html", parameters);
         response.getWriter().write(page);

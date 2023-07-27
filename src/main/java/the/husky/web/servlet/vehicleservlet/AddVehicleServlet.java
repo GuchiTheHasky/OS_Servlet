@@ -33,14 +33,17 @@ public class AddVehicleServlet extends HttpServlet {
     private Vehicle buildVehicle(HttpServletRequest request) {
         String manufactureId = request.getParameter("manufacture");
         String engineType = request.getParameter("engineType");
+        String model = request.getParameter("model");
+        String price = (request.getParameter("price"));
+        String age = (request.getParameter("age"));
+        String weight = (request.getParameter("weight"));
         return Vehicle.builder()
                 .manufacture(VehicleManufacturer.getByManufacture(manufactureId))
                 .engineType(EngineType.getEngineType(engineType))
-                .model(request.getParameter("model"))
-                .price(Double.parseDouble(request.getParameter("price")))
-                .age(Integer.parseInt(request.getParameter("age")))
-                .weight(Integer.parseInt(request.getParameter("weight")))
-                //.vehicleId()
+                .model(model)
+                .price(Double.parseDouble(price))
+                .age(Integer.parseInt(age))
+                .weight(Integer.parseInt(weight))
                 .build();
     }
 }

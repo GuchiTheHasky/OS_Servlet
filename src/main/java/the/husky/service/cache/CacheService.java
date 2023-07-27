@@ -3,7 +3,6 @@ package the.husky.service.cache;
 import lombok.Data;
 import the.husky.entity.user.User;
 import the.husky.entity.vehicle.Vehicle;
-import the.husky.security.entity.Credentials;
 import the.husky.service.entity.UserService;
 import the.husky.service.entity.VehicleService;
 
@@ -23,20 +22,11 @@ public class CacheService {
         this.vehiclesCache = vehicleService.findAll();
     }
 
-    public User getUserFromCredentials(Credentials credentials) {
-        String login = credentials.getLogin();
-        String password = credentials.getPassword();
-        for (User user : usersCache) {
-            if (user.getLogin().equalsIgnoreCase(login) && user.getPassword().equals(password)) {
-                return user;
-            }
-        }
-        return null;
-    }
-
     public void addUser(User user) {
-        usersCache.add(user);
-        userService.add(user);
+        if (!loginAlreadyExist(user.getLogin())) {
+            usersCache.add(user);
+            userService.add(user);
+        }
     }
 
     public void deleteUser(int id) {
@@ -58,6 +48,15 @@ public class CacheService {
 
     public void updateUser(User user) {
         userService.update(user);
+    }
+
+    public boolean loginAlreadyExist(String login) {
+        for (User cachedUser : usersCache) {
+            if (cachedUser.getLogin().equals(login)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public void updateVehicle(Vehicle vehicle) {

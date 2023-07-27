@@ -12,7 +12,7 @@ CREATE TABLE vehicle
     manufacture varchar(64)    NOT NULL,
     engineType  varchar(64)    NOT NULL,
     model       varchar(64)    NOT NULL,
-    price       decimal(10, 2) NOT NULL,
-    age         int check ( age > 0 ),
-    weight      int check (weight > 0 )
+    price       decimal NOT NULL,
+    age         int,
+    weight      int
 );

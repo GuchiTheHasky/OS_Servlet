@@ -1,6 +1,5 @@
 package the.husky.security;
 
-import the.husky.entity.user.User;
 import the.husky.security.entity.Credentials;
 import the.husky.security.entity.Session;
 
@@ -18,6 +17,15 @@ public interface Security {
      * @return The created session.
      */
     Session createSession(Credentials credentials);
+
+    /**
+     * Creates a guest session.
+     * The guest session represents an unauthenticated user's session and may have limited access.
+     * It is typically used to provide temporary access or partial functionality for guests.
+     *
+     * @return The created guest session.
+     */
+    Session createGuestSession();
 
     /**
      * Generates a security token based on the provided password.

@@ -1,5 +1,6 @@
 package the.husky.web.servlet.userservlet;
 
+import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -10,6 +11,7 @@ import the.husky.service.WebService;
 import the.husky.web.util.PageGenerator;
 
 import java.io.IOException;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -22,17 +24,15 @@ public class EditUserServlet extends HttpServlet {
         PageGenerator pageGenerator = PageGenerator.instance();
         User user = getToUpdate(request);
 
-        Map<String, Object> params = new HashMap<>();
+        Map<String, Object> params = Collections.synchronizedMap(new HashMap<>());
         params.put("user", user);
 
-        response.setContentType("text/html;charset=utf-8");
-        response.setStatus(HttpServletResponse.SC_OK);
         String page = pageGenerator.getPage("user_edit.html", params);
         response.getWriter().write(page);
     }
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         User user = getNewUser(request);
         webService.getCacheService().updateUser(user);
         response.sendRedirect("/user_all");
@@ -45,10 +45,10 @@ public class EditUserServlet extends HttpServlet {
     }
 
     private User getNewUser(HttpServletRequest request) {
-        int id = parseIdParameter(request.getParameter("id"));
+        String idStr = request.getParameter("id");
+        int id = parseIdParameter(idStr);
         String login = request.getParameter("login");
         String password = request.getParameter("password");
-
         return User.builder()
                 .userId(id)
                 .login(login)

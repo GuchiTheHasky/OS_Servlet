@@ -38,7 +38,6 @@ public class Main {
 //        final String jdbcPassword = properties.getProperty("db.password");
 //        Flyway flyway = Flyway.configure().dataSource(jdbcUrl, jdbcUser, jdbcPassword)
 //                .load();
-//        flyway.baseline();
 //        flyway.migrate();
 
         JdbcUserDao userDao = new JdbcUserDao();
@@ -54,14 +53,14 @@ public class Main {
 
         contextHandler.addFilter
                 (new FilterHolder
-                        (new WebFilter()), "/*", EnumSet.of(DispatcherType.REQUEST));
+                        (new WebFilter(webService)), "/*", EnumSet.of(DispatcherType.REQUEST));
 
         Server server = new Server(1025);
         server.setHandler(contextHandler);
         server.start();
     }
 
-    private static Map<Servlet, String> servletMap(WebService webService) {
+    private static Map<Servlet, String> servletsMap(WebService webService) {
         return Map.of(
                 new AdminServlet(webService), "/admin",
                 new LoginServlet(webService), "/login",
@@ -75,23 +74,22 @@ public class Main {
                 new DeleteVehicleServlet(webService), "/vehicle/delete");
     }
 
-    private static Map<Servlet, String> servletMap() {
+    private static Map<Servlet, String> servletMap(WebService webService) {
         return Map.of(
                 new LogoutServlet(), "/logout",
-                new ForgotPasswordServlet(), "/task",
+                new ForgotPasswordServlet(webService), "/task",
                 new StaticResourceServlet(), "/static/*");
     }
 
     private static ServletContextHandler getServletContextHandler(WebService webService) {
         ServletContextHandler contextHandler = new ServletContextHandler(ServletContextHandler.SESSIONS);
-        for (Map.Entry<Servlet, String> entry : servletMap().entrySet()) {
-            contextHandler.addServlet(new ServletHolder(entry.getKey()), entry.getValue());
-        }
-
         for (Map.Entry<Servlet, String> entry : servletMap(webService).entrySet()) {
             contextHandler.addServlet(new ServletHolder(entry.getKey()), entry.getValue());
         }
 
+        for (Map.Entry<Servlet, String> entry : servletsMap(webService).entrySet()) {
+            contextHandler.addServlet(new ServletHolder(entry.getKey()), entry.getValue());
+        }
         return contextHandler;
     }
 }

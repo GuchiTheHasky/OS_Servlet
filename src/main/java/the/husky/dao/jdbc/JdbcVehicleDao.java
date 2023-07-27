@@ -12,6 +12,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -32,7 +33,7 @@ public class JdbcVehicleDao implements VehicleDao {
         try (Connection connection = DataSourceConnector.getConnection();
              PreparedStatement statement = connection.prepareStatement(SELECT_ALL);
              ResultSet resultSet = statement.executeQuery()) {
-            List<Vehicle> vehicles = new ArrayList<>();
+            List<Vehicle> vehicles = Collections.synchronizedList(new ArrayList<>());
             while (resultSet.next()) {
                 Vehicle vehicle = VEHICLE_ROW_MAPPER.mapRow(resultSet);
                 vehicles.add(vehicle);
@@ -79,17 +80,16 @@ public class JdbcVehicleDao implements VehicleDao {
     @Override
     public void update(Vehicle updatedVehicle) {
         try (Connection connection = DataSourceConnector.getConnection();
-             PreparedStatement statement = connection.prepareStatement(UPDATE)) {
-            statement.setString(1, updatedVehicle.getManufacture().getManufacture());
-            statement.setString(2, updatedVehicle.getEngineType().getType());
-            statement.setString(3, updatedVehicle.getModel());
-            statement.setDouble(4, updatedVehicle.getPrice());
-            statement.setInt(5, updatedVehicle.getAge());
-            statement.setInt(6, updatedVehicle.getWeight());
-            statement.setInt(7, updatedVehicle.getVehicleId());
+             PreparedStatement preparedStatement = connection.prepareStatement(UPDATE)) {
+            preparedStatement.setString(1, updatedVehicle.getManufacture().getManufacture());
+            preparedStatement.setString(2, updatedVehicle.getEngineType().getType());
+            preparedStatement.setString(3, updatedVehicle.getModel());
+            preparedStatement.setDouble(4, updatedVehicle.getPrice());
+            preparedStatement.setInt(5, updatedVehicle.getAge());
+            preparedStatement.setInt(6, updatedVehicle.getWeight());
+            preparedStatement.setInt(7, updatedVehicle.getVehicleId());
 
-            statement.executeUpdate();
-
+            preparedStatement.executeUpdate();
         } catch (SQLException e) {
             log.error("SQL or data connection refused; JdbcVehicleDao.class, method: update;", e);
             throw new DataAccessException("Error updating vehicle. Please try again later.", e);

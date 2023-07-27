@@ -12,5 +12,6 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class Session {
     private Role role;
+    private String token;
     private LocalDateTime expireDate;
 }

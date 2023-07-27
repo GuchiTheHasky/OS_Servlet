@@ -6,6 +6,7 @@ import the.husky.entity.user.User;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 public class UserService {
@@ -21,8 +22,8 @@ public class UserService {
         userDao.save(user);
     }
 
-    public User getByName(String name) {
-        return userDao.findByLogin(name).orElseThrow();
+    public Optional<User> getByLogin(String name) {
+        return userDao.findByLogin(name);
     }
 
     public User getUserById(int id) {

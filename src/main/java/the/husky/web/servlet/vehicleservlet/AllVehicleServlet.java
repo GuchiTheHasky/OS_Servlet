@@ -11,9 +11,7 @@ import the.husky.service.WebService;
 import the.husky.web.util.PageGenerator;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 @AllArgsConstructor
 public class AllVehicleServlet extends HttpServlet {
@@ -36,14 +34,14 @@ public class AllVehicleServlet extends HttpServlet {
             vehicles = filterByEngineType(vehicles, engineTypeFilter);
         }
 
-        HashMap<String, Object> parameters = putParameters(vehicles);
+        Map<String, Object> parameters = putParameters(vehicles);
 
         String page = pageGenerator.getPage("vehicle_all.html", parameters);
         response.getWriter().write(page);
     }
 
-    private HashMap<String, Object> putParameters(List<Vehicle> vehicles) {
-        HashMap<String, Object> parameters = new HashMap<>();
+    private Map<String, Object> putParameters(List<Vehicle> vehicles) {
+        Map<String, Object> parameters = Collections.synchronizedMap(new HashMap<>());
         parameters.put("vehicles", vehicles);
         parameters.put("manufacturers", VehicleManufacturer.getManufacturers());
         parameters.put("engineTypes", EngineType.getAllEngineTypes());
@@ -51,7 +49,7 @@ public class AllVehicleServlet extends HttpServlet {
     }
 
     private List<Vehicle> filterByManufacturer(List<Vehicle> vehicles, String manufacturerFilter) {
-        List<Vehicle> filteredVehicles = new ArrayList<>();
+        List<Vehicle> filteredVehicles = Collections.synchronizedList(new ArrayList<>());
         for (Vehicle vehicle : vehicles) {
             if (vehicle.getManufacture().getManufacture().equalsIgnoreCase(manufacturerFilter)) {
                 filteredVehicles.add(vehicle);
@@ -61,7 +59,7 @@ public class AllVehicleServlet extends HttpServlet {
     }
 
     private List<Vehicle> filterByEngineType(List<Vehicle> vehicles, String engineFilter) {
-        List<Vehicle> filteredVehicles = new ArrayList<>();
+        List<Vehicle> filteredVehicles = Collections.synchronizedList(new ArrayList<>());
         for (Vehicle vehicle : vehicles) {
             if (vehicle.getEngineType().getType().equalsIgnoreCase(engineFilter)) {
                 filteredVehicles.add(vehicle);

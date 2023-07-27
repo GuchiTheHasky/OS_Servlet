@@ -9,7 +9,9 @@ import the.husky.service.WebService;
 import the.husky.web.util.PageGenerator;
 
 import java.io.IOException;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.Map;
 
 @AllArgsConstructor
 public class AdminServlet extends HttpServlet {
@@ -21,14 +23,14 @@ public class AdminServlet extends HttpServlet {
         int usersCount = webService.getCacheService().getUsersCache().size();
         int vehiclesCount = webService.getCacheService().getVehiclesCache().size();
 
-        HashMap<String, Object> parameters = putParameters(usersCount, vehiclesCount);
+        Map<String, Object> parameters = putParameters(usersCount, vehiclesCount);
 
         String page = pageGenerator.getPage("admin.html", parameters);
         response.getWriter().write(page);
     }
 
-    private HashMap<String, Object> putParameters(int usersCount, int vehiclesCount) {
-        HashMap<String, Object> parameters = new HashMap<>();
+    private Map<String, Object> putParameters(int usersCount, int vehiclesCount) {
+        Map<String, Object> parameters = Collections.synchronizedMap(new HashMap<>());
         parameters.put("usersCount", usersCount);
         parameters.put("vehiclesCount", vehiclesCount);
         return parameters;

@@ -1,6 +1,5 @@
 package the.husky.dao;
 
-import the.husky.entity.vehicle.EngineType;
 import the.husky.entity.vehicle.Vehicle;
 
 import java.util.List;

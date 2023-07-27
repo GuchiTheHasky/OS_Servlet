@@ -1,35 +1,67 @@
 package the.husky.security;
 
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import the.husky.entity.user.User;
 import the.husky.security.entity.Credentials;
 import the.husky.security.entity.Role;
 import the.husky.security.entity.Session;
 
 import java.security.SecureRandom;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Base64;
+import java.util.Collections;
+import java.util.List;
 
 @Slf4j
 @Getter
-@NoArgsConstructor
 public class SecurityService implements Security {
+    private final List<Session> sessionList;
+
+    public SecurityService() {
+        this.sessionList = Collections.synchronizedList(new ArrayList<>());
+    }
+
+    public Session getSession (String token) {
+        for (Session session : sessionList) {
+            if (session.getToken().equals(token)) {
+                return session;
+            }
+        }
+        return null;
+    }
+
+    public boolean isSessionTerminated(String token) {
+        for (Session session : sessionList) {
+            if (session.getToken().equals(token)) {
+                if (session.getExpireDate().isAfter(LocalDateTime.now())) {
+                    return false;
+                } else {
+                    sessionList.remove(session);
+                }
+            }
+        }
+        return true;
+    }
+
     @Override
     public Session createSession(Credentials credentials) {
+        Role role = credentials.getLogin().equalsIgnoreCase("admin") ? Role.ADMIN : Role.USER;
+        String token = generateToken(credentials.getPassword());
         LocalDateTime expireDate = getExpirationDate();
-        if (credentials.getLogin().equals("admin")) {
-            return Session.builder()
-                    .role(Role.ADMIN)
-                    .expireDate(expireDate)
-                    .build();
-        } else {
-            return Session.builder()
-                    .role(Role.USER)
-                    .expireDate(expireDate)
-                    .build();
-        }
+        Session session = new Session(role, token, expireDate);
+        sessionList.add(session);
+        return session;
+    }
+
+    @Override
+    public Session createGuestSession() {
+        Role role = Role.USER;
+        String token = generateToken("guest");
+        LocalDateTime expireDate = getExpirationDate();
+        Session session = new Session(role, token, expireDate);
+        sessionList.add(session);
+        return session;
     }
 
     @Override

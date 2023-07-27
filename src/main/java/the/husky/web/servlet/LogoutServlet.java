@@ -13,25 +13,22 @@ public class LogoutServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws IOException {
-        String tokenRole = tokenRole(request);
-        assert tokenRole != null;
-        Cookie cookie = new Cookie(tokenRole, "");
+        String tokenName = getTokenName(request);
+        Cookie cookie = new Cookie(tokenName, "");
         cookie.setMaxAge(0);
         response.addCookie(cookie);
         response.sendRedirect("/login");
     }
 
-    private String tokenRole(HttpServletRequest request) {
+    private String getTokenName(HttpServletRequest request) {
         Cookie[] cookies = request.getCookies();
         if (cookies != null) {
             for (Cookie cookie : cookies) {
-                if (cookie.getName().equals("user-token")) {
+                if (cookie.getName().equalsIgnoreCase("user-token")) {
                     return "user-token";
-                } else if (cookie.getName().equals("admin-token")) {
-                    return "admin-token";
                 }
             }
         }
-        return null;
+        return "admin-token";
     }
 }

@@ -1,13 +1,13 @@
 package the.husky.entity.vehicle;
 
-import lombok.Builder;
-import lombok.Data;
-import lombok.NonNull;
+import lombok.*;
 
-@Data
+@Setter
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
 @Builder
 public class Vehicle {
-    @NonNull
     private int vehicleId;
     private VehicleManufacturer manufacture;
     private EngineType engineType;

@@ -9,6 +9,7 @@ import the.husky.exception.DataAccessException;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,7 +28,7 @@ public class JdbcUserDao implements UserDao {
         try (Connection connection = DataSourceConnector.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(SELECT_ALL);
              ResultSet resultSet = preparedStatement.executeQuery()) {
-            List<User> users = new ArrayList<>();
+            List<User> users = Collections.synchronizedList(new ArrayList<>());
             while (resultSet.next()) {
                 User user = USER_ROW_MAPPER.mapRow(resultSet);
                 users.add(user);

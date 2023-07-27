@@ -1,11 +1,16 @@
 package the.husky.web.servlet.userservlet;
 
 import jakarta.servlet.http.*;
+import lombok.AllArgsConstructor;
+import the.husky.security.entity.Session;
+import the.husky.service.WebService;
 import the.husky.web.util.PageGenerator;
 
 import java.io.IOException;
 
+@AllArgsConstructor
 public class ForgotPasswordServlet extends HttpServlet {
+    private WebService webService;
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -25,7 +30,9 @@ public class ForgotPasswordServlet extends HttpServlet {
         int expectedAnswer = num1 + num2;
 
         if (answer.trim().equals(String.valueOf(expectedAnswer))) {
-            setCookies(response);
+            String user = "user-token";
+            Session session = webService.getSecurityService().createGuestSession();
+            setCookies(response, session.getToken(), user);
             response.sendRedirect("/vehicle_all");
         } else {
             String page = generator.getPage("wrong_answer.html");
@@ -33,8 +40,8 @@ public class ForgotPasswordServlet extends HttpServlet {
         }
     }
 
-    private void setCookies(HttpServletResponse response) {
-        Cookie cookie = new Cookie("user-token", "root");
+    private void setCookies(HttpServletResponse response, String token, String tokenRole) {
+        Cookie cookie = new Cookie(tokenRole, token);
         cookie.setMaxAge(3600);
         response.addCookie(cookie);
     }

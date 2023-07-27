@@ -24,15 +24,21 @@ public class AddUserServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         User user = buildUser(request);
-        webService.getCacheService().addUser(user);
-        response.sendRedirect("/login");
+        if (isUserExists(user.getLogin())) {
+            response.sendRedirect("/user_add");
+        } else {
+            webService.getCacheService().addUser(user);
+            response.sendRedirect("/login");
+        }
     }
 
     private User buildUser(HttpServletRequest request) {
-        return User.builder()
-                .login(request.getParameter("login"))
-                .password(request.getParameter("password"))
-                //.userId()
-                .build();
+        String login = request.getParameter("login");
+        String password = request.getParameter("password");
+        return new User(login, password);
+    }
+
+    private boolean isUserExists(String login) {
+        return webService.getCacheService().loginAlreadyExist(login);
     }
 }
