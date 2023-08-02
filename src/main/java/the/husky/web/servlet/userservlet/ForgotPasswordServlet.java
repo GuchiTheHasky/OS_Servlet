@@ -2,12 +2,14 @@ package the.husky.web.servlet.userservlet;
 
 import jakarta.servlet.http.*;
 import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import the.husky.security.entity.Session;
 import the.husky.service.WebService;
 import the.husky.web.util.PageGenerator;
 
 import java.io.IOException;
 
+@NoArgsConstructor
 @AllArgsConstructor
 public class ForgotPasswordServlet extends HttpServlet {
     private WebService webService;

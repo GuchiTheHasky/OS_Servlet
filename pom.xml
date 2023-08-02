@@ -3,7 +3,23 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>the-husky</groupId>
   <artifactId>os</artifactId>
-  <version>1.0-SNAPSHOT</version>
+
+  <name>Online Shop</name>
+  <version>4.0</version>
+  <url>https://github.com/GuchiTheHasky/OS_Servlet</url>
+
+  <description>
+    Online Shop is a small online shopping application built with Java Servlets.
+    It provides functionality for users to browse and purchase products, as well as manage their accounts.
+    The application uses the IoC DI Container library for dependency injection and inversion of control.
+  </description>
+
+  <developers>
+    <developer>
+        <name>GuchiTheHasky</name>
+        <email>guchithehasky@gmail.com</email>
+    </developer>
+  </developers>
 
   <properties>
     <java.version>17</java.version>
@@ -75,6 +91,12 @@
   </build>
 
   <dependencies>
+    <dependency>
+      <groupId>com.husky</groupId>
+      <artifactId>ioc-di-container</artifactId>
+      <version>3.0</version>
+    </dependency>
+
     <dependency>
       <groupId>org.eclipse.jetty</groupId>
       <artifactId>jetty-servlet</artifactId>

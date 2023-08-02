@@ -1,17 +1,20 @@
 package the.husky.service.entity;
 
-import lombok.RequiredArgsConstructor;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import the.husky.dao.VehicleDao;
 import the.husky.entity.vehicle.Vehicle;
 
+import java.util.ArrayList;
 import java.util.List;
 
-@RequiredArgsConstructor
+@NoArgsConstructor
+@AllArgsConstructor
 public class VehicleService {
-    private final VehicleDao vehicleDao;
+    private VehicleDao vehicleDao;
 
     public List<Vehicle> findAll() {
-        return vehicleDao.findAll();
+        return vehicleDao.findAll().isPresent() ? vehicleDao.findAll().get() : new ArrayList<>();
     }
 
     public void add(Vehicle vehicle) {

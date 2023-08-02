@@ -1,5 +1,7 @@
 package the.husky.dao.jdbc;
 
+import lombok.AllArgsConstructor;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import the.husky.dao.UserDao;
 import the.husky.dao.connector.DataSourceConnector;
@@ -14,6 +16,8 @@ import java.util.List;
 import java.util.Optional;
 
 @Slf4j
+@Setter
+@AllArgsConstructor
 public class JdbcUserDao implements UserDao {
     private static final UserRowMapper USER_ROW_MAPPER = new UserRowMapper();
     private static final String SELECT_ALL = "SELECT id, login, password, registration_time FROM users";
@@ -24,7 +28,7 @@ public class JdbcUserDao implements UserDao {
     private static final String DELETE = "DELETE FROM users WHERE id = ?";
 
     @Override
-    public List<User> findAll() {
+    public Optional<List<User>> findAll() {
         try (Connection connection = DataSourceConnector.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(SELECT_ALL);
              ResultSet resultSet = preparedStatement.executeQuery()) {
@@ -33,7 +37,7 @@ public class JdbcUserDao implements UserDao {
                 User user = USER_ROW_MAPPER.mapRow(resultSet);
                 users.add(user);
             }
-            return users;
+            return Optional.ofNullable(users);
         } catch (SQLException e) {
             log.error("SQL or data connection refused; JdbcUserDao.class, method: findAll;", e);
             throw new DataAccessException("Error retrieving users. Please try again later.", e);

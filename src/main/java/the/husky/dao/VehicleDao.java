@@ -16,7 +16,7 @@ public interface VehicleDao {
      * This method retrieves all vehicle records from the data source and returns them as a list of Vehicle objects.
      * It allows you to get a comprehensive list of all vehicles available in the database.
      */
-    List<Vehicle> findAll();
+    Optional<List<Vehicle>> findAll();
 
     /**
      * The add method adds a new vehicle record to the data source. It takes a Vehicle object as a parameter,

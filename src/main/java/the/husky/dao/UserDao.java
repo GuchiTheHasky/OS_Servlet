@@ -16,7 +16,7 @@ public interface UserDao {
      * This method retrieves all user records from the data source and returns them as a list of User objects.
      * It allows you to get a comprehensive list of all users available in the database.
      */
-    List<User> findAll();
+    Optional<List<User>> findAll();
 
     /**
      * The add method adds a new user record to the data source. It takes a User object as a parameter,

@@ -29,7 +29,7 @@ public class JdbcVehicleDao implements VehicleDao {
     private static final String GET_BY_ID = "SELECT * FROM \"vehicle\" WHERE vehicle_id = ?";
 
     @Override
-    public List<Vehicle> findAll() {
+    public Optional<List<Vehicle>> findAll() {
         try (Connection connection = DataSourceConnector.getConnection();
              PreparedStatement statement = connection.prepareStatement(SELECT_ALL);
              ResultSet resultSet = statement.executeQuery()) {
@@ -38,7 +38,7 @@ public class JdbcVehicleDao implements VehicleDao {
                 Vehicle vehicle = VEHICLE_ROW_MAPPER.mapRow(resultSet);
                 vehicles.add(vehicle);
             }
-            return vehicles;
+            return Optional.ofNullable(vehicles);
         } catch (SQLException e) {
             log.error("SQL or data connection refused; JdbcVehicleDao.class, method: findAll;", e);
             throw new DataAccessException("Error retrieving vehicles. Please try again later.", e);

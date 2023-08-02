@@ -5,6 +5,7 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import the.husky.security.entity.Session;
 import the.husky.service.WebService;
@@ -13,6 +14,7 @@ import java.io.IOException;
 import java.util.List;
 
 @Slf4j
+@NoArgsConstructor
 @AllArgsConstructor
 public class WebFilter implements Filter {
     private WebService webService;

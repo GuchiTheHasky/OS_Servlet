@@ -1,19 +1,22 @@
 package the.husky.service.entity;
 
-import lombok.RequiredArgsConstructor;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import the.husky.dao.UserDao;
 import the.husky.entity.user.User;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-@RequiredArgsConstructor
+@NoArgsConstructor
+@AllArgsConstructor
 public class UserService {
-    private final UserDao userDao;
+    private UserDao userDao;
 
     public List<User> findAll() {
-        return userDao.findAll();
+        return userDao.findAll().isPresent() ? userDao.findAll().get() : new ArrayList<>();
     }
 
     public void add(User user) {

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<beans>
+
+    <import resource="classpath:raw_service_context.xml"/>
+
+    <bean id="securityService" class="the.husky.security.SecurityService"/>
+
+    <bean id="cacheService" class="the.husky.service.cache.CacheService">
+        <property name="userService" ref="userService"/>
+        <property name="vehicleService" ref="vehicleService"/>
+    </bean>
+
+    <bean id="webService" class="the.husky.service.WebService">
+        <property name="securityService" ref="securityService"/>
+        <property name="cacheService" ref="cacheService"/>
+    </bean>
+</beans>

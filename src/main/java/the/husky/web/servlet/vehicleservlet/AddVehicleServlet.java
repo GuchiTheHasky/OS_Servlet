@@ -4,6 +4,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import the.husky.entity.vehicle.EngineType;
 import the.husky.entity.vehicle.Vehicle;
 import the.husky.entity.vehicle.VehicleManufacturer;
@@ -12,6 +13,7 @@ import the.husky.web.util.PageGenerator;
 
 import java.io.IOException;
 
+@NoArgsConstructor
 @AllArgsConstructor
 public class AddVehicleServlet extends HttpServlet {
     private WebService webService;

@@ -1,10 +1,12 @@
 package the.husky.service;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import the.husky.security.SecurityService;
 import the.husky.service.cache.CacheService;
 
-@Data
+@Getter
+@NoArgsConstructor
 public class WebService {
     private SecurityService securityService;
     private CacheService cacheService;

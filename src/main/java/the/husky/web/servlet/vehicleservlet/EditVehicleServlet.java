@@ -4,6 +4,8 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import the.husky.entity.vehicle.EngineType;
 import the.husky.entity.vehicle.Vehicle;
 import the.husky.entity.vehicle.VehicleManufacturer;
@@ -16,6 +18,8 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
+@Slf4j
+@NoArgsConstructor
 @AllArgsConstructor
 public class EditVehicleServlet extends HttpServlet {
     private WebService webService;
@@ -76,6 +80,7 @@ public class EditVehicleServlet extends HttpServlet {
         try {
             return Integer.parseInt(idParam);
         } catch (NumberFormatException e) {
+            log.error("Couldn't parse ID parameter: {}", idParam);
             throw new ParseRequestException("Error, wrong ID.");
         }
     }

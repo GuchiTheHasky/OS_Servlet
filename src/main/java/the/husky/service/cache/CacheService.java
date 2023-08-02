@@ -1,14 +1,17 @@
 package the.husky.service.cache;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import the.husky.entity.user.User;
 import the.husky.entity.vehicle.Vehicle;
 import the.husky.service.entity.UserService;
 import the.husky.service.entity.VehicleService;
 
+import java.util.ArrayList;
 import java.util.List;
 
-@Data
+@Getter
+@NoArgsConstructor
 public class CacheService {
     private UserService userService;
     private VehicleService vehicleService;
@@ -18,12 +21,33 @@ public class CacheService {
     public CacheService(UserService userService, VehicleService vehicleService) {
         this.userService = userService;
         this.vehicleService = vehicleService;
+        initCache();
+    }
+
+    private void initCache() {
         this.usersCache = userService.findAll();
         this.vehiclesCache = vehicleService.findAll();
     }
 
+    public List<User> getUsersCache() {
+        if (usersCache == null) {
+            usersCache = new ArrayList<>();
+        }
+        return usersCache;
+    }
+
+    public List<Vehicle> getVehiclesCache() {
+        if (vehiclesCache == null) {
+            vehiclesCache = new ArrayList<>();
+        }
+        return vehiclesCache;
+    }
+
     public void addUser(User user) {
         if (!loginAlreadyExist(user.getLogin())) {
+            if (usersCache == null) {
+                usersCache = new ArrayList<>();
+            }
             usersCache.add(user);
             userService.add(user);
         }
@@ -36,6 +60,9 @@ public class CacheService {
     }
 
     public void addVehicle(Vehicle vehicle) {
+        if (vehiclesCache == null) {
+            vehiclesCache = new ArrayList<>();
+        }
         vehicleService.add(vehicle);
         vehiclesCache.add(vehicle);
     }
@@ -51,9 +78,11 @@ public class CacheService {
     }
 
     public boolean loginAlreadyExist(String login) {
-        for (User cachedUser : usersCache) {
-            if (cachedUser.getLogin().equals(login)) {
-                return true;
+        if (!(usersCache == null)) {
+            for (User cachedUser : usersCache) {
+                if (cachedUser.getLogin().equals(login)) {
+                    return true;
+                }
             }
         }
         return false;
@@ -64,11 +93,13 @@ public class CacheService {
     }
 
     public List<User> getUsers() {
-        return userService.findAll();
+        usersCache = userService.findAll();
+        return usersCache;
     }
 
     public List<Vehicle> getVehicles() {
-        return vehicleService.findAll();
+        vehiclesCache = vehicleService.findAll();
+        return vehiclesCache;
     }
 
     public User getUserById(int id) {

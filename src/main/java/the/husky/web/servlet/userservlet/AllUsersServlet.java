@@ -4,6 +4,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import the.husky.entity.user.User;
 import the.husky.service.WebService;
 import the.husky.web.util.PageGenerator;
@@ -14,6 +15,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@NoArgsConstructor
 @AllArgsConstructor
 public class AllUsersServlet extends HttpServlet {
     private WebService webService;

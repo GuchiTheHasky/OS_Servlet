@@ -1,5 +1,8 @@
 package the.husky;
 
+import com.husky.container.context.ApplicationContext;
+import com.husky.container.context.ClassPathApplicationContext;
+
 import jakarta.servlet.DispatcherType;
 import jakarta.servlet.Servlet;
 import lombok.extern.slf4j.Slf4j;
@@ -7,14 +10,7 @@ import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.FilterHolder;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
-import the.husky.dao.jdbc.JdbcUserDao;
-import the.husky.dao.jdbc.JdbcVehicleDao;
-import the.husky.service.cache.CacheService;
-import the.husky.security.SecurityService;
-import the.husky.service.WebService;
 import the.husky.web.filter.WebFilter;
-import the.husky.service.entity.UserService;
-import the.husky.service.entity.VehicleService;
 import the.husky.web.servlet.AdminServlet;
 import the.husky.web.servlet.LoginServlet;
 import the.husky.web.servlet.LogoutServlet;
@@ -40,57 +36,76 @@ public class Main {
 //                .load();
 //        flyway.migrate();
 
-        JdbcUserDao userDao = new JdbcUserDao();
-        JdbcVehicleDao vehicleDao = new JdbcVehicleDao();
+        ApplicationContext context = new ClassPathApplicationContext(
+                "/context/dao_context.xml",
+                "/context/entity_service_context.xml",
+                "/context/service_context.xml",
+                "/context/servlet_context.xml",
+                "/context/filter_context.xml");
 
-        UserService userService = new UserService(userDao);
-        VehicleService vehicleService = new VehicleService(vehicleDao);
-        CacheService cacheService = new CacheService(userService, vehicleService);
-        SecurityService securityService = new SecurityService();
-        WebService webService = new WebService(securityService, cacheService);
-
-        ServletContextHandler contextHandler = getServletContextHandler(webService);
-
+        ServletContextHandler contextHandler = getServletContextHandler(context);
+        WebFilter webFilter = context.getBean(WebFilter.class);
         contextHandler.addFilter
                 (new FilterHolder
-                        (new WebFilter(webService)), "/*", EnumSet.of(DispatcherType.REQUEST));
+                        (webFilter), "/*", EnumSet.of(DispatcherType.REQUEST));
 
         Server server = new Server(1025);
         server.setHandler(contextHandler);
         server.start();
     }
 
-    private static Map<Servlet, String> servletsMap(WebService webService) {
+    private static Map<Servlet, String> userServletMap(ApplicationContext context) {
+        AddUserServlet addUserServlet = context.getBean(AddUserServlet.class);
+        AllUsersServlet allUsersServlet = context.getBean(AllUsersServlet.class);
+        EditUserServlet editUserServlet = context.getBean(EditUserServlet.class);
+        DeleteUserServlet deleteUserServlet = context.getBean(DeleteUserServlet.class);
+        ForgotPasswordServlet forgotPasswordServlet = context.getBean(ForgotPasswordServlet.class);
         return Map.of(
-                new AdminServlet(webService), "/admin",
-                new LoginServlet(webService), "/login",
-                new AddUserServlet(webService), "/user_add",
-                new AllUsersServlet(webService), "/user_all",
-                new EditUserServlet(webService), "/user_edit/*",
-                new DeleteUserServlet(webService), "/user/delete",
-                new AddVehicleServlet(webService), "/vehicle_add", // !
-                new AllVehicleServlet(webService), "/vehicle_all",
-                new EditVehicleServlet(webService), "/vehicle_edit",
-                new DeleteVehicleServlet(webService), "/vehicle/delete");
+                addUserServlet, "/user_add",
+                allUsersServlet, "/user_all",
+                editUserServlet, "/user_edit/*",
+                deleteUserServlet, "/user/delete",
+                forgotPasswordServlet, "/task");
     }
 
-    private static Map<Servlet, String> servletMap(WebService webService) {
+    private static Map<Servlet, String> vehicleServletMap(ApplicationContext context) {
+        AddVehicleServlet addVehicleServlet = context.getBean(AddVehicleServlet.class);
+        AllVehicleServlet allVehicleServlet = context.getBean(AllVehicleServlet.class);
+        EditVehicleServlet editVehicleServlet = context.getBean(EditVehicleServlet.class);
+        DeleteVehicleServlet deleteVehicleServlet = context.getBean(DeleteVehicleServlet.class);
         return Map.of(
-                new LogoutServlet(), "/logout",
-                new ForgotPasswordServlet(webService), "/task",
-                new StaticResourceServlet(), "/static/*");
+                addVehicleServlet, "/vehicle_add",
+                allVehicleServlet, "/vehicle_all",
+                editVehicleServlet, "/vehicle_edit",
+                deleteVehicleServlet, "/vehicle/delete");
     }
 
-    private static ServletContextHandler getServletContextHandler(WebService webService) {
+    private static Map<Servlet, String> systemServletMap(ApplicationContext context) {
+        AdminServlet adminServlet = context.getBean(AdminServlet.class);
+        LoginServlet loginServlet = context.getBean(LoginServlet.class);
+        LogoutServlet logoutServlet = context.getBean(LogoutServlet.class);
+        StaticResourceServlet staticResourceServlet = context.getBean(StaticResourceServlet.class);
+
+        return Map.of(
+                adminServlet, "/admin",
+                loginServlet, "/login",
+                logoutServlet, "/logout",
+                staticResourceServlet, "/static/*");
+    }
+
+    private static ServletContextHandler getServletContextHandler(ApplicationContext context) {
         ServletContextHandler contextHandler = new ServletContextHandler(ServletContextHandler.SESSIONS);
-        for (Map.Entry<Servlet, String> entry : servletMap(webService).entrySet()) {
+        for (Map.Entry<Servlet, String> entry : userServletMap(context).entrySet()) {
             contextHandler.addServlet(new ServletHolder(entry.getKey()), entry.getValue());
         }
 
-        for (Map.Entry<Servlet, String> entry : servletsMap(webService).entrySet()) {
+        for (Map.Entry<Servlet, String> entry : vehicleServletMap(context).entrySet()) {
+            contextHandler.addServlet(new ServletHolder(entry.getKey()), entry.getValue());
+        }
+
+        for (Map.Entry<Servlet, String> entry : systemServletMap(context).entrySet()) {
             contextHandler.addServlet(new ServletHolder(entry.getKey()), entry.getValue());
         }
         return contextHandler;
     }
 }
-

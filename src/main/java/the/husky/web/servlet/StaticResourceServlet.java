@@ -3,7 +3,8 @@ package the.husky.web.servlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import lombok.Cleanup;
+import lombok.NoArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -12,6 +13,8 @@ import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
 import java.nio.channels.WritableByteChannel;
 
+@Slf4j
+@NoArgsConstructor
 public class StaticResourceServlet extends HttpServlet {
 
     @Override
@@ -20,11 +23,12 @@ public class StaticResourceServlet extends HttpServlet {
         String resourcePath = request.getRequestURI();
         String relativePath = resourcePath.substring(1);
 
-        @Cleanup InputStream inputStream = getClass().getClassLoader().getResourceAsStream(relativePath);
+        try (InputStream inputStream = getClass().getClassLoader().getResourceAsStream(relativePath)) {
 
-        if (inputStream != null) {
             streamResourceContent(response, inputStream);
-        } else {
+
+        } catch (NullPointerException | IOException e) {
+            log.error("Failed to stream resource content: {}", relativePath, e);
             response.sendError(HttpServletResponse.SC_NOT_FOUND);
         }
     }

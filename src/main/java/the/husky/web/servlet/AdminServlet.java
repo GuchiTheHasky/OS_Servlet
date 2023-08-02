@@ -5,6 +5,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import the.husky.service.WebService;
 import the.husky.web.util.PageGenerator;
 
@@ -13,6 +14,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
+@NoArgsConstructor
 @AllArgsConstructor
 public class AdminServlet extends HttpServlet {
     private WebService webService;
@@ -20,8 +22,8 @@ public class AdminServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         PageGenerator pageGenerator = PageGenerator.instance();
-        int usersCount = webService.getCacheService().getUsersCache().size();
-        int vehiclesCount = webService.getCacheService().getVehiclesCache().size();
+        int usersCount = getRegisteredUsersCount();
+        int vehiclesCount = getRegisteredVehiclesCount();
 
         Map<String, Object> parameters = putParameters(usersCount, vehiclesCount);
 
@@ -34,5 +36,15 @@ public class AdminServlet extends HttpServlet {
         parameters.put("usersCount", usersCount);
         parameters.put("vehiclesCount", vehiclesCount);
         return parameters;
+    }
+
+    private int getRegisteredUsersCount() {
+        return webService.getCacheService().getUsersCache() == null ?
+                 0 : webService.getCacheService().getUsersCache().size();
+    }
+
+    private int getRegisteredVehiclesCount() {
+        return webService.getCacheService().getVehiclesCache() == null ?
+                 0 : webService.getCacheService().getVehiclesCache().size();
     }
 }

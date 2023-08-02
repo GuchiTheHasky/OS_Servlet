@@ -2,6 +2,7 @@ package the.husky.web.servlet;
 
 import jakarta.servlet.http.*;
 import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import the.husky.service.WebService;
 import the.husky.security.entity.Credentials;
@@ -11,6 +12,7 @@ import the.husky.web.util.PageGenerator;
 import java.io.IOException;
 
 @Slf4j
+@NoArgsConstructor
 @AllArgsConstructor
 public class LoginServlet extends HttpServlet {
     private WebService webService;

@@ -3,6 +3,7 @@ package the.husky.web.util;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
+import lombok.extern.slf4j.Slf4j;
 import the.husky.exception.PageGeneratorException;
 
 import java.io.IOException;
@@ -11,6 +12,7 @@ import java.io.Writer;
 import java.util.Collections;
 import java.util.Map;
 
+@Slf4j
 public class PageGenerator {
     private static final String TEMPLATE_SOURCE_DIR = "/template";
     private static PageGenerator pageGenerator;
@@ -38,6 +40,7 @@ public class PageGenerator {
             Template template = cfg.getTemplate(templateName);
             template.process(data, stream);
         } catch (IOException | TemplateException e) {
+            log.error("Failed to generate template: {}", templateName, e);
             throw new PageGeneratorException(String.format("Failed to generate template: %s", templateName), e);
         }
         return stream.toString();

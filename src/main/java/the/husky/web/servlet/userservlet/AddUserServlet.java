@@ -4,12 +4,14 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import the.husky.entity.user.User;
 import the.husky.service.WebService;
 import the.husky.web.util.PageGenerator;
 
 import java.io.IOException;
 
+@NoArgsConstructor
 @AllArgsConstructor
 public class AddUserServlet extends HttpServlet {
     private WebService webService;
