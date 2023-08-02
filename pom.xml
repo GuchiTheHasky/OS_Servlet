@@ -10,7 +10,6 @@
 
   <description>
     Online Shop is a small online shopping application built with Java Servlets.
-    It provides functionality for users to browse and purchase products, as well as manage their accounts.
     The application uses the IoC DI Container library for dependency injection and inversion of control.
   </description>
 
@@ -23,9 +22,12 @@
 
   <properties>
     <java.version>17</java.version>
+    <ioc-di-container.version>3.0</ioc-di-container.version>
     <jetty.servlet.version>11.0.15</jetty.servlet.version>
     <maven-compiler-plugin.version>3.11.0</maven-compiler-plugin.version>
     <jetty-maven-plugin.version>11.0.15</jetty-maven-plugin.version>
+    <maven-jar-plugin.version>3.2.0</maven-jar-plugin.version>
+    <maven-assembly-plugin.version>3.3.0</maven-assembly-plugin.version>
     <logback.classic.version>1.4.7</logback.classic.version>
     <lombok.version>1.18.26</lombok.version>
     <postgresql.version>42.6.0</postgresql.version>
@@ -52,7 +54,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jar-plugin</artifactId>
-        <version>3.2.0</version>
+        <version>${maven-jar-plugin.version}</version>
         <configuration>
           <archive>
             <manifest>
@@ -66,7 +68,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-assembly-plugin</artifactId>
-        <version>3.3.0</version>
+        <version>${maven-assembly-plugin.version}</version>
         <configuration>
           <archive>
             <manifest>
@@ -94,7 +96,13 @@
     <dependency>
       <groupId>com.husky</groupId>
       <artifactId>ioc-di-container</artifactId>
-      <version>3.0</version>
+      <version>${ioc-di-container.version}</version>
+      <exclusions>
+        <exclusion>
+          <groupId>ch.qos.logback</groupId>
+          <artifactId>logback-classic</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
 
     <dependency>
