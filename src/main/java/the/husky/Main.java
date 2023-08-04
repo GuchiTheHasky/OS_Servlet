@@ -10,6 +10,7 @@ import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.FilterHolder;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
+import the.husky.dao.connector.DataSourceConnector;
 import the.husky.web.filter.WebFilter;
 import the.husky.web.servlet.AdminServlet;
 import the.husky.web.servlet.LoginServlet;
@@ -23,11 +24,12 @@ import the.husky.web.servlet.vehicleservlet.EditVehicleServlet;
 
 import java.util.EnumSet;
 import java.util.Map;
+import java.util.Properties;
 
 @Slf4j
 public class Main {
     public static void main(String[] args) throws Exception {
-//        Properties properties = DataSourceConnector.loadProperties();
+        Properties properties = DataSourceConnector.loadProperties();
 //
 //        final String jdbcUrl = properties.getProperty("db.flyway.url");
 //        final String jdbcUser = properties.getProperty("db.user");

@@ -10,7 +10,7 @@
 <h1 id="vehicles_title">Vehicles:</h1>
 
 <form id="logout_user" class="logout" action="/logout" method="POST">
-    <button type="submit">Logout</button>
+    <button>Logout</button>
 </form>
 
 <form id="by_manufacturer" action="/vehicle_all" method="get">
@@ -21,7 +21,7 @@
         <option value="${manufacturer}">${manufacturer}</option>
     </#list>
     </select>
-    <button type="submit">Manufacture Filter</button>
+    <button>Manufacture Filter</button>
 </form>
 
 <form id="by_engine" action="/vehicle_all" method="get">
@@ -73,7 +73,7 @@
                   method="post"
                   onsubmit="return confirm('Are you sure you want to delete this vehicle?');">
                 <input type="hidden" name="vehicleId" value="${vehicle.vehicleId?if_exists}">
-                <button type="submit" class="delete-button">Delete</button>
+                <button class="delete-button">Delete</button>
             </form>
         </td>
     </tr>

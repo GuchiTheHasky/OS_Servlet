@@ -7,6 +7,8 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import the.husky.security.entity.Session;
 import the.husky.service.WebService;
 
@@ -17,13 +19,12 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class WebFilter implements Filter {
-    private WebService webService;
-
     private final List<String> PERMITTED_URI = List.of("/login", "/task", "/user_add", "image.png",
             "/static", "/favicon.ico", "/wrong_answer.html");
     private final List<String> USER_ACCESS_LEVEL_URI = List.of("/login", "/logout", "/task", "/user_add",
             "image.png", "/static", "/favicon.ico", "/wrong_answer.html", "/vehicle_all", "/vehicle_add",
             "/vehicle_edit", "/vehicle/delete");
+    private WebService webService;
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain)
@@ -98,7 +99,6 @@ public class WebFilter implements Filter {
 
     private void validateSession(HttpServletResponse response, Session session) throws IOException {
         if (session == null) {
-            log.warn("Session is null");
             response.sendRedirect("/login");
         }
     }
