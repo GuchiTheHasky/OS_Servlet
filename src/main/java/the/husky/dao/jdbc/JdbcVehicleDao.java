@@ -1,5 +1,6 @@
 package the.husky.dao.jdbc;
 
+import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import the.husky.dao.VehicleDao;
 import the.husky.dao.connector.DataSourceConnector;
@@ -17,6 +18,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Slf4j
+@NoArgsConstructor
 public class JdbcVehicleDao implements VehicleDao {
     private static final VehicleRowMapper VEHICLE_ROW_MAPPER = new VehicleRowMapper();
     private static final String SELECT_ALL = "SELECT vehicle_id, manufacture, enginetype, model, price, age, weight " +
@@ -27,10 +29,15 @@ public class JdbcVehicleDao implements VehicleDao {
     private static final String UPDATE = "UPDATE \"vehicle\" " +
             "SET manufacture=?, enginetype=?, model=?, price=?, age=?, weight=? WHERE vehicle_id=?";
     private static final String GET_BY_ID = "SELECT * FROM \"vehicle\" WHERE vehicle_id = ?";
+    private DataSourceConnector dataSource;
+
+    public JdbcVehicleDao(DataSourceConnector dataSourceConnector) {
+        this.dataSource = dataSourceConnector;
+    }
 
     @Override
     public synchronized Iterable<List<Vehicle>> findAll() {
-        try (Connection connection = DataSourceConnector.getConnection();
+        try (Connection connection = dataSource.getConnection();
              PreparedStatement statement = connection.prepareStatement(SELECT_ALL);
              ResultSet resultSet = statement.executeQuery()) {
             List<Vehicle> vehicles = Collections.synchronizedList(new ArrayList<>());
@@ -47,7 +54,7 @@ public class JdbcVehicleDao implements VehicleDao {
 
     @Override
     public synchronized void save(Vehicle vehicle) {
-        try (Connection connection = DataSourceConnector.getConnection();
+        try (Connection connection = dataSource.getConnection();
              PreparedStatement statement = connection.prepareStatement(INSERT)) {
             statement.setString(1, vehicle.getManufacture().getManufacture());
             statement.setString(2, vehicle.getEngineType().getType());
@@ -66,7 +73,7 @@ public class JdbcVehicleDao implements VehicleDao {
 
     @Override
     public synchronized void delete(int id) {
-        try (Connection connection = DataSourceConnector.getConnection();
+        try (Connection connection = dataSource.getConnection();
              PreparedStatement statement = connection.prepareStatement(DELETE)) {
             statement.setInt(1, id);
             statement.executeUpdate();
@@ -79,7 +86,7 @@ public class JdbcVehicleDao implements VehicleDao {
 
     @Override
     public synchronized void update(Vehicle updatedVehicle) {
-        try (Connection connection = DataSourceConnector.getConnection();
+        try (Connection connection = dataSource.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(UPDATE)) {
             preparedStatement.setString(1, updatedVehicle.getManufacture().getManufacture());
             preparedStatement.setString(2, updatedVehicle.getEngineType().getType());
@@ -98,7 +105,7 @@ public class JdbcVehicleDao implements VehicleDao {
 
     @Override
     public synchronized Optional<Vehicle> findById(int id) {
-        try (Connection connection = DataSourceConnector.getConnection();
+        try (Connection connection = dataSource.getConnection();
              PreparedStatement statement = connection.prepareStatement(GET_BY_ID)) {
             statement.setInt(1, id);
             try (ResultSet resultSet = statement.executeQuery()) {

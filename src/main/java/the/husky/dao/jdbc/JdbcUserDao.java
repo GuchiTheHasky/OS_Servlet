@@ -1,6 +1,6 @@
 package the.husky.dao.jdbc;
 
-import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import the.husky.dao.UserDao;
@@ -17,7 +17,7 @@ import java.util.Optional;
 
 @Slf4j
 @Setter
-@AllArgsConstructor
+@NoArgsConstructor
 public class JdbcUserDao implements UserDao {
     private static final UserRowMapper USER_ROW_MAPPER = new UserRowMapper();
     private static final String SELECT_ALL = "SELECT id, login, password, registration_time FROM users";
@@ -26,10 +26,15 @@ public class JdbcUserDao implements UserDao {
     private static final String GET_BY_ID = "SELECT * FROM users WHERE id = ?";
     private static final String UPDATE = "UPDATE users SET login = ?, password = ? WHERE id = ?";
     private static final String DELETE = "DELETE FROM users WHERE id = ?";
+    private DataSourceConnector dataSource;
+
+    public JdbcUserDao(DataSourceConnector dataSourceConnector) {
+        this.dataSource = dataSourceConnector;
+    }
 
     @Override
     public synchronized Iterable<List<User>> findAll() {
-        try (Connection connection = DataSourceConnector.getConnection();
+        try (Connection connection = dataSource.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(SELECT_ALL);
              ResultSet resultSet = preparedStatement.executeQuery()) {
             List<User> users = Collections.synchronizedList(new ArrayList<>());
@@ -46,7 +51,7 @@ public class JdbcUserDao implements UserDao {
 
     @Override
     public synchronized void save(User user) {
-        try (Connection connection = DataSourceConnector.getConnection();
+        try (Connection connection = dataSource.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(INSERT)) {
             preparedStatement.setString(1, user.getLogin());
             preparedStatement.setString(2, user.getPassword());
@@ -61,7 +66,7 @@ public class JdbcUserDao implements UserDao {
 
     @Override
     public synchronized Optional<User> findByLogin(String login) {
-        try (Connection connection = DataSourceConnector.getConnection();
+        try (Connection connection = dataSource.getConnection();
              PreparedStatement statement = connection.prepareStatement(GET_BY_LOGIN)) {
             statement.setString(1, login);
             try (ResultSet resultSet = statement.executeQuery()) {
@@ -75,7 +80,7 @@ public class JdbcUserDao implements UserDao {
 
     @Override
     public synchronized Optional<User> findById(int id) {
-        try (Connection connection = DataSourceConnector.getConnection();
+        try (Connection connection = dataSource.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(GET_BY_ID)) {
             preparedStatement.setInt(1, id);
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
@@ -90,7 +95,7 @@ public class JdbcUserDao implements UserDao {
 
     @Override
     public synchronized void update(User user) {
-        try (Connection connection = DataSourceConnector.getConnection();
+        try (Connection connection = dataSource.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(UPDATE)) {
             preparedStatement.setString(1, user.getLogin());
             preparedStatement.setString(2, user.getPassword());
@@ -105,7 +110,7 @@ public class JdbcUserDao implements UserDao {
 
     @Override
     public synchronized void delete(int id) {
-        try (Connection connection = DataSourceConnector.getConnection();
+        try (Connection connection = dataSource.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(DELETE)) {
             preparedStatement.setInt(1, id);
             preparedStatement.executeUpdate();

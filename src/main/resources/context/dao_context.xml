@@ -1,8 +1,19 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <beans>
 
-    <bean id="userDao" class="the.husky.dao.jdbc.JdbcUserDao"/>
+<!--    <import resource="classpath:connector_context.xml"/>-->
+    <bean id="hikariDataSource" class="the.husky.dao.connector.DataSourceConnector">
+        <property name="jdbcUrl" value="jdbc:postgresql://localhost:5432/OS"/>
+        <property name="jdbcUser" value="postgres"/>
+        <property name="jdbcPassword" value="root"/>
+    </bean>
 
-    <bean id="vehicleDao" class="the.husky.dao.jdbc.JdbcVehicleDao"/>
+    <bean id="userDao" class="the.husky.dao.jdbc.JdbcUserDao">
+        <property name="dataSource" ref="hikariDataSource"/>
+    </bean>
+
+    <bean id="vehicleDao" class="the.husky.dao.jdbc.JdbcVehicleDao">
+        <property name="dataSource" ref="hikariDataSource"/>
+    </bean>
 
 </beans>

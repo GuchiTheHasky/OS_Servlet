@@ -41,10 +41,10 @@ public class Main {
 
         ApplicationContext context = new ClassPathApplicationContext(
                 "/context/dao_context.xml",
-                "/context/entity_service_context.xml",
                 "/context/service_context.xml",
                 "/context/servlet_context.xml",
-                "/context/filter_context.xml");
+                "/context/filter_context.xml"
+        );
 
         ServletContextHandler contextHandler = getServletContextHandler(context);
         WebFilter webFilter = context.getBean(WebFilter.class);

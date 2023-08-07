@@ -1,7 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <beans>
 
-    <import resource="classpath:raw_service_context.xml"/>
+    <import resource="classpath:dao_context.xml"/>
+
+    <bean id="userService" class="the.husky.service.entity.UserService">
+        <property name="userDao" ref="userDao"/>
+    </bean>
+
+    <bean id="vehicleService" class="the.husky.service.entity.VehicleService">
+        <property name="vehicleDao" ref="vehicleDao"/>
+    </bean>
 
     <bean id="securityService" class="the.husky.security.SecurityService"/>
 
