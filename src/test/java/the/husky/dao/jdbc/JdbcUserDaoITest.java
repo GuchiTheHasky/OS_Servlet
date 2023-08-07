@@ -3,6 +3,7 @@ package the.husky.dao.jdbc;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import the.husky.dao.connector.DataSourceConnector;
 import the.husky.entity.user.User;
 
 import java.time.LocalDateTime;
@@ -12,7 +13,8 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class JdbcUserDaoITest {
-    private final JdbcUserDao USER_DAO = new JdbcUserDao();
+    private final JdbcUserDao USER_DAO = new JdbcUserDao(new DataSourceConnector
+                    ("jdbc:postgresql://localhost:5432/OS", "postgres", "root"));
 
     @Test
     @DisplayName("Test, find all users.")

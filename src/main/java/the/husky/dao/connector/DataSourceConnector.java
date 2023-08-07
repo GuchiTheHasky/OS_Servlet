@@ -2,10 +2,7 @@ package the.husky.dao.connector;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import lombok.extern.slf4j.Slf4j;
 import the.husky.exception.DataAccessException;
 
@@ -26,6 +23,12 @@ public class DataSourceConnector {
     private String jdbcUser;
     private String jdbcPassword;
     private HikariDataSource dataSource;
+
+    public DataSourceConnector(String jdbcUrl, String jdbcUser, String jdbcPassword) {
+        this.jdbcUrl = jdbcUrl;
+        this.jdbcUser = jdbcUser;
+        this.jdbcPassword = jdbcPassword;
+    }
 
     public Connection getConnection() {
         if (dataSource == null) {
