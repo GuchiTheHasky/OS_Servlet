@@ -1,24 +1,84 @@
 package the.husky.dao.jdbc;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import the.husky.entity.vehicle.Vehicle;
 
 import java.util.List;
-import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 public class JdbcVehicleDaoITest {
 
-    private final JdbcVehicleDao DAO = new JdbcVehicleDao();
+    private final JdbcVehicleDao VEHICLE_DAO = new JdbcVehicleDao();
 
     @Test
     public void testFindAll() {
-        Iterable<List<Vehicle>> vehicles = DAO.findAll();
-        System.out.println(vehicles.iterator().next());
-        assertFalse(vehicles.iterator().next().isEmpty());
+        Iterable<List<Vehicle>> vehicles = VEHICLE_DAO.findAll();
 
+        assertNotNull(vehicles);
+        boolean isEmptyVehiclesList = VEHICLE_DAO.findAll().iterator().next().isEmpty();
+        assertTrue(isEmptyVehiclesList);
     }
+
+    @Test
+    @DisplayName("Test, add new vehicle & delete.")
+    public void testAddNewVehicleAndDelete() {
+        String manufactureId = "SUBARU";
+        String engineType = "GASOLINE";
+        String model = "Forester";
+        double price = 16000;
+        int age = 8;
+        int weight = 2000;
+        Vehicle vehicle = new Vehicle(manufactureId, engineType, model, price, age, weight);
+
+        int expectedVehiclesCount = 0;
+        int actualVehiclesCount = VEHICLE_DAO.findAll().iterator().next().size();
+        assertEquals(expectedVehiclesCount, actualVehiclesCount);
+
+        VEHICLE_DAO.save(vehicle);
+
+        expectedVehiclesCount = 1;
+        actualVehiclesCount = VEHICLE_DAO.findAll().iterator().next().size();
+        assertEquals(expectedVehiclesCount, actualVehiclesCount);
+
+        Iterable<List<Vehicle>> vehicles = VEHICLE_DAO.findAll();
+        Vehicle actualVehicle = vehicles.iterator().next().get(0);
+        VEHICLE_DAO.delete(actualVehicle.getVehicleId());
+
+        expectedVehiclesCount = 0;
+        actualVehiclesCount = VEHICLE_DAO.findAll().iterator().next().size();
+        assertEquals(expectedVehiclesCount, actualVehiclesCount);
+    }
+
+
+
+
+//    @Test
+//    @DisplayName("Test, save new user & delete.")
+//    public void testSaveNewUserAndDelete() {
+//        String testLogin = "new-test-user";
+//        String testPassword = "new-test-user";
+//        User user = new User(testLogin, testPassword, LocalDateTime.now());
+//
+//        boolean isEmptyUsersList = USER_DAO.findAll().iterator().next().isEmpty();
+//        assertTrue(isEmptyUsersList);
+//
+//        USER_DAO.save(user);
+//
+//        isEmptyUsersList = USER_DAO.findAll().iterator().next().isEmpty();
+//        assertFalse(isEmptyUsersList);
+//
+//        int expectedUsersCount = 1;
+//        int actualUsersCount = USER_DAO.findAll().iterator().next().size();
+//        assertEquals(expectedUsersCount, actualUsersCount);
+//
+//        User actualUser = USER_DAO.findByLogin(user.getLogin()).get();
+//        USER_DAO.delete(actualUser.getUserId());
+//    }
+
+
+
 
 //    @Test
 //    public void testFindById() {

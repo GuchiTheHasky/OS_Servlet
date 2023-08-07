@@ -1,6 +1,5 @@
 package the.husky.dao.jdbc.mapper;
 
-
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import the.husky.entity.user.User;
@@ -15,11 +14,12 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class UserRowMapperTest {
     private final UserRowMapper MAPPER = new UserRowMapper();
+
     @Test
     public void testMapRow() throws SQLException {
         ResultSet resultSet = Mockito.mock(ResultSet.class);
         Mockito.when(resultSet.getInt("id")).thenReturn(1);
-        Mockito.when(resultSet.getString("user_name")).thenReturn("Obi-Wan Kenobi");
+        Mockito.when(resultSet.getString("login")).thenReturn("Obi-Wan Kenobi");
         Mockito.when(resultSet.getString("password")).thenReturn("master");
         Mockito.when(resultSet.getTimestamp("registration_time")).thenReturn(Timestamp.valueOf(LocalDateTime.now()));
 

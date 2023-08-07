@@ -19,15 +19,15 @@ public class JdbcUserDaoITest {
     public void testFindAllUsers() {
         Iterable<List<User>> users = USER_DAO.findAll();
 
+        assertNotNull(users);
+
         boolean isEmptyUsersList = USER_DAO.findAll().iterator().next().isEmpty();
         assertTrue(isEmptyUsersList);
-
-        assertNotNull(users);
     }
 
     @Test
     @DisplayName("Test, save new user & delete.")
-    public void testSaveNewUser() {
+    public void testSaveNewUserAndDelete() {
         String testLogin = "new-test-user";
         String testPassword = "new-test-user";
         User user = new User(testLogin, testPassword, LocalDateTime.now());
@@ -52,12 +52,19 @@ public class JdbcUserDaoITest {
     @SneakyThrows
     @DisplayName("Test, find User by name.")
     public void testFindUserByName() {
-        String name = "user";
-        Optional<User> currentUser = USER_DAO.findByLogin(name);
+        String login = "user";
+        String password = "user";
+        User user = new User(login, password, LocalDateTime.now());
+        USER_DAO.save(user);
+
+        Optional<User> currentUser = USER_DAO.findByLogin(login);
         assertNotNull(currentUser);
 
-        String expectedPassword = "user";
+        String actualLogin = currentUser.get().getLogin();
         String actualPassword = currentUser.get().getPassword();
-        assertEquals(expectedPassword, actualPassword);
+        assertEquals(login, actualLogin);
+        assertEquals(password, actualPassword);
+
+        USER_DAO.delete(currentUser.get().getUserId());
     }
 }
