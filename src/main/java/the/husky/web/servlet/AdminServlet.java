@@ -40,11 +40,11 @@ public class AdminServlet extends HttpServlet {
 
     private int getRegisteredUsersCount() {
         return webService.getCacheService().getUsersCache() == null ?
-                 0 : webService.getCacheService().getUsersCache().size();
+                0 : webService.getCacheService().getUsersCache().size();
     }
 
     private int getRegisteredVehiclesCount() {
         return webService.getCacheService().getVehiclesCache() == null ?
-                 0 : webService.getCacheService().getVehiclesCache().size();
+                0 : webService.getCacheService().getVehiclesCache().size();
     }
 }

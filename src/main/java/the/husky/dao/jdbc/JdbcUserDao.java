@@ -28,7 +28,7 @@ public class JdbcUserDao implements UserDao {
     private static final String DELETE = "DELETE FROM users WHERE id = ?";
 
     @Override
-    public Optional<List<User>> findAll() {
+    public synchronized Iterable<List<User>> findAll() {
         try (Connection connection = DataSourceConnector.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(SELECT_ALL);
              ResultSet resultSet = preparedStatement.executeQuery()) {
@@ -37,7 +37,7 @@ public class JdbcUserDao implements UserDao {
                 User user = USER_ROW_MAPPER.mapRow(resultSet);
                 users.add(user);
             }
-            return Optional.ofNullable(users);
+            return Collections.synchronizedList(List.of(users));
         } catch (SQLException e) {
             log.error("SQL or data connection refused; JdbcUserDao.class, method: findAll;", e);
             throw new DataAccessException("Error retrieving users. Please try again later.", e);
@@ -45,7 +45,7 @@ public class JdbcUserDao implements UserDao {
     }
 
     @Override
-    public void save(User user) {
+    public synchronized void save(User user) {
         try (Connection connection = DataSourceConnector.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(INSERT)) {
             preparedStatement.setString(1, user.getLogin());
@@ -60,7 +60,7 @@ public class JdbcUserDao implements UserDao {
     }
 
     @Override
-    public Optional<User> findByLogin(String login) {
+    public synchronized Optional<User> findByLogin(String login) {
         try (Connection connection = DataSourceConnector.getConnection();
              PreparedStatement statement = connection.prepareStatement(GET_BY_LOGIN)) {
             statement.setString(1, login);
@@ -74,7 +74,7 @@ public class JdbcUserDao implements UserDao {
     }
 
     @Override
-    public Optional<User> findById(int id) {
+    public synchronized Optional<User> findById(int id) {
         try (Connection connection = DataSourceConnector.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(GET_BY_ID)) {
             preparedStatement.setInt(1, id);
@@ -89,7 +89,7 @@ public class JdbcUserDao implements UserDao {
     }
 
     @Override
-    public void update(User user) {
+    public synchronized void update(User user) {
         try (Connection connection = DataSourceConnector.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(UPDATE)) {
             preparedStatement.setString(1, user.getLogin());
@@ -104,7 +104,7 @@ public class JdbcUserDao implements UserDao {
     }
 
     @Override
-    public void delete(int id) {
+    public synchronized void delete(int id) {
         try (Connection connection = DataSourceConnector.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(DELETE)) {
             preparedStatement.setInt(1, id);

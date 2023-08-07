@@ -8,6 +8,7 @@ import the.husky.service.entity.UserService;
 import the.husky.service.entity.VehicleService;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Getter
@@ -31,14 +32,14 @@ public class CacheService {
 
     public List<User> getUsersCache() {
         if (usersCache == null) {
-            usersCache = new ArrayList<>();
+            usersCache = Collections.synchronizedList(new ArrayList<>());
         }
         return usersCache;
     }
 
     public List<Vehicle> getVehiclesCache() {
         if (vehiclesCache == null) {
-            vehiclesCache = new ArrayList<>();
+            vehiclesCache = Collections.synchronizedList(new ArrayList<>());
         }
         return vehiclesCache;
     }
@@ -46,7 +47,7 @@ public class CacheService {
     public void addUser(User user) {
         if (!loginAlreadyExist(user.getLogin())) {
             if (usersCache == null) {
-                usersCache = new ArrayList<>();
+                usersCache = Collections.synchronizedList(new ArrayList<>());
             }
             usersCache.add(user);
             userService.add(user);
@@ -61,7 +62,7 @@ public class CacheService {
 
     public void addVehicle(Vehicle vehicle) {
         if (vehiclesCache == null) {
-            vehiclesCache = new ArrayList<>();
+            vehiclesCache = Collections.synchronizedList(new ArrayList<>());
         }
         vehicleService.add(vehicle);
         vehiclesCache.add(vehicle);

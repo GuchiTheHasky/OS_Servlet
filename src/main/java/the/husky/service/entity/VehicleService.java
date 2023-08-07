@@ -6,6 +6,7 @@ import the.husky.dao.VehicleDao;
 import the.husky.entity.vehicle.Vehicle;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @NoArgsConstructor
@@ -14,7 +15,13 @@ public class VehicleService {
     private VehicleDao vehicleDao;
 
     public List<Vehicle> findAll() {
-        return vehicleDao.findAll().isPresent() ? vehicleDao.findAll().get() : new ArrayList<>();
+        List<Vehicle> allVehicles = Collections.synchronizedList(new ArrayList<>());
+        for (List<Vehicle> currentVehicle : vehicleDao.findAll()) {
+            synchronized (allVehicles) {
+                allVehicles.addAll(currentVehicle);
+            }
+        }
+        return allVehicles;
     }
 
     public void add(Vehicle vehicle) {

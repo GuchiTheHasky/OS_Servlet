@@ -22,7 +22,7 @@ public class SecurityService implements Security {
         this.sessionList = Collections.synchronizedList(new ArrayList<>());
     }
 
-    public Session getSession (String token) {
+    public Session getSession(String token) {
         for (Session session : sessionList) {
             if (session.getToken().equals(token)) {
                 return session;

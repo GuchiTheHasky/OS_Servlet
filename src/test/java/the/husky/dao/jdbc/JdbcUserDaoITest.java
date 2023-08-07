@@ -5,34 +5,47 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import the.husky.entity.user.User;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 public class JdbcUserDaoITest {
-    private final JdbcUserDao DAO = new JdbcUserDao();
+    private final JdbcUserDao USER_DAO = new JdbcUserDao();
 
     @Test
-    @SneakyThrows
     @DisplayName("Test, find all users.")
     public void testFindAllUsers() {
-        List<User> users = DAO.findAll();
-        assertFalse(users.isEmpty());
-        for (User user : users) {
-            assertNotEquals(0, user.getUserId());
-        }
+        Iterable<List<User>> users = USER_DAO.findAll();
+
+        boolean isEmptyUsersList = USER_DAO.findAll().iterator().next().isEmpty();
+        assertTrue(isEmptyUsersList);
+
+        assertNotNull(users);
     }
 
     @Test
-    @SneakyThrows
-    @DisplayName("Test, find user by id.")
-    public void testFindById() {
-        int id = 1;
-        Optional<User> user = DAO.findById(id);
-        assertNotNull(user);
-        assertFalse(user.get().getLogin().isEmpty());
-        assertFalse(user.get().getPassword().isEmpty());
+    @DisplayName("Test, save new user & delete.")
+    public void testSaveNewUser() {
+        String testLogin = "new-test-user";
+        String testPassword = "new-test-user";
+        User user = new User(testLogin, testPassword, LocalDateTime.now());
+
+        boolean isEmptyUsersList = USER_DAO.findAll().iterator().next().isEmpty();
+        assertTrue(isEmptyUsersList);
+
+        USER_DAO.save(user);
+
+        isEmptyUsersList = USER_DAO.findAll().iterator().next().isEmpty();
+        assertFalse(isEmptyUsersList);
+
+        int expectedUsersCount = 1;
+        int actualUsersCount = USER_DAO.findAll().iterator().next().size();
+        assertEquals(expectedUsersCount, actualUsersCount);
+
+        User actualUser = USER_DAO.findByLogin(user.getLogin()).get();
+        USER_DAO.delete(actualUser.getUserId());
     }
 
     @Test
@@ -40,7 +53,7 @@ public class JdbcUserDaoITest {
     @DisplayName("Test, find User by name.")
     public void testFindUserByName() {
         String name = "user";
-        Optional<User> currentUser = DAO.findByLogin(name);
+        Optional<User> currentUser = USER_DAO.findByLogin(name);
         assertNotNull(currentUser);
 
         String expectedPassword = "user";

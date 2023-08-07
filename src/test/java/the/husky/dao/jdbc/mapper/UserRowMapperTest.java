@@ -15,7 +15,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class UserRowMapperTest {
     private final UserRowMapper MAPPER = new UserRowMapper();
-    // todo моки це не інтеграційний тест, а звичайний
     @Test
     public void testMapRow() throws SQLException {
         ResultSet resultSet = Mockito.mock(ResultSet.class);

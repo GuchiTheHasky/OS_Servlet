@@ -7,6 +7,7 @@ import the.husky.entity.user.User;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -16,7 +17,13 @@ public class UserService {
     private UserDao userDao;
 
     public List<User> findAll() {
-        return userDao.findAll().isPresent() ? userDao.findAll().get() : new ArrayList<>();
+        List<User> allUsers = Collections.synchronizedList(new ArrayList<>());
+        for (List<User> currentUser : userDao.findAll()) {
+            synchronized (allUsers) {
+                allUsers.addAll(currentUser);
+            }
+        }
+        return allUsers;
     }
 
     public void add(User user) {

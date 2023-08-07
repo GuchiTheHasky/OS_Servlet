@@ -29,7 +29,7 @@ public class JdbcVehicleDao implements VehicleDao {
     private static final String GET_BY_ID = "SELECT * FROM \"vehicle\" WHERE vehicle_id = ?";
 
     @Override
-    public Optional<List<Vehicle>> findAll() {
+    public synchronized Iterable<List<Vehicle>> findAll() {
         try (Connection connection = DataSourceConnector.getConnection();
              PreparedStatement statement = connection.prepareStatement(SELECT_ALL);
              ResultSet resultSet = statement.executeQuery()) {
@@ -38,7 +38,7 @@ public class JdbcVehicleDao implements VehicleDao {
                 Vehicle vehicle = VEHICLE_ROW_MAPPER.mapRow(resultSet);
                 vehicles.add(vehicle);
             }
-            return Optional.ofNullable(vehicles);
+            return Collections.synchronizedList(List.of(vehicles));
         } catch (SQLException e) {
             log.error("SQL or data connection refused; JdbcVehicleDao.class, method: findAll;", e);
             throw new DataAccessException("Error retrieving vehicles. Please try again later.", e);
@@ -46,7 +46,7 @@ public class JdbcVehicleDao implements VehicleDao {
     }
 
     @Override
-    public void save(Vehicle vehicle) {
+    public synchronized void save(Vehicle vehicle) {
         try (Connection connection = DataSourceConnector.getConnection();
              PreparedStatement statement = connection.prepareStatement(INSERT)) {
             statement.setString(1, vehicle.getManufacture().getManufacture());
@@ -65,7 +65,7 @@ public class JdbcVehicleDao implements VehicleDao {
     }
 
     @Override
-    public void delete(int id) {
+    public synchronized void delete(int id) {
         try (Connection connection = DataSourceConnector.getConnection();
              PreparedStatement statement = connection.prepareStatement(DELETE)) {
             statement.setInt(1, id);
@@ -78,7 +78,7 @@ public class JdbcVehicleDao implements VehicleDao {
     }
 
     @Override
-    public void update(Vehicle updatedVehicle) {
+    public synchronized void update(Vehicle updatedVehicle) {
         try (Connection connection = DataSourceConnector.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(UPDATE)) {
             preparedStatement.setString(1, updatedVehicle.getManufacture().getManufacture());
@@ -97,7 +97,7 @@ public class JdbcVehicleDao implements VehicleDao {
     }
 
     @Override
-    public Optional<Vehicle> findById(int id) {
+    public synchronized Optional<Vehicle> findById(int id) {
         try (Connection connection = DataSourceConnector.getConnection();
              PreparedStatement statement = connection.prepareStatement(GET_BY_ID)) {
             statement.setInt(1, id);

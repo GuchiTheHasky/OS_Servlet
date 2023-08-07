@@ -12,43 +12,48 @@ import java.util.Optional;
  */
 
 public interface UserDao {
-    /**
-     * This method retrieves all user records from the data source and returns them as a list of User objects.
-     * It allows you to get a comprehensive list of all users available in the database.
-     */
-    Optional<List<User>> findAll();
 
     /**
-     * The add method adds a new user record to the data source. It takes a User object as a parameter,
-     * representing the user to be added. This method is used to insert a new user into the database.
+     * Retrieves a list of all users stored in the data source.
+     *
+     * @return An iterable containing lists of users.
+     */
+    Iterable<List<User>> findAll();
+
+    /**
+     * Adds a new user record to the data source.
+     *
+     * @param user The user object to be added.
      */
     void save(User user);
 
     /**
-     * This method searches for a user record in the data source based on the provided name.
-     * It takes a String parameter name and returns the corresponding User object if found.
-     * It allows you to retrieve a specific user by their name.
+     * Searches for a user record in the data source based on the provided name.
+     *
+     * @param name The name of the user to search for.
+     * @return An optional containing the corresponding User object if found, or empty if not found.
      */
     Optional<User> findByLogin(String name);
 
     /**
-     * The findById method retrieves a user record from the data source based on the provided ID.
-     * It takes an integer parameter id representing the unique identifier of the user and returns
-     * the corresponding User object. This method is useful for fetching a user by their ID.
+     * Retrieves a user record from the data source based on the provided ID.
+     *
+     * @param id The unique identifier of the user.
+     * @return An optional containing the corresponding User object if found, or empty if not found.
      */
     Optional<User> findById(int id);
 
     /**
-     * The update method updates an existing user record in the data source. It takes a User object as a parameter,
-     * representing the updated user information. This method is used to modify the details
-     * of an existing user in the database.
+     * Updates an existing user record in the data source.
+     *
+     * @param user The updated user information.
      */
     void update(User user);
 
     /**
-     * The delete method removes a user record from the data source based on the provided ID.
-     * It takes an integer parameter id representing the unique identifier of the user to be deleted.
-     * This method allows you to delete a specific user from the database.
+     * Removes a user record from the data source based on the provided ID.
+     *
+     * @param id The unique identifier of the user to be deleted.
      */
     void delete(int id);
 }

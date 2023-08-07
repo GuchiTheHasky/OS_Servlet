@@ -10,6 +10,7 @@ import java.util.Objects;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@ToString
 public class User {
     private int userId;
     private String login;
@@ -19,6 +20,12 @@ public class User {
     public User(String login, String password) {
         this.login = login;
         this.password = password;
+    }
+
+    public User(String login, String password, LocalDateTime registrationTime) {
+        this.login = login;
+        this.password = password;
+        this.registrationTime = registrationTime;
     }
 
     @Override

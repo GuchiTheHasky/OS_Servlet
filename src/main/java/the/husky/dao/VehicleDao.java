@@ -13,35 +13,39 @@ import java.util.Optional;
 
 public interface VehicleDao {
     /**
-     * This method retrieves all vehicle records from the data source and returns them as a list of Vehicle objects.
-     * It allows you to get a comprehensive list of all vehicles available in the database.
+     * Retrieves a list of all vehicles stored in the data source.
+     *
+     * @return An iterable containing lists of vehicles.
      */
-    Optional<List<Vehicle>> findAll();
+
+    Iterable<List<Vehicle>> findAll();
 
     /**
-     * The add method adds a new vehicle record to the data source. It takes a Vehicle object as a parameter,
-     * representing the vehicle to be added. This method is used to insert a new vehicle into the database.
+     * Adds a new vehicle record to the data source.
+     *
+     * @param vehicle The vehicle object to be added.
      */
     void save(Vehicle vehicle);
 
     /**
-     * The delete method removes a vehicle record from the data source based on the provided ID. It takes an integer
-     * parameter id representing the unique identifier of the vehicle to be deleted. This method allows you to delete
-     * a specific vehicle from the database.
+     * Deletes a vehicle record from the data source based on the provided ID.
+     *
+     * @param id The unique identifier of the vehicle to be deleted.
      */
     void delete(int id);
 
     /**
-     * The edit method updates an existing vehicle record in the data source. It takes a Vehicle object as a parameter,
-     * representing the updated vehicle information. This method is used to modify the details of an existing vehicle
-     * in the database.
+     * Updates an existing vehicle record in the data source.
+     *
+     * @param vehicle The updated vehicle information.
      */
     void update(Vehicle vehicle);
 
     /**
-     * The getById method retrieves a vehicle record from the data source based on the provided ID. It takes an integer
-     * parameter id representing the unique identifier of the vehicle and returns the corresponding Vehicle object.
-     * This method is useful for fetching a vehicle by its ID.
+     * Retrieves a vehicle record from the data source based on the provided ID.
+     *
+     * @param id The unique identifier of the vehicle.
+     * @return An optional containing the corresponding Vehicle object if found, or empty if not found.
      */
     Optional<Vehicle> findById(int id);
 }
