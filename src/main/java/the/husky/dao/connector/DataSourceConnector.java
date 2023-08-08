@@ -20,6 +20,8 @@ import java.util.Properties;
 @AllArgsConstructor
 public class DataSourceConnector {
     private static final String DB_PROPERTIES = "db.properties";     // TODO: It's used for flyway migration.
+    private static final String VALIDATION_QUERY = "SELECT 1";
+    private static final String JDBC_DRIVER = "org.postgresql.Driver";
     private String jdbcUrl;
     private String jdbcUser;
     private String jdbcPassword;
@@ -45,9 +47,12 @@ public class DataSourceConnector {
 
     private void initializeDataSource() {
         basicDataSource = new BasicDataSource();
+        basicDataSource.addConnectionProperty("useUnicode", "true");
+        basicDataSource.setDriverClassName(JDBC_DRIVER);
         basicDataSource.setUrl(jdbcUrl);
         basicDataSource.setUsername(jdbcUser);
         basicDataSource.setPassword(jdbcPassword);
+        basicDataSource.setValidationQuery(VALIDATION_QUERY);
     }
 
     // TODO: It's used for flyway migration.
