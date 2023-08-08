@@ -32,7 +32,7 @@
     <lombok.version>1.18.26</lombok.version>
     <postgresql.version>42.6.0</postgresql.version>
     <freemarker.version>2.3.31</freemarker.version>
-    <HikariCP.version>5.0.1</HikariCP.version>
+    <commons-dbcp2.version>2.9.0</commons-dbcp2.version>
     <flyway-core.version>9.20.0</flyway-core.version>
     <mockito-core.version>5.3.1</mockito-core.version>
     <junit.jupiter.version>5.9.2</junit.jupiter.version>
@@ -143,9 +143,9 @@
     </dependency>
 
     <dependency>
-      <groupId>com.zaxxer</groupId>
-      <artifactId>HikariCP</artifactId>
-      <version>${HikariCP.version}</version>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-dbcp2</artifactId>
+      <version>${commons-dbcp2.version}</version>
     </dependency>
 
     <dependency>

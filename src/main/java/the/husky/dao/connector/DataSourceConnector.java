@@ -1,9 +1,11 @@
 package the.husky.dao.connector;
 
-import com.zaxxer.hikari.HikariConfig;
-import com.zaxxer.hikari.HikariDataSource;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.dbcp2.BasicDataSource;
 import the.husky.exception.DataAccessException;
 
 import java.io.IOException;
@@ -18,11 +20,10 @@ import java.util.Properties;
 @AllArgsConstructor
 public class DataSourceConnector {
     private static final String DB_PROPERTIES = "db.properties";     // TODO: It's used for flyway migration.
-    private static final String CONNECTION_TEST_QUERY = "SELECT 1";
     private String jdbcUrl;
     private String jdbcUser;
     private String jdbcPassword;
-    private HikariDataSource dataSource;
+    private BasicDataSource basicDataSource;
 
     public DataSourceConnector(String jdbcUrl, String jdbcUser, String jdbcPassword) {
         this.jdbcUrl = jdbcUrl;
@@ -31,11 +32,11 @@ public class DataSourceConnector {
     }
 
     public Connection getConnection() {
-        if (dataSource == null) {
+        if (basicDataSource == null) {
             initializeDataSource();
         }
         try {
-            return dataSource.getConnection();
+            return basicDataSource.getConnection();
         } catch (Exception e) {
             log.error("Error creating connection pool.", e);
             throw new DataAccessException("Connections lost, please try again later.", e);
@@ -43,13 +44,10 @@ public class DataSourceConnector {
     }
 
     private void initializeDataSource() {
-        HikariConfig config = new HikariConfig();
-        config.setJdbcUrl(jdbcUrl);
-        config.setUsername(jdbcUser);
-        config.setPassword(jdbcPassword);
-        config.setConnectionTestQuery(CONNECTION_TEST_QUERY);
-
-        dataSource = new HikariDataSource(config);
+        basicDataSource = new BasicDataSource();
+        basicDataSource.setUrl(jdbcUrl);
+        basicDataSource.setUsername(jdbcUser);
+        basicDataSource.setPassword(jdbcPassword);
     }
 
     // TODO: It's used for flyway migration.
