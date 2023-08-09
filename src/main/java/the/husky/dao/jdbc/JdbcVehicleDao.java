@@ -1,9 +1,11 @@
 package the.husky.dao.jdbc;
 
+import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.dbcp2.BasicDataSource;
 import the.husky.dao.VehicleDao;
-import the.husky.dao.connector.DataSourceConnector;
 import the.husky.dao.jdbc.mapper.VehicleRowMapper;
 import the.husky.entity.vehicle.Vehicle;
 import the.husky.exception.DataAccessException;
@@ -18,7 +20,9 @@ import java.util.List;
 import java.util.Optional;
 
 @Slf4j
+@Setter
 @NoArgsConstructor
+@AllArgsConstructor
 public class JdbcVehicleDao implements VehicleDao {
     private static final VehicleRowMapper VEHICLE_ROW_MAPPER = new VehicleRowMapper();
     private static final String SELECT_ALL = "SELECT vehicle_id, manufacture, enginetype, model, price, age, weight " +
@@ -29,11 +33,7 @@ public class JdbcVehicleDao implements VehicleDao {
     private static final String UPDATE = "UPDATE \"vehicle\" " +
             "SET manufacture=?, enginetype=?, model=?, price=?, age=?, weight=? WHERE vehicle_id=?";
     private static final String GET_BY_ID = "SELECT * FROM \"vehicle\" WHERE vehicle_id = ?";
-    private DataSourceConnector dataSource;
-
-    public JdbcVehicleDao(DataSourceConnector dataSourceConnector) {
-        this.dataSource = dataSourceConnector;
-    }
+    private BasicDataSource dataSource;
 
     @Override
     public synchronized Iterable<List<Vehicle>> findAll() {

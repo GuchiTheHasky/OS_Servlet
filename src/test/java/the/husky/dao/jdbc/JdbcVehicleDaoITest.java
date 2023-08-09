@@ -1,8 +1,9 @@
 package the.husky.dao.jdbc;
 
+import org.apache.commons.dbcp2.BasicDataSource;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import the.husky.dao.connector.DataSourceConnector;
 import the.husky.entity.vehicle.Vehicle;
 
 import java.util.List;
@@ -11,8 +12,16 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class JdbcVehicleDaoITest {
 
-    private final JdbcVehicleDao VEHICLE_DAO = new JdbcVehicleDao(new DataSourceConnector
-            ("jdbc:postgresql://localhost:5432/OS", "postgres", "root"));
+    private static final JdbcVehicleDao VEHICLE_DAO = new JdbcVehicleDao();
+
+    @BeforeAll
+    static void init () {
+        BasicDataSource dataSource = new BasicDataSource();
+        dataSource.setUrl("jdbc:postgresql://localhost:5432/OS");
+        dataSource.setUsername("postgres");
+        dataSource.setPassword("root");
+        VEHICLE_DAO.setDataSource(dataSource);
+    }
 
     @Test
     public void testFindAll() {

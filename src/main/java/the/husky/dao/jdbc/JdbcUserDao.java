@@ -1,10 +1,11 @@
 package the.husky.dao.jdbc;
 
+import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.dbcp2.BasicDataSource;
 import the.husky.dao.UserDao;
-import the.husky.dao.connector.DataSourceConnector;
 import the.husky.dao.jdbc.mapper.UserRowMapper;
 import the.husky.entity.user.User;
 import the.husky.exception.DataAccessException;
@@ -18,6 +19,7 @@ import java.util.Optional;
 @Slf4j
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
 public class JdbcUserDao implements UserDao {
     private static final UserRowMapper USER_ROW_MAPPER = new UserRowMapper();
     private static final String SELECT_ALL = "SELECT id, login, password, registration_time FROM users";
@@ -26,11 +28,7 @@ public class JdbcUserDao implements UserDao {
     private static final String GET_BY_ID = "SELECT * FROM users WHERE id = ?";
     private static final String UPDATE = "UPDATE users SET login = ?, password = ? WHERE id = ?";
     private static final String DELETE = "DELETE FROM users WHERE id = ?";
-    private DataSourceConnector dataSource;
-
-    public JdbcUserDao(DataSourceConnector dataSourceConnector) {
-        this.dataSource = dataSourceConnector;
-    }
+    private BasicDataSource dataSource;
 
     @Override
     public synchronized Iterable<List<User>> findAll() {
