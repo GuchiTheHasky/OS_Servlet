@@ -7,4 +7,8 @@
         <property name="webService" ref="webService"/>
     </bean>
 
+    <bean id="paymentFilter" class="the.husky.web.filter.CardFilter">
+        <property name="webService" ref="webService"/>
+    </bean>
+
 </beans>

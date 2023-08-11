@@ -1,7 +1,6 @@
 package the.husky.web.filter;
 
 import jakarta.servlet.*;
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
@@ -16,12 +15,12 @@ import java.util.List;
 @Slf4j
 @NoArgsConstructor
 @AllArgsConstructor
-public class WebFilter implements Filter {
+public class WebFilter implements Filter, MyFilter {
     private final List<String> PERMITTED_URI = List.of("/login", "/task", "/user_add", "image.png",
             "/static", "/favicon.ico", "/wrong_answer.html");
     private final List<String> USER_ACCESS_LEVEL_URI = List.of("/login", "/logout", "/task", "/user_add",
             "image.png", "/static", "/favicon.ico", "/wrong_answer.html", "/vehicle_all", "/vehicle_add",
-            "/vehicle_edit", "/vehicle/delete");
+            "/vehicle_edit", "/vehicle/delete", "/cart", "/card");
     private WebService webService;
 
     @Override
@@ -43,11 +42,15 @@ public class WebFilter implements Filter {
         }
 
         Session currentSession = getSession(cookieToken);
-        validateSession(response, currentSession);
+        validateSession(response, currentSession, "/login");
+        String admin = "Admin";
+        String user = "User";
+        String guest = "Guest";
 
-        if (isAdmin(currentSession, cookieToken) && !isSessionTerminated(cookieToken)) {
+        if (identifyUser(currentSession, cookieToken, admin) && !isSessionTerminated(cookieToken)) {
             filterChain.doFilter(request, response);
-        } else if (isUser(currentSession, cookieToken) &&
+        } else if ((identifyUser(currentSession, cookieToken, user) ||
+                identifyUser(currentSession, cookieToken, guest) )&&
                 isUserAccessLevel(request) &&
                 !isSessionTerminated(cookieToken)) {
             filterChain.doFilter(request, response);
@@ -58,16 +61,6 @@ public class WebFilter implements Filter {
 
     private boolean isSessionTerminated(String token) {
         return webService.getSecurityService().isSessionTerminated(token);
-    }
-
-    private boolean isAdmin(Session session, String token) {
-        return session.getRole().getRole().equalsIgnoreCase("Admin") &&
-                session.getToken().equals(token);
-    }
-
-    private boolean isUser(Session session, String token) {
-        return session.getRole().getRole().equalsIgnoreCase("User") &&
-                session.getToken().equals(token);
     }
 
     private boolean isUserAccessLevel(HttpServletRequest request) {
@@ -81,24 +74,6 @@ public class WebFilter implements Filter {
 
     private Session getSession(String token) {
         return webService.getSecurityService().getSession(token);
-    }
-
-    private String extractTokenValue(HttpServletRequest request) {
-        Cookie[] cookies = request.getCookies();
-        if (cookies != null) {
-            for (Cookie cookie : cookies) {
-                if ("user-token".equals(cookie.getName()) || "admin-token".equals(cookie.getName())) {
-                    return cookie.getValue();
-                }
-            }
-        }
-        return null;
-    }
-
-    private void validateSession(HttpServletResponse response, Session session) throws IOException {
-        if (session == null) {
-            response.sendRedirect("/login");
-        }
     }
 
     private boolean isPermittedURI(String uri) {

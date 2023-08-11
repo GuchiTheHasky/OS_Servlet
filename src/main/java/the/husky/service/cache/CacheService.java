@@ -18,30 +18,35 @@ public class CacheService {
     private VehicleService vehicleService;
     private List<User> usersCache;
     private List<Vehicle> vehiclesCache;
+    private List<Vehicle> cartCache;
 
     public CacheService(UserService userService, VehicleService vehicleService) {
         this.userService = userService;
         this.vehicleService = vehicleService;
-        initCache();
+        initializeCache();
     }
 
-    private void initCache() {
-        this.usersCache = userService.findAll();
-        this.vehiclesCache = vehicleService.findAll();
-    }
-
-    public List<User> getUsersCache() {
-        if (usersCache == null) {
-            usersCache = Collections.synchronizedList(new ArrayList<>());
+    public List<Vehicle> getCartCache() {
+        if (cartCache == null) {
+            cartCache = Collections.synchronizedList(new ArrayList<>());
         }
-        return usersCache;
+        return cartCache;
     }
 
-    public List<Vehicle> getVehiclesCache() {
-        if (vehiclesCache == null) {
-            vehiclesCache = Collections.synchronizedList(new ArrayList<>());
+    public void addToCart(int id) {
+        Vehicle vehicle = vehicleService.getById(id);
+        if (cartCache == null) {
+            cartCache = Collections.synchronizedList(new ArrayList<>());
         }
-        return vehiclesCache;
+        cartCache.add(vehicle);
+    }
+
+    public void clearCart() {
+        if (cartCache == null) {
+            cartCache = Collections.synchronizedList(new ArrayList<>());
+        }
+        removedVehicleFromDB(cartCache);
+        cartCache.clear();
     }
 
     public void addUser(User user) {
@@ -79,7 +84,7 @@ public class CacheService {
     }
 
     public boolean loginAlreadyExist(String login) {
-        if (!(usersCache == null)) {
+        if (usersCache != null) {
             for (User cachedUser : usersCache) {
                 if (cachedUser.getLogin().equals(login)) {
                     return true;
@@ -109,5 +114,17 @@ public class CacheService {
 
     public Vehicle getVehicleById(int id) {
         return vehicleService.getById(id);
+    }
+
+    private void initializeCache() {
+        this.usersCache = userService.findAll();
+        this.vehiclesCache = vehicleService.findAll();
+        this.cartCache = Collections.synchronizedList(new ArrayList<>());
+    }
+
+    private void removedVehicleFromDB(List<Vehicle> vehicles) {
+        for (Vehicle vehicle : vehicles) {
+            vehicleService.delete(vehicle.getVehicleId());
+        }
     }
 }

@@ -56,7 +56,7 @@ public class SecurityService implements Security {
 
     @Override
     public Session createGuestSession() {
-        Role role = Role.USER;
+        Role role = Role.GUEST;
         String token = generateToken("guest");
         LocalDateTime expireDate = getExpirationDate();
         Session session = new Session(role, token, expireDate);

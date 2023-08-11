@@ -695,6 +695,41 @@ body.edit_user {
     width: 80px;
 }
 
+.custom-button {
+    background-color: green;
+    color: white;
+    border: 1px solid #333333;
+    padding: 10px 20px;
+    text-decoration: none;
+    border-radius: 8px;
+}
+
+.custom-button:hover {
+    background-color: darkgreen;
+}
+
+#cart {
+        background-color: green;
+        color: white;
+        padding: 10px;
+        border-radius: 8px;
+        max-width: 72px;
+        margin-left: auto; /* Відсутність відступу з лівого боку */
+        cursor: pointer;
+        text-align: center; /* Вирівнювання тексту по центру */
+        text-decoration: none;
+    }
+
+    #cart {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    #cart:hover {
+        background-color: darkgreen; /* Зміна фону при наведенні */
+    }
+
 #edit_vehicle {
     text-decoration: none;
     background-color: #111010;
@@ -869,4 +904,132 @@ div#add_new_vehicle_in_list a {
     color: white;
     text-decoration: none;
     border-radius: 5px;
+}
+
+/* cart */
+
+#vehicles_cart_list {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px;
+    background-color: white;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+#vehicles_cart_list th,
+#vehicles_cart_list td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+#vehicles_cart_list th {
+    background-color: #f2f2f2;
+}
+
+#vehicles_cart_list tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+#vehicles_cart_list tr:hover {
+    background-color: #ddd;
+    cursor: pointer;
+}
+
+#card_data {
+        background-color: green;
+        color: white;
+        padding: 10px;
+        border-radius: 20px;
+        max-width: 72px;
+        margin-left: auto; /* Відсутність відступу з лівого боку */
+        cursor: pointer;
+        text-align: center; /* Вирівнювання тексту по центру */
+        text-decoration: none;
+    }
+
+    #card_data {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    #card_data:hover {
+        background-color: darkgreen; /* Зміна фону при наведенні */
+    }
+
+#back_to_shopping {
+        background-color: green;
+        color: white;
+        padding: 10px;
+        border-radius: 20px;
+        max-width: 72px;
+        margin-left: auto; /* Відсутність відступу з лівого боку */
+        cursor: pointer;
+        text-align: center; /* Вирівнювання тексту по центру */
+        text-decoration: none;
+    }
+
+    #back_to_shopping {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    #back_to_shopping:hover {
+        background-color: darkgreen; /* Зміна фону при наведенні */
+    }
+
+/* card */
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+}
+
+#payment_form {
+    background-color: white;
+    border-radius: 100px;
+    padding: 20px;
+}
+
+#payment_form {
+   width: 400px;
+   height: 400px;
+}
+
+#payment_form label {
+    display: block;
+    font-weight: bold; /* жирний шрифт */
+}
+
+.card-form input {
+    width: 75%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 20px;
+}
+
+#pay {
+    background-color: green;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+#pay:hover {
+    background-color: darkgreen;
+}
+
+#by_vehicle {
+    margin-top: 20px;
+    display: block;
+    text-align: center;
 }

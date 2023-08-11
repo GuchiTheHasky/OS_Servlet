@@ -50,4 +50,12 @@
     <bean id="logoutServlet" class="the.husky.web.servlet.LogoutServlet"/>
 
     <bean id="staticResourceServlet" class="the.husky.web.servlet.StaticResourceServlet"/>
+
+    <bean id="cartServlet" class="the.husky.web.servlet.userservlet.CartServlet">
+        <property name="webService" ref="webService"/>
+    </bean>
+
+    <bean id="paymentServlet" class="the.husky.web.servlet.userservlet.PaymentServlet">
+        <property name="webService" ref="webService"/>
+    </bean>
 </beans>

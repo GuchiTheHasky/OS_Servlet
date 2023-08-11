@@ -10,6 +10,7 @@ import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.FilterHolder;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
+import the.husky.web.filter.CardFilter;
 import the.husky.web.filter.WebFilter;
 import the.husky.web.servlet.AdminServlet;
 import the.husky.web.servlet.LoginServlet;
@@ -44,10 +45,7 @@ public class Main {
         );
 
         ServletContextHandler contextHandler = getServletContextHandler(context);
-        WebFilter webFilter = context.getBean(WebFilter.class);
-        contextHandler.addFilter
-                (new FilterHolder
-                        (webFilter), "/*", EnumSet.of(DispatcherType.REQUEST));
+        addFilter(contextHandler, context);
 
         Server server = new Server(1025);
         server.setHandler(contextHandler);
@@ -60,12 +58,16 @@ public class Main {
         EditUserServlet editUserServlet = context.getBean(EditUserServlet.class);
         DeleteUserServlet deleteUserServlet = context.getBean(DeleteUserServlet.class);
         ForgotPasswordServlet forgotPasswordServlet = context.getBean(ForgotPasswordServlet.class);
+        CartServlet cartServlet = context.getBean(CartServlet.class);
+        PaymentServlet paymentServlet = context.getBean(PaymentServlet.class);
         return Map.of(
                 addUserServlet, "/user_add",
                 allUsersServlet, "/user_all",
                 editUserServlet, "/user_edit/*",
                 deleteUserServlet, "/user/delete",
-                forgotPasswordServlet, "/task");
+                forgotPasswordServlet, "/task",
+                cartServlet, "/cart",
+                paymentServlet, "/card");
     }
 
     private static Map<Servlet, String> vehicleServletMap(ApplicationContext context) {
@@ -107,5 +109,16 @@ public class Main {
             contextHandler.addServlet(new ServletHolder(entry.getKey()), entry.getValue());
         }
         return contextHandler;
+    }
+
+    private static void addFilter(ServletContextHandler contextHandler, ApplicationContext context) {
+        WebFilter webFilter = context.getBean(WebFilter.class);
+        contextHandler.addFilter
+                (new FilterHolder
+                        (webFilter), "/*", EnumSet.of(DispatcherType.REQUEST));
+        CardFilter cardFilter = context.getBean(CardFilter.class);
+        contextHandler.addFilter
+                (new FilterHolder
+                        (cardFilter), "/card", EnumSet.of(DispatcherType.REQUEST));
     }
 }

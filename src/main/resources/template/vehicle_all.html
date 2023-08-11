@@ -13,6 +13,8 @@
     <button>Logout</button>
 </form>
 
+<a id="cart" href="/cart">Cart</a>
+
 <form id="by_manufacturer" action="/vehicle_all" method="get">
     <label for="manufacturer">Filter by Manufacturer:</label>
     <select name="manufacturer" id="manufacturer">
@@ -41,7 +43,7 @@
 
 <br/>
 
-<a id="add_new_vehicle" href="/vehicle_add">Back to Add</a>
+<!--<a id="add_new_vehicle" href="/vehicle_add">Back to Add</a>-->
 
 <table id="vehicle_list">
     <thead>
@@ -75,6 +77,13 @@
                 <input type="hidden" name="vehicleId" value="${vehicle.vehicleId?if_exists}">
                 <button class="delete-button">Delete</button>
             </form>
+            <p/>
+            <form id="add_to_cart"
+                  action="/cart"
+                  method="post"
+                  onsubmit="return confirm('Are you sure you want to add this vehicle to cart?');">
+                <input type="hidden" name="vehicleId" value="${vehicle.vehicleId?if_exists}">
+                <button class="add-user-button custom-button">Add to Cart</button>
         </td>
     </tr>
     </#list>
