@@ -19,11 +19,11 @@ public interface MyFilter {
                 session.getToken().equals(token);
     }
 
-    default String extractTokenValue(HttpServletRequest request) {
+    default String extractTokenValue(HttpServletRequest request, String... cookieName) {
         Cookie[] cookies = request.getCookies();
         if (cookies != null) {
             for (Cookie cookie : cookies) {
-                if ("user-token".equals(cookie.getName()) || "admin-token".equals(cookie.getName())) {
+                if (cookieName[0].equals(cookie.getName()) || cookieName[1].equals(cookie.getName())) {
                     return cookie.getValue();
                 }
             }

@@ -13,6 +13,7 @@ import java.io.IOException;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CardFilter implements Filter, MyFilter {
+    private final String[] COOKIE_NAME = {"user-token", "admin-token"};
     private WebService webService;
 
     @Override
@@ -21,7 +22,7 @@ public class CardFilter implements Filter, MyFilter {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         HttpServletResponse response = (HttpServletResponse) servletResponse;
 
-        String cookieToken = extractTokenValue(request);
+        String cookieToken = extractTokenValue(request, COOKIE_NAME);
 
         if (cookieToken == null) {
             response.sendRedirect("/login");
