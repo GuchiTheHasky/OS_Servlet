@@ -13,7 +13,7 @@ import java.io.IOException;
 @NoArgsConstructor
 @AllArgsConstructor
 public class PaymentFilter implements Filter, MyFilter {
-    private final String[] COOKIE_NAME = {"user-token", "admin-token"};
+    private final String[] COOKIE_NAME = {"user-token", "admin-token", "guest-token"};
     private WebService webService;
 
     @Override

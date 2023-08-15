@@ -56,14 +56,14 @@ public class LoginServlet extends HttpServlet {
 
     private void validateSession(HttpServletResponse response, Session session) throws IOException {
         if (session == null) {
-            log.warn("Session is null");
+            log.error("Session is null");
             response.sendRedirect("/login");
         }
     }
 
     private void validateCredentials(HttpServletResponse response, Credentials credentials) throws IOException {
         if (credentials.getLogin().isEmpty() || credentials.getPassword().isEmpty()) {
-            log.warn("Credentials is empty");
+            log.error("Credentials is empty");
             response.sendRedirect("/login");
         }
     }

@@ -35,7 +35,7 @@ public class ForgotPasswordServlet extends HttpServlet {
         int expectedAnswer = num1 + num2;
 
         if (answer.trim().equals(String.valueOf(expectedAnswer))) {
-            String user = "user-token";
+            String user = "guest-token";
             Session session = webService.getSecurityService().createGuestSession();
             setCookies(response, session.getToken(), user);
             response.sendRedirect("/vehicle_all");

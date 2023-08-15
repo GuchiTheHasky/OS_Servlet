@@ -21,7 +21,7 @@ public class WebFilter implements Filter, MyFilter {
     private final List<String> USER_ACCESS_LEVEL_URI = List.of("/login", "/logout", "/task", "/user_add",
             "image.png", "/static", "/favicon.ico", "/wrong_answer.html", "/vehicle_all", "/vehicle_add",
             "/vehicle_edit", "/vehicle/delete", "/cart", "/card");
-    private final String[] COOKIE_NAME = {"user-token", "admin-token"};
+    private final String[] COOKIE_NAME = {"user-token", "admin-token", "guest-token"};
     private WebService webService;
 
     @Override

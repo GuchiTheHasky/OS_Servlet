@@ -31,16 +31,16 @@ import java.util.Properties;
 @Slf4j
 public class Main {
     public static void main(String[] args) throws Exception {
-        Properties properties = PropertiesLoader.loadProperties();
-
-        final String jdbcUrl = properties.getProperty("db.flyway.url");
-        final String jdbcUser = properties.getProperty("db.user");
-        final String jdbcPassword = properties.getProperty("db.password");
-        final String jdbcLocations = properties.getProperty("db.flyway.locations");
-        Flyway flyway = Flyway.configure().dataSource(jdbcUrl, jdbcUser, jdbcPassword)
-                .locations(jdbcLocations)
-                .load();
-        flyway.migrate();
+//        Properties properties = PropertiesLoader.loadProperties();
+//
+//        final String jdbcUrl = properties.getProperty("db.flyway.url");
+//        final String jdbcUser = properties.getProperty("db.user");
+//        final String jdbcPassword = properties.getProperty("db.password");
+//        final String jdbcLocations = properties.getProperty("db.flyway.locations");
+//        Flyway flyway = Flyway.configure().dataSource(jdbcUrl, jdbcUser, jdbcPassword)
+//                .locations(jdbcLocations)
+//                .load();
+//        flyway.migrate();
 
         ApplicationContext context = new ClassPathApplicationContext(
                 "/context/dao_context.xml",
@@ -52,7 +52,7 @@ public class Main {
         ServletContextHandler contextHandler = getServletContextHandler(context);
         addFilter(contextHandler, context);
 
-        Server server = new Server(80);
+        Server server = new Server(1024);
         server.setHandler(contextHandler);
         server.start();
     }

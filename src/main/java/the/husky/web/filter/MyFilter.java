@@ -23,8 +23,10 @@ public interface MyFilter {
         Cookie[] cookies = request.getCookies();
         if (cookies != null) {
             for (Cookie cookie : cookies) {
-                if (cookieName[0].equals(cookie.getName()) || cookieName[1].equals(cookie.getName())) {
-                    return cookie.getValue();
+                for (String currentName : cookieName) {
+                    if (cookie.getName().equals(currentName)) {
+                        return cookie.getValue();
+                    }
                 }
             }
         }
