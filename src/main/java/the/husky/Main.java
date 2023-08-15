@@ -10,7 +10,9 @@ import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.FilterHolder;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
-import the.husky.web.filter.CardFilter;
+import org.flywaydb.core.Flyway;
+import the.husky.dao.loader.PropertiesLoader;
+import the.husky.web.filter.PaymentFilter;
 import the.husky.web.filter.WebFilter;
 import the.husky.web.servlet.AdminServlet;
 import the.husky.web.servlet.LoginServlet;
@@ -24,18 +26,21 @@ import the.husky.web.servlet.vehicleservlet.EditVehicleServlet;
 
 import java.util.EnumSet;
 import java.util.Map;
+import java.util.Properties;
 
 @Slf4j
 public class Main {
     public static void main(String[] args) throws Exception {
-//        Properties properties = PropertiesLoader.loadProperties();
-//
-//        final String jdbcUrl = properties.getProperty("db.flyway.url");
-//        final String jdbcUser = properties.getProperty("db.user");
-//        final String jdbcPassword = properties.getProperty("db.password");
-//        Flyway flyway = Flyway.configure().dataSource(jdbcUrl, jdbcUser, jdbcPassword)
-//                .load();
-//        flyway.migrate();
+        Properties properties = PropertiesLoader.loadProperties();
+
+        final String jdbcUrl = properties.getProperty("db.flyway.url");
+        final String jdbcUser = properties.getProperty("db.user");
+        final String jdbcPassword = properties.getProperty("db.password");
+        final String jdbcLocations = properties.getProperty("db.flyway.locations");
+        Flyway flyway = Flyway.configure().dataSource(jdbcUrl, jdbcUser, jdbcPassword)
+                .locations(jdbcLocations)
+                .load();
+        flyway.migrate();
 
         ApplicationContext context = new ClassPathApplicationContext(
                 "/context/dao_context.xml",
@@ -47,7 +52,7 @@ public class Main {
         ServletContextHandler contextHandler = getServletContextHandler(context);
         addFilter(contextHandler, context);
 
-        Server server = new Server(1025);
+        Server server = new Server(80);
         server.setHandler(contextHandler);
         server.start();
     }
@@ -116,9 +121,9 @@ public class Main {
         contextHandler.addFilter
                 (new FilterHolder
                         (webFilter), "/*", EnumSet.of(DispatcherType.REQUEST));
-        CardFilter cardFilter = context.getBean(CardFilter.class);
+        PaymentFilter paymentFilter = context.getBean(PaymentFilter.class);
         contextHandler.addFilter
                 (new FilterHolder
-                        (cardFilter), "/card", EnumSet.of(DispatcherType.REQUEST));
+                        (paymentFilter), "/card", EnumSet.of(DispatcherType.REQUEST));
     }
 }

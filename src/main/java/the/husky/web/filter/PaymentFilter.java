@@ -12,7 +12,7 @@ import java.io.IOException;
 
 @NoArgsConstructor
 @AllArgsConstructor
-public class CardFilter implements Filter, MyFilter {
+public class PaymentFilter implements Filter, MyFilter {
     private final String[] COOKIE_NAME = {"user-token", "admin-token"};
     private WebService webService;
 
