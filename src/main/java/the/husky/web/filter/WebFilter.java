@@ -15,13 +15,13 @@ import java.util.List;
 @Slf4j
 @NoArgsConstructor
 @AllArgsConstructor
-public class WebFilter implements Filter, MyFilter {
-    private final List<String> PERMITTED_URI = List.of("/login", "/task", "/user_add", "image.png",
+public class WebFilter implements Filter {
+    private final List<String> permittedUri = List.of("/login", "/task", "/user_add", "image.png",
             "/static", "/favicon.ico", "/wrong_answer.html");
-    private final List<String> USER_ACCESS_LEVEL_URI = List.of("/login", "/logout", "/task", "/user_add",
+    private final List<String> userAccessLevelUri = List.of("/login", "/logout", "/task", "/user_add",
             "image.png", "/static", "/favicon.ico", "/wrong_answer.html", "/vehicle_all", "/vehicle_add",
             "/vehicle_edit", "/vehicle/delete", "/cart", "/card");
-    private final String[] COOKIE_NAME = {"user-token", "admin-token", "guest-token"};
+    private final String[] cookieNames = {"user-token", "admin-token", "guest-token"};
     private WebService webService;
 
     @Override
@@ -35,7 +35,7 @@ public class WebFilter implements Filter, MyFilter {
             return;
         }
 
-        String cookieToken = extractTokenValue(request, COOKIE_NAME);
+        String cookieToken = FilterUtil.extractTokenValue(request, cookieNames);
 
         if (cookieToken == null) {
             response.sendRedirect("/login");
@@ -43,15 +43,15 @@ public class WebFilter implements Filter, MyFilter {
         }
 
         Session currentSession = getSession(cookieToken);
-        validateSession(response, currentSession, "/login");
+        FilterUtil.validateSession(response, currentSession, "/login");
         String admin = "Admin";
         String user = "User";
         String guest = "Guest";
 
-        if (identifyUser(currentSession, cookieToken, admin) && !isSessionTerminated(cookieToken)) {
+        if (FilterUtil.identifyUser(currentSession, cookieToken, admin) && !isSessionTerminated(cookieToken)) {
             filterChain.doFilter(request, response);
-        } else if ((identifyUser(currentSession, cookieToken, user) ||
-                identifyUser(currentSession, cookieToken, guest) )&&
+        } else if ((FilterUtil.identifyUser(currentSession, cookieToken, user) ||
+                FilterUtil.identifyUser(currentSession, cookieToken, guest) )&&
                 isUserAccessLevel(request) &&
                 !isSessionTerminated(cookieToken)) {
             filterChain.doFilter(request, response);
@@ -65,7 +65,7 @@ public class WebFilter implements Filter, MyFilter {
     }
 
     private boolean isUserAccessLevel(HttpServletRequest request) {
-        for (String permittedUri : USER_ACCESS_LEVEL_URI) {
+        for (String permittedUri : userAccessLevelUri) {
             if (request.getRequestURI().contains(permittedUri)) {
                 return true;
             }
@@ -78,7 +78,7 @@ public class WebFilter implements Filter, MyFilter {
     }
 
     private boolean isPermittedURI(String uri) {
-        for (String permittedUri : PERMITTED_URI) {
+        for (String permittedUri : permittedUri) {
             if (uri.contains(permittedUri)) {
                 return true;
             }

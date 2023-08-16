@@ -42,12 +42,7 @@ public class Main {
 //                .load();
 //        flyway.migrate();
 
-        ApplicationContext context = new ClassPathApplicationContext(
-                "/context/dao_context.xml",
-                "/context/service_context.xml",
-                "/context/servlet_context.xml",
-                "/context/filter_context.xml"
-        );
+        ApplicationContext context = new ClassPathApplicationContext("root_context.xml");
 
         ServletContextHandler contextHandler = getServletContextHandler(context);
         addFilter(contextHandler, context);

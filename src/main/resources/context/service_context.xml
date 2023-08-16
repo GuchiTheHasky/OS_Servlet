@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <beans>
 
-    <import resource="classpath:dao_context.xml"/>
-
     <bean id="userService" class="the.husky.service.entity.UserService">
         <property name="userDao" ref="userDao"/>
     </bean>

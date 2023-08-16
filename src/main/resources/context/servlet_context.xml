@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <beans>
 
-    <import resource="classpath:service_context.xml"/>
-
     <bean id="allUsersServlet" class="the.husky.web.servlet.userservlet.AllUsersServlet">
         <property name="webService" ref="webService"/>
     </bean>

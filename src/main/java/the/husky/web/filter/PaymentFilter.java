@@ -12,8 +12,8 @@ import java.io.IOException;
 
 @NoArgsConstructor
 @AllArgsConstructor
-public class PaymentFilter implements Filter, MyFilter {
-    private final String[] COOKIE_NAME = {"user-token", "admin-token", "guest-token"};
+public class PaymentFilter implements Filter {
+    private final String[] cookieNames = {"user-token", "admin-token", "guest-token"};
     private WebService webService;
 
     @Override
@@ -22,7 +22,7 @@ public class PaymentFilter implements Filter, MyFilter {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         HttpServletResponse response = (HttpServletResponse) servletResponse;
 
-        String cookieToken = extractTokenValue(request, COOKIE_NAME);
+        String cookieToken = FilterUtil.extractTokenValue(request, cookieNames);
 
         if (cookieToken == null) {
             response.sendRedirect("/login");
@@ -30,9 +30,9 @@ public class PaymentFilter implements Filter, MyFilter {
         }
 
         Session currentSession = getSession(cookieToken);
-        validateSession(response, currentSession, "/login");
+        FilterUtil.validateSession(response, currentSession, "/login");
 
-        if (identifyUser(currentSession, cookieToken, "User")) {
+        if (FilterUtil.identifyUser(currentSession, cookieToken, "User")) {
             filterChain.doFilter(request, response);
         } else {
             response.sendRedirect("/cart");

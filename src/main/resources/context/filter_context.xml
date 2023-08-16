@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <beans>
 
-    <import resource="classpath:service_context.xml"/>
-
     <bean id="webFilter" class="the.husky.web.filter.WebFilter">
         <property name="webService" ref="webService"/>
     </bean>

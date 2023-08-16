@@ -10,6 +10,7 @@ import java.io.IOException;
 
 @NoArgsConstructor
 public class LogoutServlet extends HttpServlet {
+    private final String[] cookieNames = {"user-token", "guest-token"};
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -25,8 +26,10 @@ public class LogoutServlet extends HttpServlet {
         Cookie[] cookies = request.getCookies();
         if (cookies != null) {
             for (Cookie cookie : cookies) {
-                if (cookie.getName().equalsIgnoreCase("user-token")) {
-                    return "user-token";
+                for (String cookieName : cookieNames) {
+                    if (cookieName.equals(cookie.getName())) {
+                        return cookieName;
+                    }
                 }
             }
         }
