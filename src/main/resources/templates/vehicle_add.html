@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Add Vehicle</title>
+    <link rel="stylesheet" type="text/css" href="../css/common.css">
+    <link rel="icon" href="../favicon/favicon.ico" type="image/vnd.microsoft.icon">
+
+</head>
+
+<body id="add_vehicle_class_container">
+
+<form id="add_vehicle_form" action="/vehicle_add" method="post">
+
+    <h1 id="add_vehicle_class_title">Add Vehicle</h1>
+
+    <label for="manufacture">Manufacturer:</label>
+    <select name="manufacture" id="manufacture">
+        <option value="SUBARU">Subaru</option>
+        <option value="KIA">Kia</option>
+        <option value="VOLVO">Volvo</option>
+        <option value="BMW">BMW</option>
+        <option value="HONDA">Honda</option>
+        <option value="FORD">Ford</option>
+        <option value="GM">GM</option>
+        <option value="MAZDA">Mazda</option>
+        <option value="TOYOTA">Toyota</option>
+        <option value="MITSUBISHI">Mitsubishi</option>
+    </select>
+
+    <br/>
+
+    <label for="engineType">Engine Type:</label>
+    <select name="engineType" id="engineType">
+        <option value="GASOLINE">Gasoline</option>
+        <option value="DIESEL">Diesel</option>
+        <option value="HYBRID">Hybrid</option>
+        <option value="ELECTRIC">Electric</option>
+    </select>
+
+    <br/>
+
+    <label for="model">Model:</label>
+    <input type="text" name="model" id="model" required>
+
+    <br/>
+
+    <label for="price">Price:</label>
+    <select name="price" id="price" required>
+        <option value="1000">1000</option>
+        <option value="2000">2000</option>
+        <option value="3000">3000</option>
+        <option value="4000">4000</option>
+        <option value="5000">5000</option>
+        <option value="6000">6000</option>
+        <option value="7000">7000</option>
+        <option value="8000">8000</option>
+        <option value="9000">9000</option>
+        <option value="10000">10000</option>
+        <option value="11000">11000</option>
+        <option value="12000">12000</option>
+        <option value="13000">13000</option>
+        <option value="14000">14000</option>
+        <option value="15000">15000</option>
+        <option value="16000">16000</option>
+        <option value="17000">17000</option>
+        <option value="18000">18000</option>
+        <option value="19000">19000</option>
+        <option value="20000">20000</option>
+        <option value="21000">21000</option>
+        <option value="22000">22000</option>
+        <option value="23000">23000</option>
+        <option value="24000">24000</option>
+        <option value="25000">25000</option>
+        <option value="26000">26000</option>
+        <option value="27000">27000</option>
+        <option value="28000">28000</option>
+        <option value="29000">29000</option>
+        <option value="30000">30000</option>
+    </select>
+
+    <br/>
+
+    <label for="age">Age:</label>
+    <select name="age" id="age" required>
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+        <option value="5">5</option>
+        <option value="6">6</option>
+        <option value="7">7</option>
+        <option value="8">8</option>
+        <option value="9">9</option>
+        <option value="10">10</option>
+        <option value="11">11</option>
+        <option value="12">12</option>
+        <option value="13">13</option>
+        <option value="14">14</option>
+        <option value="15">15</option>
+    </select>
+
+    <br/>
+
+    <label for="weight">Weight:</label>
+    <select name="weight" id="weight" required>
+        <option value="1100">1100</option>
+        <option value="1200">1200</option>
+        <option value="1300">1300</option>
+        <option value="1400">1400</option>
+        <option value="1500">1500</option>
+        <option value="1600">1600</option>
+        <option value="1700">1700</option>
+        <option value="1800">1800</option>
+        <option value="1900">1900</option>
+        <option value="2000">2000</option>
+        <option value="2100">2100</option>
+        <option value="2200">2200</option>
+        <option value="2300">2300</option>
+        <option value="2400">2400</option>
+    </select>
+
+    <br/>
+
+    <input id="save_vehicle" type="submit" value="Save">
+</form>
+
+<div class="image_container">
+    <img src="../img/image.png">
+</div>
+
+</body>
+</html>

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+    <title>Add User</title>
+    <link rel="stylesheet" type="text/css" href="../css/common.css">
+    <link rel="icon" href="../favicon/favicon.ico" type="image/vnd.microsoft.icon">
+
+</head>
+
+<body>
+<div class="add_user_container">
+    <h1 class="add_user_title">Add User</h1>
+
+    <form action="/user_add" method="post">
+
+        <div>
+            <label for=login>Login:</label>
+            <input type="text" id="login" name="login" required>
+        </div>
+        <div>
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required>
+        </div>
+
+        <div class="add_user_buttons">
+            <input type="submit" value="Add">
+            <a href="/login" class="back-to-login">Back to Login</a>
+        </div>
+
+    </form>
+</div>
+
+<div class="image_container">
+    <img src="../img/image.png">
+</div>
+
+</body>
+</html>
+
