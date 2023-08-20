@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<beans>
-
-    <import resource="/context/dao_context.xml"/>
-    <import resource="/context/service_context.xml"/>
-    <import resource="/context/servlet_context.xml"/>
-    <import resource="/context/filter_context.xml"/>
-
-</beans>
