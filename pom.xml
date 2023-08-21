@@ -26,10 +26,10 @@
         <maven-compiler-plugin.version>3.11.0</maven-compiler-plugin.version>
         <maven-jar-plugin.version>3.2.0</maven-jar-plugin.version>
         <maven-assembly-plugin.version>3.3.0</maven-assembly-plugin.version>
-        <spring-boot.version>3.0.9</spring-boot.version>
-        <logback.classic.version>1.4.7</logback.classic.version>
-        <lombok.version>1.18.26</lombok.version>
-        <postgresql.version>42.6.0</postgresql.version>
+        <spring-boot.version>RELEASE</spring-boot.version>
+        <logback.classic.version>RELEASE</logback.classic.version>
+        <lombok.version>RELEASE</lombok.version>
+        <postgresql.version>RELEASE</postgresql.version>
     </properties>
 
     <build>
