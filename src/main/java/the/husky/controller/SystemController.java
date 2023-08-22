@@ -1,7 +1,6 @@
 package the.husky.controller;
 
 
-import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -36,7 +35,7 @@ public class SystemController {
     }
 
     @PostMapping("/logout")
-    public String logout(HttpServletResponse response) {
+    public String logout() {
         return "redirect:/login";
     }
 
