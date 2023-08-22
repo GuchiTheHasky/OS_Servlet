@@ -36,6 +36,7 @@ public class SystemController {
 
     @PostMapping("/logout")
     public String logout() {
+
         return "redirect:/login";
     }
 

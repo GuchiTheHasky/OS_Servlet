@@ -23,7 +23,7 @@ public class VehicleController {
 
     @GetMapping("/vehicle_all")
     public String showAll(Model model) {
-        List<Vehicle> vehicles = significantService.getVehicleService().findAll();
+        List<Vehicle> vehicles = significantService.findAllVehicles();
         List<String> manufacturers = VehicleManufacturer.getManufacturers();
         List<String> engineTypes = EngineType.getAllEngineTypes();
         model.addAttribute("vehicles", vehicles);
@@ -38,7 +38,7 @@ public class VehicleController {
             log.warn("Manufacturer is empty");
             return "redirect:/vehicle_all";
         }
-        List<Vehicle> vehicles = significantService.getVehicleService().filterByManufacturer(manufacturer);
+        List<Vehicle> vehicles = significantService.filterByManufacturer(manufacturer);
         List<String> manufacturers = VehicleManufacturer.getManufacturers();
         List<String> engineTypes = EngineType.getAllEngineTypes();
         model.addAttribute("vehicles", vehicles);
@@ -53,7 +53,7 @@ public class VehicleController {
             log.warn("Engine type is empty");
             return "redirect:/vehicle_all";
         }
-        List<Vehicle> vehicles = significantService.getVehicleService().filterByEngineType(engineType);
+        List<Vehicle> vehicles = significantService.filterByEngineType(engineType);
         List<String> manufacturers = VehicleManufacturer.getManufacturers();
         List<String> engineTypes = EngineType.getAllEngineTypes();
         model.addAttribute("vehicles", vehicles);
@@ -69,28 +69,28 @@ public class VehicleController {
 
     @PostMapping("/vehicle_add")
     public String addVehiclePost(@ModelAttribute Vehicle vehicle) {
-        significantService.getVehicleService().add(vehicle);
+        significantService.saveVehicle(vehicle);
         log.info("Vehicle {} added", vehicle);
         return "redirect:/vehicle_all";
     }
 
     @GetMapping("vehicle_edit")
     public String editVehicle(@RequestParam(name = "vehicleId") int vehicleId, Model model) {
-        Vehicle vehicle = significantService.getVehicleService().findVehicleById(vehicleId);
+        Vehicle vehicle = significantService.findVehicleById(vehicleId);
         model.addAttribute("vehicle", vehicle);
         return "vehicle_edit";
     }
 
     @PostMapping("vehicle_edit")
     public String editVehiclePost(@ModelAttribute Vehicle vehicle) {
-        significantService.getVehicleService().update(vehicle);
+        significantService.update(vehicle);
         log.info("Vehicle {} updated", vehicle);
         return "redirect:/vehicle_all";
     }
 
     @PostMapping("/vehicle/delete")
     public String deleteVehicle(@RequestParam(name = "vehicleId") int vehicleId) {
-        significantService.getVehicleService().delete(vehicleId);
+        significantService.delete(vehicleId);
         log.info("Vehicle with id {} deleted", vehicleId);
         return "redirect:/vehicle_all";
     }

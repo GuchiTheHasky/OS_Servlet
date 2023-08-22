@@ -21,7 +21,7 @@ public class UserController {
 
     @GetMapping("/user_all")
     public String showAll(Model model) {
-        List<User> users = significantService.getUserService().findAll();
+        List<User> users = significantService.findAllUsers();
         model.addAttribute("users", users);
         return "user_all";
     }
@@ -33,28 +33,28 @@ public class UserController {
 
     @PostMapping("/user_add")
     public String addUserPost(@ModelAttribute User user) {
-        significantService.getUserService().add(user);
+        significantService.saveUser(user);
         log.info("User {} added", user);
         return "redirect:/user_all";
     }
 
     @GetMapping("/user_edit")
     public String editUser(@RequestParam(name = "id") int userId, Model model) {
-        User user = significantService.getUserService().findUserById(userId);
+        User user = significantService.findUserById(userId);
         model.addAttribute("user", user);
         return "user_edit";
     }
 
     @PostMapping("/user_edit")
     public String editUserPost(@ModelAttribute User user) {
-        significantService.getUserService().update(user);
+        significantService.updateUser(user);
         log.info("User {} updated", user);
         return "redirect:/user_all";
     }
 
     @PostMapping("/user/delete")
     public String deleteUser(@RequestParam(name = "id") int userId) {
-        significantService.getUserService().delete(userId);
+        significantService.deleteUser(userId);
         log.info("User with id {} deleted", userId);
         return "redirect:/user_all";
     }
