@@ -1,5 +1,7 @@
 package the.husky.controller;
 
+
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -7,22 +9,15 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import the.husky.service.UserService;
-import the.husky.service.VehicleService;
+import the.husky.service.SignificantService;
 
 import java.util.Map;
 
 @Slf4j
 @Controller
 public class SystemController {
-    private final UserService userService;
-    private final VehicleService vehicleService;
-
     @Autowired
-    public SystemController(UserService userService, VehicleService vehicleService) {
-        this.userService = userService;
-        this.vehicleService = vehicleService;
-    }
+    private SignificantService significantService;
 
     @GetMapping("/login")
     public String login() {
@@ -40,8 +35,8 @@ public class SystemController {
         return "redirect:/vehicle_all";
     }
 
-    @GetMapping("/logout")
-    public String logout() {
+    @PostMapping("/logout")
+    public String logout(HttpServletResponse response) {
         return "redirect:/login";
     }
 
@@ -71,8 +66,8 @@ public class SystemController {
 
     @GetMapping("/admin")
     public String admin(Model model) {
-        int usersCount = userService.findAll().size();
-        int vehiclesCount = vehicleService.findAll().size();
+        int usersCount = significantService.getUserService().findAll().size();
+        int vehiclesCount = significantService.getVehicleService().findAll().size();
         Map<String, Integer> statistics = Map.of("Users count", usersCount, "Vehicles count", vehiclesCount);
         model.addAttribute("statistics", statistics);
         return "admin";

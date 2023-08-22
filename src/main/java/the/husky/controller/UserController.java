@@ -6,6 +6,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import the.husky.entity.User;
+import the.husky.service.SignificantService;
 import the.husky.service.UserService;
 
 import java.util.List;
@@ -14,11 +15,11 @@ import java.util.List;
 @Controller
 public class UserController {
     @Autowired
-    private UserService userService;
+    private SignificantService significantService;
 
     @GetMapping("/user_all")
     public String showAll(Model model) {
-        List<User> users = userService.findAll();
+        List<User> users = significantService.getUserService().findAll();
         model.addAttribute("users", users);
         return "user_all";
     }
@@ -30,28 +31,28 @@ public class UserController {
 
     @PostMapping("/user_add")
     public String addUserPost(@ModelAttribute User user) {
-        userService.add(user);
+        significantService.getUserService().add(user);
         log.info("User {} added", user);
         return "redirect:/user_all";
     }
 
     @GetMapping("/user_edit")
     public String editUser(@RequestParam(name = "id") int userId, Model model) {
-        User user = userService.findUserById(userId);
+        User user = significantService.getUserService().findUserById(userId);
         model.addAttribute("user", user);
         return "user_edit";
     }
 
     @PostMapping("/user_edit")
     public String editUserPost(@ModelAttribute User user) {
-        userService.update(user);
+        significantService.getUserService().update(user);
         log.info("User {} updated", user);
         return "redirect:/user_all";
     }
 
     @PostMapping("/user/delete")
     public String deleteUser(@RequestParam(name = "id") int userId) {
-        userService.delete(userId);
+        significantService.getUserService().delete(userId);
         log.info("User with id {} deleted", userId);
         return "redirect:/user_all";
     }
