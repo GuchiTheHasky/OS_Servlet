@@ -1,16 +1,14 @@
 package the.husky.entity.enums;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import the.husky.exception.InvalidTypeException;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Getter
-@NoArgsConstructor
-@AllArgsConstructor
+@RequiredArgsConstructor
 public enum VehicleManufacturer {
     SUBARU("SUBARU CORPORATION", "Subaru"),
     KIA("KIA MOTORS CORPORATION", "Kia"),
@@ -23,8 +21,8 @@ public enum VehicleManufacturer {
     TOYOTA("TOYOTA", "Toyota"),
     MITSUBISHI("MITSUBISHI MOTORS CORPORATION", "Mitsubishi");
 
-    private String manufactureId;
-    private String manufacture;
+    private final String manufactureId;
+    private final String manufacture;
 
     public String getManufacture() {
         return manufacture;

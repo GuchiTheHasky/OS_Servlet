@@ -1,18 +1,16 @@
 package the.husky.repository.jdbc;
 
-import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
+import the.husky.entity.User;
 import the.husky.repository.UserDao;
 import the.husky.repository.jdbc.mapper.UserRowMapper;
-import the.husky.entity.User;
 
 import javax.sql.DataSource;
 import java.util.List;
 import java.util.Optional;
 
-@NoArgsConstructor
 @Repository
 public class JdbcUserDao implements UserDao {
     private static final UserRowMapper USER_ROW_MAPPER = new UserRowMapper();
@@ -24,7 +22,7 @@ public class JdbcUserDao implements UserDao {
     private static final String DELETE = "DELETE FROM users WHERE id = ?";
     private static final String DELETE_ALL = "DELETE FROM users";
 
-    private JdbcTemplate jdbcTemplate;
+    private final JdbcTemplate jdbcTemplate;
 
     @Autowired
     public JdbcUserDao(DataSource dataSource) {

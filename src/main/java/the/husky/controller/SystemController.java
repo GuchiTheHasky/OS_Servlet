@@ -1,5 +1,9 @@
 package the.husky.controller;
 
+
+
+import jakarta.servlet.http.HttpSession;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -7,22 +11,16 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import the.husky.service.UserService;
-import the.husky.service.VehicleService;
+import the.husky.entity.enums.Role;
+import the.husky.service.SignificantService;
 
 import java.util.Map;
 
 @Slf4j
 @Controller
+@RequiredArgsConstructor
 public class SystemController {
-    private final UserService userService;
-    private final VehicleService vehicleService;
-
-    @Autowired
-    public SystemController(UserService userService, VehicleService vehicleService) {
-        this.userService = userService;
-        this.vehicleService = vehicleService;
-    }
+    private final SignificantService significantService;
 
     @GetMapping("/login")
     public String login() {
@@ -31,17 +29,21 @@ public class SystemController {
 
     @PostMapping("/login")
     public String loginPost(@RequestParam(name = "login") String login,
-                            @RequestParam(name = "password") String password) {
+                            @RequestParam(name = "password") String password,
+                            HttpSession session) {
         if (login.equals("admin") && password.equals("admin")) {
+            session.setAttribute("role", Role.ADMIN);
             log.info("Admin logged in");
             return "redirect:/admin";
         }
+        session.setAttribute("role", Role.USER);
         log.info("User logged in");
         return "redirect:/vehicle_all";
     }
 
-    @GetMapping("/logout")
+    @PostMapping("/logout")
     public String logout() {
+
         return "redirect:/login";
     }
 
@@ -71,8 +73,8 @@ public class SystemController {
 
     @GetMapping("/admin")
     public String admin(Model model) {
-        int usersCount = userService.findAll().size();
-        int vehiclesCount = vehicleService.findAll().size();
+        int usersCount = significantService.findAllUsers().size();
+        int vehiclesCount = significantService.findAllVehicles().size();
         Map<String, Integer> statistics = Map.of("Users count", usersCount, "Vehicles count", vehiclesCount);
         model.addAttribute("statistics", statistics);
         return "admin";

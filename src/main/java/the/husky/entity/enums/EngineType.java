@@ -1,23 +1,21 @@
 package the.husky.entity.enums;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import the.husky.exception.InvalidTypeException;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@NoArgsConstructor
-@AllArgsConstructor
 @Getter
+@RequiredArgsConstructor
 public enum EngineType {
     GASOLINE("Gasoline"),
     DIESEL("Diesel"),
     HYBRID("Hybrid"),
     ELECTRIC("Electric");
 
-    private String type;
+    private final String type;
 
     public static List<String> getAllEngineTypes() {
         List<String> engineTypes = new ArrayList<>();
