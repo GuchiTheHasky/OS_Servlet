@@ -1,5 +1,6 @@
 package the.husky.controller;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -15,9 +16,9 @@ import java.util.List;
 
 @Slf4j
 @Controller
+@RequiredArgsConstructor
 public class UserController {
-    @Autowired
-    private SignificantService significantService;
+    private final SignificantService significantService;
 
     @GetMapping("/user_all")
     public String showAll(Model model) {

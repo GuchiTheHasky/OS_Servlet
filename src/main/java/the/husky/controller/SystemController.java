@@ -1,6 +1,9 @@
 package the.husky.controller;
 
 
+
+import jakarta.servlet.http.HttpSession;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -8,15 +11,16 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import the.husky.entity.enums.Role;
 import the.husky.service.SignificantService;
 
 import java.util.Map;
 
 @Slf4j
 @Controller
+@RequiredArgsConstructor
 public class SystemController {
-    @Autowired
-    private SignificantService significantService;
+    private final SignificantService significantService;
 
     @GetMapping("/login")
     public String login() {
@@ -25,11 +29,14 @@ public class SystemController {
 
     @PostMapping("/login")
     public String loginPost(@RequestParam(name = "login") String login,
-                            @RequestParam(name = "password") String password) {
+                            @RequestParam(name = "password") String password,
+                            HttpSession session) {
         if (login.equals("admin") && password.equals("admin")) {
+            session.setAttribute("role", Role.ADMIN);
             log.info("Admin logged in");
             return "redirect:/admin";
         }
+        session.setAttribute("role", Role.USER);
         log.info("User logged in");
         return "redirect:/vehicle_all";
     }
@@ -66,8 +73,8 @@ public class SystemController {
 
     @GetMapping("/admin")
     public String admin(Model model) {
-        int usersCount = significantService.getUserService().findAll().size();
-        int vehiclesCount = significantService.getVehicleService().findAll().size();
+        int usersCount = significantService.findAllUsers().size();
+        int vehiclesCount = significantService.findAllVehicles().size();
         Map<String, Integer> statistics = Map.of("Users count", usersCount, "Vehicles count", vehiclesCount);
         model.addAttribute("statistics", statistics);
         return "admin";

@@ -1,7 +1,7 @@
 package the.husky.controller;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,9 +17,9 @@ import java.util.List;
 
 @Slf4j
 @Controller
+@RequiredArgsConstructor
 public class VehicleController {
-    @Autowired
-    private SignificantService significantService;
+    private final SignificantService significantService;
 
     @GetMapping("/vehicle_all")
     public String showAll(Model model) {
@@ -83,14 +83,14 @@ public class VehicleController {
 
     @PostMapping("vehicle_edit")
     public String editVehiclePost(@ModelAttribute Vehicle vehicle) {
-        significantService.update(vehicle);
+        significantService.updateVehicle(vehicle);
         log.info("Vehicle {} updated", vehicle);
         return "redirect:/vehicle_all";
     }
 
     @PostMapping("/vehicle/delete")
     public String deleteVehicle(@RequestParam(name = "vehicleId") int vehicleId) {
-        significantService.delete(vehicleId);
+        significantService.deleteVehicle(vehicleId);
         log.info("Vehicle with id {} deleted", vehicleId);
         return "redirect:/vehicle_all";
     }

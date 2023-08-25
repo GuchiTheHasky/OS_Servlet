@@ -6,7 +6,6 @@ import the.husky.entity.enums.VehicleManufacturer;
 
 @Getter
 @Setter
-@ToString
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor

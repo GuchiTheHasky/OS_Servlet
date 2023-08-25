@@ -1,8 +1,7 @@
 package the.husky.service;
 
 import lombok.Getter;
-import lombok.NoArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import the.husky.entity.User;
 import the.husky.entity.Vehicle;
@@ -11,16 +10,10 @@ import java.util.List;
 
 @Service
 @Getter
-@NoArgsConstructor
+@RequiredArgsConstructor
 public class SignificantService {
-    private UserService userService;
-    private VehicleService vehicleService;
-
-    @Autowired
-    public SignificantService(UserService userService, VehicleService vehicleService) {
-        this.userService = userService;
-        this.vehicleService = vehicleService;
-    }
+    private final UserService userService;
+    private final VehicleService vehicleService;
 
     public List<User> findAllUsers() {
         return userService.findAll();
@@ -53,11 +46,11 @@ public class SignificantService {
         return vehicleService.filterByEngineType(engineType);
     }
 
-    public Vehicle saveVehicle(Vehicle vehicle) {
-        return vehicleService.add(vehicle);
+    public void saveVehicle(Vehicle vehicle) {
+        vehicleService.add(vehicle);
     }
 
-    public void delete(int id) {
+    public void deleteVehicle(int id) {
         vehicleService.delete(id);
     }
 
@@ -66,7 +59,7 @@ public class SignificantService {
 
     }
 
-    public void update(Vehicle vehicle) {
+    public void updateVehicle(Vehicle vehicle) {
         vehicleService.update(vehicle);
     }
 

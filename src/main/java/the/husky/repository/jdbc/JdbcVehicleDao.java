@@ -1,7 +1,5 @@
 package the.husky.repository.jdbc;
 
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -16,8 +14,6 @@ import java.util.List;
 import java.util.Optional;
 
 @Slf4j
-@Setter
-@NoArgsConstructor
 @Repository
 public class JdbcVehicleDao implements VehicleDao {
     private static final VehicleRowMapper VEHICLE_ROW_MAPPER = new VehicleRowMapper();
@@ -30,7 +26,7 @@ public class JdbcVehicleDao implements VehicleDao {
             "SET manufacture=?, enginetype=?, model=?, price=?, age=?, weight=? WHERE vehicle_id=?";
     private static final String GET_BY_ID = "SELECT * FROM \"vehicle\" WHERE vehicle_id = ?";
 
-    private JdbcTemplate jdbcTemplate;
+    private final JdbcTemplate jdbcTemplate;
 
     @Autowired
     public JdbcVehicleDao(DataSource dataSource) {
