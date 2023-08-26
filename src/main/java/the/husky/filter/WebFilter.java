@@ -4,10 +4,14 @@ import jakarta.servlet.*;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.RequestMapping;
 import the.husky.entity.enums.Role;
 
 import java.io.IOException;
 
+@Component
+@RequestMapping("/*")
 public class WebFilter implements Filter {
 
     private final String[] userUri = {"/login", "/logout", "/task", "/answer", "/css/common.css", "/favicon/*",
@@ -19,7 +23,7 @@ public class WebFilter implements Filter {
             "/vehicle_add", "/vehicle_edit", "/vehicle/delete", "/cart", "/user_all", "/user_add", "/user_edit", "/user/delete"};
 
     private final String[] systemUri = {"/login", "/logout", "/task", "/answer", "/css/common.css", "/favicon/*",
-            "/vehicle_all", "/user_add", "/img/image.png"};
+            "/user_add", "/img/image.png"};
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain)
@@ -35,13 +39,16 @@ public class WebFilter implements Filter {
         }
 
         HttpSession session = request.getSession();
-
-        if (isAdminAccessLevel(uri) && session.getAttribute("role").equals(Role.ADMIN)) {
-            filterChain.doFilter(request, response);
-        } else if (isUserAccessLevel(uri) && session.getAttribute("role").equals(Role.USER)) {
-            filterChain.doFilter(request, response);
-        } else {
+        if (session == null || session.getAttribute("role") == null) {
             response.sendRedirect("/login");
+        } else {
+            if (isAdminAccessLevel(uri) && (session.getAttribute("role").equals(Role.ADMIN))) {
+                filterChain.doFilter(request, response);
+            } else if (isUserAccessLevel(uri) && session.getAttribute("role").equals(Role.USER)) {
+                filterChain.doFilter(request, response);
+            } else {
+                response.sendRedirect("/login");
+            }
         }
     }
 
